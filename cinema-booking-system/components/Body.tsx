@@ -1,18 +1,17 @@
 import React from 'react'
 import PostCard from './PostCard'
+import SearchBar from './SearchBar'
 
 const Body = () => {
   return (
-    <div className="body">
-      <div>
-        
-      </div>
-      <div>
-        <h1 className="movie-label">
+    <div className="container">
+        <SearchBar/>
+        <div>
+          <h1 className="movie-label">
             Now Playing
-        </h1>
-      </div>
-      <div className="three-col">
+          </h1>
+        </div>
+        <div className="three-col">
           <PostCard/>
           <PostCard/>
           <PostCard/>
