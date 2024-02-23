@@ -54,7 +54,7 @@ export default function Home() {
           required
         />
       </div>
-      <div className="name block">
+      <div className="loc block">
         <div>
           <label htmlFor="frm-city">City</label>
           <input
