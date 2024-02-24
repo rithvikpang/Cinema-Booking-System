@@ -15,6 +15,12 @@ const Navbar = () => {
         <h1 className="navbar">Cinema Booking</h1>
       </div>
         <div className="home-buttons">
+          <div className="edit-button">
+              <button className="edit-button" type="submit">Edit Profile</button>
+          </div>
+          <div className="edit-button">
+              <button className="edit-button" type="submit">Edit Cards</button>
+          </div>
           <div className="h-button block">
               <button type="submit">Sign In</button>
           </div>

@@ -86,8 +86,26 @@ export default function Home() {
           />
         </div>
       </div>
-      <div className="button block">
-        <button type="submit">Submit</button>
+      <div className="left-button block">
+          <button type="submit">Change Password</button>
+      </div>
+      <div className="check-boxes">
+        <div>
+          <input type="checkbox" name="myCheckbox"/>
+          <label>Register for Promotions</label>
+        </div>
+        <div>
+          <input className="check" type="checkbox" name="myCheckbox"/>
+          <label>Remember Me</label>
+        </div>
+      </div>
+      <div className="cancel-save block">
+        <div className="button block">
+            <button type="submit">Cancel</button>
+        </div>
+        <div className="button block">
+            <button type="submit">Save Changes</button>
+        </div>
       </div>
     </form>
   );

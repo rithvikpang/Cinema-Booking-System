@@ -59,9 +59,9 @@ export default function Home() {
       <div className="button block">
         <button type="submit">Add Card</button>
       </div>
-      <div className="back-save block">
+      <div className="left-button block">
         <div className="button block">
-            <button type="submit">Back</button>
+            <button type="submit">Cancel</button>
         </div>
         <div className="button block">
             <button type="submit">Save Changes</button>
