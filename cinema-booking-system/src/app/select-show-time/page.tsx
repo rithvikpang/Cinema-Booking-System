@@ -15,7 +15,11 @@ export default function Home() {
             
             <div className="combobox">
                 <div className="combobox">
-                    <input type="text" placeholder="Select a showtime"/>
+                    <input
+                    type="text"
+                    placeholder="Select a showtime"
+                    style={{ fontSize: '16px' }} 
+                    />
                     <ul className="dropdown">
                         <li>March 14, 2024 at 12:00</li>
                         <li>March 15, 2024 at 14:00</li>
