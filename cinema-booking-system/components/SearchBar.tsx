@@ -5,9 +5,11 @@ const SearchBar = () => {
     <div className="search">
         <div className="search-item">
             <input
-            id="frm-search"
+            id="search"
             type="text"
             name="search"
+            defaultValue="Search for a movie"
+            style={{ fontSize: '16px' }} 
             autoComplete="search"
             required
             />

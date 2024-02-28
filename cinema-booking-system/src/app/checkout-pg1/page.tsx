@@ -7,7 +7,11 @@ export default function Home() {
             <h1>Checkout</h1>
             <h2>Use Existing Card</h2>
             <div className="combobox">
-                <input type="text" placeholder="Select a card"/>
+                <input
+                type="text"
+                placeholder="Select a card"
+                style={{ fontSize: '14px' }} 
+                />
                 <ul className="dropdown">
                     <li>XXXX-XXXX-XXXX-1234</li>
                     <li>XXXX-XXXX-XXXX-5678</li>

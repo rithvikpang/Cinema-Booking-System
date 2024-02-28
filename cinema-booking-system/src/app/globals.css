@@ -62,12 +62,13 @@ h1 {
 }
 
 .search-item {
-  width: 50%;
+  width: 75%;
   padding: 50px;
 }
 
 .three-col {
   display: grid;
+  justify-content: center;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   padding: 10px;
 }
