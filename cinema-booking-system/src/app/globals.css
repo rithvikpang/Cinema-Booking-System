@@ -168,6 +168,22 @@ h1 {
   color: #0A0F3A;
 }
 
+.seats {
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 15px;
+  background-color: #ACC3FF;
+  color: #060606;
+}
+
+.sign-in button {
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 15px;
+  background-color: #ACC3FF;
+  color: #0A0F3A;
+}
+
 .button {
   display: flex;
   align-items: center;
@@ -289,4 +305,36 @@ input[type="text"] {
 
 .movie-item {
   padding: 30px;
+}
+
+.leftThirdContent {
+  grid-area: leftThird;
+}
+
+.comboboxtwo {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 300px;
+  padding-bottom: 50px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  gap: 20px;
+}
+
+.rectangle {
+  background-color: #ACC3FF;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.label {
+  padding: 10px;
+  font-size: 20px;
+  background-color: #ACC3FF;
+  color:#060606;
 }
