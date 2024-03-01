@@ -1,28 +1,37 @@
 package com.cinemabookingsystem.cinemadb.controller;
 
 import com.cinemabookingsystem.cinemadb.model.Movie;
-import com.cinemabookingsystem.cinemadb.repository.MovieRepository;
+import com.cinemabookingsystem.cinemadb.service.MovieService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+
 
 @RestController
-@RequestMapping("/api/movies")
+@RequestMapping("api/movies")
+@CrossOrigin
 public class MovieController {
 
     @Autowired
-    private MovieRepository movieRepository;
+    private MovieService movieService;
 
-    @GetMapping
-    public List<Movie> getAllMovies() {
-        return movieRepository.findAll();
+
+    @PostMapping("/add")
+    public String addMovie(@RequestBody Movie movie) {
+        movieService.saveMovie(movie);
+        return "Movie added successfuly";
     }
 
-    @PostMapping
-    public Movie createMovie(@RequestBody Movie movie) {
-        return movieRepository.save(movie);
+    @GetMapping("/getAll")
+    public List<Movie> list() {
+        return movieService.getAllMovies();
     }
+    
+
+
 
     // Add methods for GET by ID, PUT, and DELETE as needed
 }
