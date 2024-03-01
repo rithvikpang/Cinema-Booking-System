@@ -39,6 +39,51 @@ export default function Home() {
                     <button type="submit">Delete</button>
                 </div>
             </div>
+            <hr></hr>
+            <h1 style={{marginTop: '50px' }}>Add Promotion</h1>
+            <div className="first-name block">
+                <label htmlFor="frm-first">Promotion Name</label>
+                <input
+                    id="frm-first"
+                    type="text"
+                    name="first"
+                    autoComplete="given-name"
+                    required
+                />
+            </div>
+            <div className="first-name block">
+                <label htmlFor="frm-first">Promo Code</label>
+                <input
+                    id="frm-first"
+                    type="text"
+                    name="first"
+                    autoComplete="given-name"
+                    required
+                />
+            </div>
+            <div className="first-name block">
+                <label htmlFor="frm-first">Expiration Date</label>
+                <input
+                    id="frm-first"
+                    type="text"
+                    name="first"
+                    autoComplete="given-name"
+                    required
+                />
+            </div>
+            <div className="first-name block">
+                <label htmlFor="frm-first">Discount</label>
+                <input
+                    id="frm-first"
+                    type="text"
+                    name="first"
+                    autoComplete="given-name"
+                    required
+                />
+            </div>
+            <div className="button block">
+                <button type="submit">Add</button>
+            </div>
         </form>
 
     )

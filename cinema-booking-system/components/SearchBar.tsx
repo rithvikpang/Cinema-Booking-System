@@ -36,7 +36,7 @@ const SearchBar: React.FC = () => {
   const handleSearch = async () => {
     // Perform search when the search button is clicked
     try {
-      const response = await fetch(`/api/movies?search=${encodeURIComponent(searchQuery)}`);
+      const response = await fetch(`/api/movies/api/search?term=${encodeURIComponent(searchQuery)}`);
       const data = await response.json();
       console.log(data); // Display or use the search results as needed
     } catch (error) {

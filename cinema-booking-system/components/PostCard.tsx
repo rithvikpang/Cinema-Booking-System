@@ -17,10 +17,12 @@ const PostCard = () => {
             </dl>
             <div className="home-buttons block">
                 <div className="h-button block">
-                    <button type="submit">Watch Trailer</button>
+                    <a href="https://youtu.be/otNh9bTjXWg?si=7G3LAmZPcKdILPNv">
+                        <button type="submit">Watch Trailer</button>
+                    </a>
                 </div>
                 <div className="h-button block">
-                    <button type="submit">Book Movie</button>
+                    <button type="submit" >Book Movie</button>
                 </div>
             </div>
         </div>
