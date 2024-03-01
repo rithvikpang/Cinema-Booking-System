@@ -1,6 +1,7 @@
 package com.cinemabookingsystem.cinemadb.controller;
 
 import com.cinemabookingsystem.cinemadb.model.Movie;
+import com.cinemabookingsystem.cinemadb.repository.MovieRepository;
 import com.cinemabookingsystem.cinemadb.service.MovieService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class MovieController {
 
     @Autowired
     private MovieService movieService;
+
+    @Autowired
+    private MovieRepository movieRepository;
 
 
     @PostMapping("/add")
