@@ -29,6 +29,12 @@ public class MovieController {
     public List<Movie> list() {
         return movieService.getAllMovies();
     }
+
+    @GetMapping("/api/search")
+    public List<Movie> searchMovies(@RequestParam String term) {
+        List<Movie> searchResults = movieRepository.findByTitleContainingIgnoreCase(term);
+        return searchResults;
+    }
     
 
 
