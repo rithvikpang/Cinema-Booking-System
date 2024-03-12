@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import org.springframework.context.annotation.ComponentScan;
 
 @RestController
-@RequestMapping("api/movies")
+@RequestMapping("/api/movies")
 @CrossOrigin
+@ComponentScan(basePackages = { "com.cinemabookingsystem.cinemadb.*" })
 public class MovieController {
 
     @Autowired

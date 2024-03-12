@@ -2,6 +2,7 @@ package com.cinemabookingsystem.cinemadb.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.cinemabookingsystem.cinemadb.model.Movie;
 import com.cinemabookingsystem.cinemadb.repository.MovieRepository;
@@ -15,7 +16,7 @@ public class MovieServiceImpl implements MovieService {
     private MovieRepository movieRepository;
 
     @Override
-    public Movie saveMovie(Movie movie) {
+    public Movie saveMovie(@RequestBody Movie movie) {
         return movieRepository.save(movie);
     }
 

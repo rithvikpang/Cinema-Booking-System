@@ -12,24 +12,61 @@ public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int movie_id;
     private String title;
     private String description;
     private int duration;
     private Date release_date;
     private int genre_id;
+    private String image_url;
+    private String director;
+    private String cast;
+    private String trailer_url;
+    private String rating;
+    
 
     // Constructors, Getters, and Setters
     public Movie() {
 
     }
 
-    public int getId() {
-        return movie_id;
+    public String getImage_url() {
+        return image_url;
     }
 
-    public void setId(int id) {
-        this.movie_id = id;
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
+
+    public String getTrailer_url() {
+        return trailer_url;
+    }
+
+    public void setTrailer_url(String trailer_url) {
+        this.trailer_url = trailer_url;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+    
+    public String getDirector() {
+        return director;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    public void setCast(String cast) {
+        this.cast = cast;
+    }
+
+    public String getCast() {
+        return cast;
     }
 
     public String getTitle() {
