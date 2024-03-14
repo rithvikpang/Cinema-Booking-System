@@ -31,12 +31,12 @@ public class MovieController {
         return "Movie added successfuly";
     }
 
-    @GetMapping("/getAll")
-    public List<Movie> list() {
+    @GetMapping("getAll")
+    public List<Movie> getAllMovies() {
         return movieService.getAllMovies();
     }
 
-    @GetMapping("/api/search")
+    @GetMapping("/search")
     public List<Movie> searchMovies(@RequestParam String term) {
         List<Movie> searchResults = movieRepository.findByTitleContainingIgnoreCase(term);
         return searchResults;
