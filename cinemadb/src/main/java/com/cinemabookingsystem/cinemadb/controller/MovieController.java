@@ -42,7 +42,7 @@ public class MovieController {
         return searchResults;
     }
     
-
+    
 
 
     // Add methods for GET by ID, PUT, and DELETE as needed
