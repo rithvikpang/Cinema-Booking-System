@@ -12,3 +12,21 @@ export interface Movie {
     movie_trailer: string;
   }
   
+ export interface FormData {
+    firstname: string;
+    lastname: string;
+    age: string; // Assuming age is a string; adjust types as necessary
+    email: string;
+    password: string;
+    confirmPassword: string;
+    // Add any other fields as needed
+}
+
+export interface FormErrors {
+    firstname?: string;
+    lastname?: string;
+    email?: string;
+    password?: string;
+    confirmPassword?: string;
+    // Corresponding fields for errors
+}
