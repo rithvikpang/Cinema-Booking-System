@@ -26,12 +26,15 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Transactional
     @Override
     public void registerUser(@RequestBody User user) {
+        
         userRepository.save(user);
         
+        // Create an initilialize the user as unverified
         UnverifiedUser newUnverifiedUser = new UnverifiedUser();
 
         newUnverifiedUser.setUser(user);
         newUnverifiedUser.setCreated_at(Instant.now());
+        newUnverifiedUser.setPassword(user.getPassword());
         unverifiedUserRepository.save(newUnverifiedUser);
     }
 }
