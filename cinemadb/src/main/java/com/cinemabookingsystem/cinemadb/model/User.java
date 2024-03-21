@@ -5,11 +5,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "users")
+@Table(schema = "cinema_db", name = "users")
 public class User {
+    
     @Id
     private String email;
-
     private String firstname;
     private String lastname;
     private int age;
