@@ -13,12 +13,13 @@ import jakarta.persistence.TemporalType;
 @Table(schema = "cinema_db", name = "movies")
 public class Movie {
 
-    @Id @Column(name = "title", nullable = false, length = 255)
+    @Id
+    @Column(name = "title", nullable = false, length = 255)
     private String title;
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
-    
+
     @Column(name = "duration")
     private int duration;
 
@@ -46,7 +47,6 @@ public class Movie {
 
     @Column(name = "movie_trailer", length = 255)
     private String trailer_url;
-    
 
     // Constructors, Getters, and Setters
     public Movie() {
@@ -76,7 +76,7 @@ public class Movie {
     public void setRating(String rating) {
         this.rating = rating;
     }
-    
+
     public String getDirector() {
         return director;
     }
@@ -108,6 +108,7 @@ public class Movie {
     public void setDescription(String description) {
         this.description = description;
     }
+
     public int getDuration() {
         return duration;
     }
@@ -140,5 +141,4 @@ public class Movie {
         this.category = category;
     }
 
-   
 }

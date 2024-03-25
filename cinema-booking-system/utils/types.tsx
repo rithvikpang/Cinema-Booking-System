@@ -8,7 +8,7 @@ export interface Movie {
     category: string;
     cast: string;
     director: string;
-    movie_image: string;
-    movie_trailer: string;
+    image_url: string;
+    trailer_url: string;
   }
   

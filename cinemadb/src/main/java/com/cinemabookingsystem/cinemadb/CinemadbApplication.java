@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @EnableJpaRepositories("com.cinemabookingsystem.cinemadb.repository")
 @ComponentScan(basePackages = { "com.cinemabookingsystem.cinemadb" })
-@EntityScan("com.cinemabookingsystem.cinemadb.model") 
+@EntityScan("com.cinemabookingsystem.cinemadb.model")
 @SpringBootApplication
 public class CinemadbApplication {
 

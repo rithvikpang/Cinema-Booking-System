@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@types/mysql": "^2.15.25"
+    "@types/mysql": "^2.15.25",
+    "prettier": "^3.2.5"
   }
 }
