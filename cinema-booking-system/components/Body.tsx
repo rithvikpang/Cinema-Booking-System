@@ -160,7 +160,9 @@ const Body = () => {
 
   return (
     <div className="container">
-        <SearchBar onSearch={handleSearch} />
+        <div className="serach-button block">
+          <SearchBar onSearch={handleSearch} />
+        </div>
         {!isSearched || (isSearched && searchResults.length === 0) ? (
           <>
             <div>

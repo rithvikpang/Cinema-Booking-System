@@ -194,19 +194,23 @@ const SearchBar: React.FC<Props> = ({ onSearch }) => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSearch}>
-          <input
-            id="search"
-            type="text"
-            name="search"
-            autoComplete="off"
-            required
-            value={searchQuery} 
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <button type="submit">Search</button>
-      </form>
+    <div className="search">
+        <div className="search-bar">
+            <form onSubmit={handleSearch}>
+                <input
+                  id="search"
+                  type="text"
+                  name="search"
+                  autoComplete="off"
+                  required
+                  value={searchQuery} 
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+            </form>
+        </div>
+        <div>
+            <button type="submit">Search</button> 
+        </div>
     </div>
   );
 };
