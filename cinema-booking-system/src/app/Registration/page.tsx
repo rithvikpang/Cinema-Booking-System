@@ -74,6 +74,7 @@ const Home = () => {
       console.error("Validation failed");
       return;
     }
+  
     try {
       const response = await fetch('/api/register', {
         method: 'POST',
@@ -84,22 +85,25 @@ const Home = () => {
       });
   
       if (response.ok) {
-        // Handle success
         const data = await response.json();
         console.log("Registration successful", data);
-        // Redirect or show a success message
+        // Redirect the user to a success page
         // e.g., router.push('/registration-success');
       } else {
-        // Handle server errors
         const errorData = await response.json();
         console.error("Registration failed", errorData.message);
         // Show error messages to the user
       }
     } catch (error) {
-      console.error("An error occurred:", error);
-      // Handle network errors
+      if (error instanceof SyntaxError) {
+        console.error("Error parsing JSON data from the server");
+      } else {
+        console.error("An error occurred while processing the request:", error);
+        // Handle network errors separately
+      }
     }
   };
+  
 
   return (
     <form onSubmit={handleSubmit} className="container">
