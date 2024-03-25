@@ -7,12 +7,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.cinemabookingsystem.cinemadb.model.User;
-import com.cinemabookingsystem.cinemadb.model.UnverifiedUser;
 import com.cinemabookingsystem.cinemadb.repository.UserRepository;
 import com.cinemabookingsystem.cinemadb.service.RegistrationServiceImpl;
-import com.cinemabookingsystem.cinemadb.repository.UnverifiedUserRepository;
-
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -33,8 +31,15 @@ public class RegistrationController {
     
         user.setStatus("Inactive");
         // Hash password and save user
-        registrationService.registerUser(user);
+        registrationService.registerUser(user, "http://localhost:8080/api/registration");
     
         return ResponseEntity.ok().body("User registered successfully");
     }
+
+    @GetMapping("/verify")
+    public String verifyUser(@RequestParam String email) {
+        registrationService.verifyUser(email);
+        return "User verfied successfully";
+    }
+    
 }

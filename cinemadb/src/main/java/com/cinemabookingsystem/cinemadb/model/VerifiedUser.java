@@ -18,7 +18,7 @@ public class VerifiedUser {
     
     // Enumeration for role
     public enum Role {
-        admin, verfiied_user
+        admin, verified_user
     }
 
     @Id

@@ -6,12 +6,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.cinemabookingsystem.cinemadb.repository.UserRepository;
+import com.cinemabookingsystem.cinemadb.repository.VerifiedUserRepository;
+import com.cinemabookingsystem.cinemadb.model.User;
+import com.cinemabookingsystem.cinemadb.model.VerifiedUser;
+import com.cinemabookingsystem.cinemadb.model.VerifiedUser.Role;
 
 import jakarta.transaction.Transactional;
-
-import com.cinemabookingsystem.cinemadb.model.UnverifiedUser;
-import com.cinemabookingsystem.cinemadb.model.User;
-import com.cinemabookingsystem.cinemadb.repository.UnverifiedUserRepository;
 
 import java.time.Instant;
 
@@ -22,9 +22,12 @@ public class RegistrationServiceImpl implements RegistrationService {
     private UserRepository userRepository;
 
     @Autowired
-    private UnverifiedUserRepository unverifiedUserRepository;
+    private VerifiedUserRepository verifiedUserRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private MailServiceImpl mailService;
 
     // constructor autowired to pass in encoder instance
     public RegistrationServiceImpl(PasswordEncoder passwordEncoder) {
@@ -33,22 +36,17 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Transactional
     @Override
-    public void registerUser(@RequestBody User user) {
+    public void registerUser(@RequestBody User user, String url) {
         
         // Hashed password
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
+        user.setCreated_at(Instant.now());
         userRepository.save(user);
-        
-        // Create an initilialize the user as unverified
-        UnverifiedUser newUnverifiedUser = new UnverifiedUser();
 
-        // Sets foreign key for enitity, user has a one to one relationship
-        // with an unverified or verified user
-        newUnverifiedUser.setUser(user);
-        newUnverifiedUser.setCreated_at(Instant.now());
-        newUnverifiedUser.setPassword(user.getPassword());
-        unverifiedUserRepository.save(newUnverifiedUser);
+        // send verification email
+        mailService.sendVerificationEmail(user.getEmail(), url);
+        
     }
 
     // hash password before storing
@@ -56,4 +54,21 @@ public class RegistrationServiceImpl implements RegistrationService {
     public String hashPassword(String rawPassword) {
         return passwordEncoder.encode(rawPassword);
     }
+
+    @Transactional
+    @Override
+    public void verifyUser(String email) {
+        User user = userRepository.findById(email).orElseThrow();
+        user.setIsverified(true);
+        userRepository.save(user);
+
+        //VerifiedUser newVerifiedUser = new VerifiedUser();
+        ///newVerifiedUser.setUser(user);
+        //newVerifiedUser.setPassword(user.getPassword());
+        //newVerifiedUser.setCreated_at(user.getCreated_at());
+        //newVerifiedUser.setRole(Role.verfiied_user);
+        //verifiedUserRepository.save(newVerifiedUser);
+    }
+
+    // verify password
 }

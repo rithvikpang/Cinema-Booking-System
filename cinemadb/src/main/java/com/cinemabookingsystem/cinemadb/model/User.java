@@ -1,5 +1,7 @@
 package com.cinemabookingsystem.cinemadb.model;
 
+import java.time.Instant;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -20,6 +22,8 @@ public class User {
     private String password;
     private boolean promotions;
     private String status;
+    private boolean isverified;
+    private Instant created_at;
 
     // Constructors, getters, and setters
     public User() {
@@ -112,6 +116,22 @@ public class User {
 
     public String getStatus() {
         return status;
+    }
+
+    public boolean isIsverified() {
+        return isverified;
+    }
+
+    public void setIsverified(boolean isverified) {
+        this.isverified = isverified;
+    }
+
+    public Instant getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(Instant created_at) {
+        this.created_at = created_at;
     }
 
     
