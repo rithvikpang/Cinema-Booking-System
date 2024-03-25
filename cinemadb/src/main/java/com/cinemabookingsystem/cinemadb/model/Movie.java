@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -13,7 +15,12 @@ import jakarta.persistence.TemporalType;
 @Table(schema = "cinema_db", name = "movies")
 public class Movie {
 
-    @Id @Column(name = "title", nullable = false, length = 255)
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "movie_id")
+    private int movie_id;
+
+    @Column(name = "title", nullable = false, length = 255)
     private String title;
 
     @Column(name = "description", columnDefinition = "TEXT")
@@ -138,6 +145,14 @@ public class Movie {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public int getMovie_id() {
+        return movie_id;
+    }
+
+    public void setMovie_id(int movie_id) {
+        this.movie_id = movie_id;
     }
 
    
