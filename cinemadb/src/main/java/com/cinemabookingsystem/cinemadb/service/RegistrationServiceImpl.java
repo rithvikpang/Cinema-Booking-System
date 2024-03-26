@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.cinemabookingsystem.cinemadb.repository.UserRepository;
-import com.cinemabookingsystem.cinemadb.repository.VerifiedUserRepository;
 import com.cinemabookingsystem.cinemadb.model.User;
-import com.cinemabookingsystem.cinemadb.model.VerifiedUser;
-import com.cinemabookingsystem.cinemadb.model.VerifiedUser.Role;
 
 import jakarta.transaction.Transactional;
 
@@ -20,9 +17,6 @@ public class RegistrationServiceImpl implements RegistrationService {
     
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private VerifiedUserRepository verifiedUserRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -55,19 +49,13 @@ public class RegistrationServiceImpl implements RegistrationService {
         return passwordEncoder.encode(rawPassword);
     }
 
+    @SuppressWarnings("null")
     @Transactional
     @Override
     public void verifyUser(String email) {
         User user = userRepository.findById(email).orElseThrow();
         user.setIsverified(true);
         userRepository.save(user);
-
-        //VerifiedUser newVerifiedUser = new VerifiedUser();
-        ///newVerifiedUser.setUser(user);
-        //newVerifiedUser.setPassword(user.getPassword());
-        //newVerifiedUser.setCreated_at(user.getCreated_at());
-        //newVerifiedUser.setRole(Role.verfiied_user);
-        //verifiedUserRepository.save(newVerifiedUser);
     }
 
     // verify password

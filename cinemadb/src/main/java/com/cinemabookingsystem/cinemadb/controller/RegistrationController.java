@@ -5,12 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import com.cinemabookingsystem.cinemadb.model.User;
-import com.cinemabookingsystem.cinemadb.repository.UserRepository;
-import com.cinemabookingsystem.cinemadb.service.RegistrationServiceImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.cinemabookingsystem.cinemadb.model.User;
+import com.cinemabookingsystem.cinemadb.service.RegistrationServiceImpl;
 
 
 
