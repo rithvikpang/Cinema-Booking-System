@@ -4,6 +4,7 @@ export default function Home() {
   return (
     <form className="container">
       <h1>Profile</h1>
+      <h2>Account Information</h2>
       <div className="first-name block">
         <label htmlFor="frm-first">First Name</label>
         <input
