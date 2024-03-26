@@ -1,16 +1,16 @@
 package com.cinemabookingsystem.cinemadb.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.bind.annotation.GetMapping;
+
 import com.cinemabookingsystem.cinemadb.model.Movie;
 import com.cinemabookingsystem.cinemadb.repository.MovieRepository;
 import com.cinemabookingsystem.cinemadb.service.MovieService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
 
-import org.springframework.context.annotation.ComponentScan;
 
 @RestController
 @RequestMapping("/api/movies")
