@@ -1,5 +1,8 @@
 package com.cinemabookingsystem.cinemadb.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cinemabookingsystem.cinemadb.service.AuthenticationServiceImpl;
 
 @RestController
-@RequestMapping("api/auth")
+@RequestMapping("/api/auth")
 public class AuthenticationController {
 
     private final AuthenticationServiceImpl authenticationService;
@@ -23,10 +26,13 @@ public class AuthenticationController {
         boolean isAuthenticated = authenticationService.authenticate(
                 loginRequest.getEmail(), loginRequest.getPassword());
 
+        Map<String, Object> response = new HashMap<>();
         if (isAuthenticated) {
-            return ResponseEntity.ok().body("Authentication successful");
+            response.put("message", "Authentication successful");
+            return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(401).body("Authentication failed");
+            response.put("message", "Authentication failed");
+            return ResponseEntity.status(401).body(response);
         }
     }
 

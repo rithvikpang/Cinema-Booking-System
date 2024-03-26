@@ -107,179 +107,179 @@ const Home = () => {
 
   return (
     <form onSubmit={handleSubmit} className="container">
-  <h1>Register</h1>
-  <h4>* = required</h4>
+    <h1>Register</h1>
+    <h4>* = required</h4>
 
-  {/* First Name */}
-  <div className="first-name block">
-    <label htmlFor="frm-first">First Name*</label>
-    <input
-      id="frm-first"
-      type="text"
-      name="firstname"
-      value={formData.firstname}
-      onChange={handleChange}
-      required
-    />
-    {formErrors.firstname && <p className="error">{formErrors.firstname}</p>}
+    {/* First Name */}
+    <div className="first-name block">
+      <label htmlFor="frm-first">First Name*</label>
+      <input
+        id="frm-first"
+        type="text"
+        name="firstname"
+        value={formData.firstname}
+        onChange={handleChange}
+        required
+      />
+      {formErrors.firstname && <p className="error">{formErrors.firstname}</p>}
+    </div>
+
+    {/* Last Name */}
+    <div className="last-name block">
+      <label htmlFor="frm-last">Last Name*</label>
+      <input
+        id="frm-last"
+        type="text"
+        name="lastname"
+        value={formData.lastname}
+        onChange={handleChange}
+        required
+      />
+      {formErrors.lastname && <p className="error">{formErrors.lastname}</p>}
+    </div>
+
+    {/* Age */}
+    <div className="age block">
+      <label htmlFor="from-age">Age*</label>
+      <input
+        id="from-age"
+        type="text"
+        name="age"
+        value={formData.age}
+        onChange={handleChange}
+        required
+      />
+      {formErrors.age && <p className="error">{formErrors.age}</p>}
+    </div>
+
+    {/* Email */}
+    <div className="email block">
+      <label htmlFor="frm-email">Email*</label>
+      <input
+        id="frm-email"
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
+        required
+      />
+      {formErrors.email && <p className="error">{formErrors.email}</p>}
+    </div>
+
+    {/* Address */}
+    <div className="address block">
+      <label htmlFor="frm-address">Address*</label>
+      <input
+        id="frm-address"
+        type="text"
+        name="address"
+        value={formData.address}
+        onChange={handleChange}
+        required
+      />
+      {formErrors.address && <p className="error">{formErrors.address}</p>}
+    </div>
+
+    {/* City */}
+    <div className="block">
+      <label htmlFor="frm-city">City*</label>
+      <input
+        id="frm-city"
+        type="text"
+        name="city"
+        value={formData.city}
+        onChange={handleChange}
+        required
+      />
+      {formErrors.city && <p className="error">{formErrors.city}</p>}
+    </div>
+
+    {/* State */}
+    <div className="block">
+      <label htmlFor="frm-state">State*</label>
+      <input
+        id="frm-state"
+        type="text"
+        name="state"
+        value={formData.state}
+        onChange={handleChange}
+        required
+      />
+      {formErrors.state && <p className="error">{formErrors.state}</p>}
+    </div>
+
+    {/* Zip Code */}
+    <div className="block">
+      <label htmlFor="frm-zip">Zip Code*</label>
+      <input
+        id="frm-zip"
+        type="text"
+        name="zip"
+        value={formData.zip}
+        onChange={handleChange}
+        required
+      />
+      {formErrors.zip && <p className="error">{formErrors.zip}</p>}
+    </div>
+
+    {/* Password */}
+    <div className="password block">
+      <label htmlFor="frm-password">Enter Password*</label>
+      <input
+        id="frm-password"
+        type="password"
+        name="password"
+        value={formData.password}
+        onChange={handleChange}
+        required
+      />
+      {formErrors.password && <p className="error">{formErrors.password}</p>}
+    </div>
+
+    {/* Re-enter Password */}
+    <div className="block">
+      <label htmlFor="frm-confirmPassword">Re-enter Password*</label>
+      <input
+        id="frm-confirmPassword"
+        type="password"
+        name="confirmPassword"
+        value={formData.confirmPassword}
+        onChange={handleChange}
+        required
+      />
+      {formErrors.confirmPassword && <p className="error">{formErrors.confirmPassword}</p>}
+    </div>
+
+    {/* Additional Fields as Needed... */}
+
+      {/* Register for Promotions */}
+  <div className="check-boxes">
+    <label>
+      <input
+        type="checkbox"
+        name="promotions"
+        checked={formData.promotions}
+        onChange={handleChange} // Reuse the existing handleChange function
+      /> Register for Promotions
+    </label>
   </div>
 
-  {/* Last Name */}
-  <div className="last-name block">
-    <label htmlFor="frm-last">Last Name*</label>
-    <input
-      id="frm-last"
-      type="text"
-      name="lastname"
-      value={formData.lastname}
-      onChange={handleChange}
-      required
-    />
-    {formErrors.lastname && <p className="error">{formErrors.lastname}</p>}
+  {/* Remember Me */}
+  <div className="check-boxes">
+    <label>
+      <input
+        type="checkbox"
+        name="rememberMe"
+        checked={formData.rememberMe}
+        onChange={handleChange} // Reuse the existing handleChange function
+      /> Remember Me
+    </label>
   </div>
-
-  {/* Age */}
-  <div className="age block">
-    <label htmlFor="from-age">Age*</label>
-    <input
-      id="from-age"
-      type="text"
-      name="age"
-      value={formData.age}
-      onChange={handleChange}
-      required
-    />
-    {formErrors.age && <p className="error">{formErrors.age}</p>}
-  </div>
-
-  {/* Email */}
-  <div className="email block">
-    <label htmlFor="frm-email">Email*</label>
-    <input
-      id="frm-email"
-      type="email"
-      name="email"
-      value={formData.email}
-      onChange={handleChange}
-      required
-    />
-    {formErrors.email && <p className="error">{formErrors.email}</p>}
-  </div>
-
-  {/* Address */}
-  <div className="address block">
-    <label htmlFor="frm-address">Address*</label>
-    <input
-      id="frm-address"
-      type="text"
-      name="address"
-      value={formData.address}
-      onChange={handleChange}
-      required
-    />
-    {formErrors.address && <p className="error">{formErrors.address}</p>}
-  </div>
-
-  {/* City */}
-  <div className="block">
-    <label htmlFor="frm-city">City*</label>
-    <input
-      id="frm-city"
-      type="text"
-      name="city"
-      value={formData.city}
-      onChange={handleChange}
-      required
-    />
-    {formErrors.city && <p className="error">{formErrors.city}</p>}
-  </div>
-
-  {/* State */}
-  <div className="block">
-    <label htmlFor="frm-state">State*</label>
-    <input
-      id="frm-state"
-      type="text"
-      name="state"
-      value={formData.state}
-      onChange={handleChange}
-      required
-    />
-    {formErrors.state && <p className="error">{formErrors.state}</p>}
-  </div>
-
-  {/* Zip Code */}
-  <div className="block">
-    <label htmlFor="frm-zip">Zip Code*</label>
-    <input
-      id="frm-zip"
-      type="text"
-      name="zip"
-      value={formData.zip}
-      onChange={handleChange}
-      required
-    />
-    {formErrors.zip && <p className="error">{formErrors.zip}</p>}
-  </div>
-
-  {/* Password */}
-  <div className="password block">
-    <label htmlFor="frm-password">Enter Password*</label>
-    <input
-      id="frm-password"
-      type="password"
-      name="password"
-      value={formData.password}
-      onChange={handleChange}
-      required
-    />
-    {formErrors.password && <p className="error">{formErrors.password}</p>}
-  </div>
-
-  {/* Re-enter Password */}
-  <div className="block">
-    <label htmlFor="frm-confirmPassword">Re-enter Password*</label>
-    <input
-      id="frm-confirmPassword"
-      type="password"
-      name="confirmPassword"
-      value={formData.confirmPassword}
-      onChange={handleChange}
-      required
-    />
-    {formErrors.confirmPassword && <p className="error">{formErrors.confirmPassword}</p>}
-  </div>
-
-  {/* Additional Fields as Needed... */}
-
-    {/* Register for Promotions */}
-<div className="check-boxes">
-  <label>
-    <input
-      type="checkbox"
-      name="promotions"
-      checked={formData.promotions}
-      onChange={handleChange} // Reuse the existing handleChange function
-    /> Register for Promotions
-  </label>
-</div>
-
-{/* Remember Me */}
-<div className="check-boxes">
-  <label>
-    <input
-      type="checkbox"
-      name="rememberMe"
-      checked={formData.rememberMe}
-      onChange={handleChange} // Reuse the existing handleChange function
-    /> Remember Me
-  </label>
-</div>
-  
-  <div className="register-button block">
-    <button type="submit">Register</button>
-  </div>
-</form>
+    
+    <div className="register-button block">
+      <button type="submit">Register</button>
+    </div>
+  </form>
 
   );
 };
