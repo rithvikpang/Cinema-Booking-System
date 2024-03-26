@@ -24,6 +24,7 @@ public class User {
     private String status;
     private boolean isverified;
     private Instant created_at;
+    private int user_id;
 
     // Constructors, getters, and setters
     public User() {
@@ -118,6 +119,22 @@ public class User {
         return status;
     }
 
+    public boolean isVerified() {
+        return isverified;
+    }
+
+    public void setIsVerified(boolean isverified) {
+        this.isverified = isverified;
+    }
+
+    public Instant getCreatedAt() {
+        return created_at;
+    }
+
+    public void setCreatedAt(Instant created_at) {
+        this.created_at = created_at;
+    }
+
     public boolean isIsverified() {
         return isverified;
     }
@@ -126,12 +143,12 @@ public class User {
         this.isverified = isverified;
     }
 
-    public Instant getCreated_at() {
-        return created_at;
+    public int getUserId() {
+        return user_id;
     }
 
-    public void setCreated_at(Instant created_at) {
-        this.created_at = created_at;
+    public void setUserId(int user_id) {
+        this.user_id = user_id;
     }
 
     

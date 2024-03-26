@@ -1,5 +1,5 @@
 package com.cinemabookingsystem.cinemadb.service;
 
 public interface AuthenticationService {
-    public boolean authenticate(String email, String rawPassword);
+    public int authenticate(String email, String rawPassword);
 }

@@ -5,6 +5,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.cinemabookingsystem.cinemadb.util.UserIdGenerator;
+
 @Service
 public class MailServiceImpl implements MailService {
     
@@ -13,12 +15,14 @@ public class MailServiceImpl implements MailService {
 
     public void sendVerificationEmail(String targetEmail, String url) {
         SimpleMailMessage verificationEmail = new SimpleMailMessage();
+        // Generate new unique id for verification, this would be saved as the user's unique
+        // id once verified successfully
+        String newRandomUserId = UserIdGenerator.generateRandomUserId();
         verificationEmail.setFrom("teamb8cinema@gmail.com");
         verificationEmail.setTo(targetEmail);
         verificationEmail.setSubject("Registration Verification");
         verificationEmail.setText("Click this link to verify your email for the cinema booking system: " 
-            + url + "/verify?email=" + targetEmail);
-
+            + url + "/verify?email=" + targetEmail + "&code=" + newRandomUserId);
         mailSender.send(verificationEmail);
     }
 }

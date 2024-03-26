@@ -35,7 +35,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         // Hashed password
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
-        user.setCreated_at(Instant.now());
+        user.setCreatedAt(Instant.now());
         userRepository.save(user);
 
         // send verification email
@@ -52,9 +52,12 @@ public class RegistrationServiceImpl implements RegistrationService {
     @SuppressWarnings("null")
     @Transactional
     @Override
-    public void verifyUser(String email) {
+    public void verifyUser(String email, String userId) {
+        // convert generated id to integer for db storage
+        int userIdAsInt = Integer.parseInt(userId);
         User user = userRepository.findById(email).orElseThrow();
-        user.setIsverified(true);
+        user.setIsVerified(true);
+        user.setUserId(userIdAsInt);
         userRepository.save(user);
     }
 
