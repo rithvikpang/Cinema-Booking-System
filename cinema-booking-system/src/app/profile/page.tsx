@@ -3,7 +3,7 @@ import React from 'react';
 export default function Home() {
   return (
     <form className="container">
-      <h1>Edit Profile</h1>
+      <h1>Profile</h1>
       <div className="first-name block">
         <label htmlFor="frm-first">First Name</label>
         <input
