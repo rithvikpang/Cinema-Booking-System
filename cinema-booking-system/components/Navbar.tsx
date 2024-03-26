@@ -25,11 +25,6 @@ const Navbar = () => {
               <button className="edit-button">Profile</button>
             </Link>
           </div>
-          <div className="edit-button">
-            <Link className="edit-button" href="/edit-cards">
-              <button className="edit-button">Edit Cards</button>
-            </Link>
-          </div>
           <div className="home-btn block">
             <Link className="home-btn" href="/sign-in">
               <button type="submit">Sign In</button>
