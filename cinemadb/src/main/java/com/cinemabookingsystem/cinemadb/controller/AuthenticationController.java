@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cinemabookingsystem.cinemadb.service.AuthenticationServiceImpl;
 import com.cinemabookingsystem.cinemadb.service.MailServiceImpl;
+import com.cinemabookingsystem.cinemadb.util.JwtUtil;
 import com.cinemabookingsystem.cinemadb.config.StatusCode;
 
 @RestController
@@ -20,6 +23,11 @@ public class AuthenticationController {
 
     private final AuthenticationServiceImpl authenticationService;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
     @Autowired
     private MailServiceImpl mailService;
 
@@ -36,9 +44,14 @@ public class AuthenticationController {
 
         Map<String, Object> response = new HashMap<>();
         if (isAuthenticated == StatusCode.SUCCESS) {
+            // Upon successful authentication, generate the JWT token
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getEmail());
+            final String jwt = jwtUtil.generateToken(userDetails);
+
             response.put("message", "Authentication successful");
+            response.put("jwt", jwt); // Add the token to the response
             return ResponseEntity.ok(response);
-        } else if(isAuthenticated == StatusCode.USER_NOT_VERIFIED) {
+        }  else if(isAuthenticated == StatusCode.USER_NOT_VERIFIED) {
             mailService.sendVerificationEmail(loginRequest.getEmail(), siteUrl);
             response.put("message", "Authentication failed, user must verify email before logging in, new verification email sent");
             return ResponseEntity.status(401).body(response);

@@ -25,6 +25,7 @@ public class User {
     private boolean isverified;
     private Instant created_at;
     private int user_id;
+    private boolean isadmin;
 
     // Constructors, getters, and setters
     public User() {
@@ -149,6 +150,14 @@ public class User {
 
     public void setUserId(int user_id) {
         this.user_id = user_id;
+    }
+
+    public boolean isAdmin() {
+        return isadmin;
+    }
+
+    public void setAdmin(boolean isadmin) {
+        this.isadmin = isadmin;
     }
 
     
