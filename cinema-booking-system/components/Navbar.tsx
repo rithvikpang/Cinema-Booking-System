@@ -6,14 +6,18 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div className="navbar">
-        <Image
-        className="navbar"
-        src="/camera.png"
-        width={100}
-        height={100}
-        alt="camera"
-        />
-        <h1 className="navbar">Cinema Booking</h1>
+        <Link href="/">
+          <Image
+          className="navbar"
+          src="/camera.png"
+          width={100}
+          height={100}
+          alt="camera"
+          />
+        </Link>
+        <Link className="site-name" href="/">
+          <h1 className="navbar">Cinema Booking</h1>
+        </Link>
       </div>
         <div className="home-buttons">
           <div className="edit-button">

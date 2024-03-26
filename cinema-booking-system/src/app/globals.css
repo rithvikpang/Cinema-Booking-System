@@ -392,3 +392,13 @@ input[type="text"] {
   justify-content: space-between;
   padding: 30px;
 }
+
+.site-name {
+  text-decoration: none;
+  padding: 10px;
+  font-size: 15px;
+  border: none;
+  border-radius: 25px;
+  background-color: #ECF4FF;
+  cursor: pointer;
+}
