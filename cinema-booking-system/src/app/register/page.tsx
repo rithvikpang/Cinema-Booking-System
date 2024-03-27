@@ -248,8 +248,8 @@ const Home = () => {
 
   {/* Additional Fields as Needed... */}
 
-    {/* Register for Promotions */}
 <div className="check-boxes">
+  {/* Register for Promotions */}
   <label>
     <input
       type="checkbox"
@@ -258,10 +258,8 @@ const Home = () => {
       onChange={handleChange} // Reuse the existing handleChange function
     /> Register for Promotions
   </label>
-</div>
 
-{/* Remember Me */}
-<div className="check-boxes">
+  {/* Remember Me */}
   <label>
     <input
       type="checkbox"
