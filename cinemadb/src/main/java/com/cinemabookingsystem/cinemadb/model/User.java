@@ -29,10 +29,10 @@ public class User {
     private Instant created_at;
     private int user_id;
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "user")
     private Set<PaymentCard> PaymentCards;
 
-    @OneToOne(mappedBy = "users")
+    @OneToOne(mappedBy = "user")
     private BillingAddress billingAddress;
 
     // Constructors, getters, and setters

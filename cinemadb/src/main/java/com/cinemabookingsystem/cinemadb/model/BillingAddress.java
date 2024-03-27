@@ -15,7 +15,6 @@ public class BillingAddress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int address_id;
-    private String email;
     private String address_line;
     private String city;
     private String state;
@@ -37,15 +36,6 @@ public class BillingAddress {
     public void setAddressId(int address_id) {
         this.address_id = address_id;
     }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
 
     public String getAddressLine() {
         return address_line;

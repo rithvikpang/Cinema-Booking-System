@@ -9,5 +9,5 @@ import java.util.Set;
 
 @Repository
 public interface PaymentCardRepository extends JpaRepository<PaymentCard, Integer> {
-    Set<PaymentCard> findByEmail(String email);
+    Set<PaymentCard> findByUserEmail(String email);
 }

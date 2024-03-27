@@ -7,5 +7,5 @@ import com.cinemabookingsystem.cinemadb.model.BillingAddress;
 
 @Repository
 public interface BillingAddressRepository extends JpaRepository<BillingAddress, Integer>{
-    BillingAddress findByEmail(String email);
+    BillingAddress findByUserEmail(String email);
 }

@@ -9,14 +9,14 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(schema = "cinema_db", name ="credit_card=")
+@Table(schema = "cinema_db", name ="credit_card")
 public class PaymentCard {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int card_id;
-    private String email;
-    private String cadholder_name;
+    private String cardholder_name;
+    private String card_number;
     private int expiry_month;
     private int expiry_year;
 
@@ -35,28 +35,28 @@ public class PaymentCard {
     public void setCardId(int card_id) {
         this.card_id = card_id;
     }
-    
-    public String getEmail() {
-        return email;
+
+    public String getCardholderName() {
+        return cardholder_name;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCardholderName(String cardholder_name) {
+        this.cardholder_name = cardholder_name;
     }
 
-    public String getCadholderName() {
-        return cadholder_name;
+    public String getCardNumber() {
+        return card_number;
     }
 
-    public void setCadholderName(String cadholder_name) {
-        this.cadholder_name = cadholder_name;
+    public void setCardNumber(String card_number) {
+        this.card_number = card_number;
     }
 
     public int getExpiryMonth() {
         return expiry_month;
     }
 
-    public void setExpiryMoth(int expiry_month) {
+    public void setExpiryMonth(int expiry_month) {
         this.expiry_month = expiry_month;
     }
 
