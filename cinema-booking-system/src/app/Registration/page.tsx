@@ -84,25 +84,29 @@ const Home = () => {
         body: JSON.stringify(formData),
       });
   
-      if (response.ok) {
+      if (!response.ok) {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const errorData = await response.json();
+          console.error("Registration failed", errorData.message);
+          // Show error messages to the user, potentially updating state to display it on the UI
+        } else {
+          const errorText = await response.text();
+          console.error('Registration failed:', errorText);
+          // Handle a non-JSON response, potentially updating state to display it on the UI
+        }
+      } else {
         const data = await response.json();
         console.log("Registration successful", data);
         // Redirect the user to a success page
         // e.g., router.push('/registration-success');
-      } else {
-        const errorData = await response.json();
-        console.error("Registration failed", errorData.message);
-        // Show error messages to the user
       }
     } catch (error) {
-      if (error instanceof SyntaxError) {
-        console.error("Error parsing JSON data from the server");
-      } else {
-        console.error("An error occurred while processing the request:", error);
-        // Handle network errors separately
-      }
+      console.error("An error occurred while processing the request:", error);
+      // Handle network errors separately, potentially updating state to display it on the UI
     }
   };
+  
   
 
   return (

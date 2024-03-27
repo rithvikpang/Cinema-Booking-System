@@ -12,8 +12,8 @@ interface RegisterData {
   password: string;
   promotions: boolean;
   rememberMe: boolean;
+  isAdmin: boolean;
 }
-
 
 const BACKEND_REGISTRATION_URL = 'http://localhost:8080/api/registration';
 
@@ -22,24 +22,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const formData: RegisterData = req.body;
 
     try {
-
       const backendResponse = await fetch(BACKEND_REGISTRATION_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-
         },
         body: JSON.stringify(formData),
       });
 
       if (!backendResponse.ok) {
-        const errorResult = await backendResponse.json();
-        res.status(backendResponse.status).json(errorResult);
+        const contentType = backendResponse.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const errorResult = await backendResponse.json();
+          res.status(backendResponse.status).json(errorResult);
+        } else {
+          const errorText = await backendResponse.text();
+          console.error('Registration failed:', errorText);
+          res.status(backendResponse.status).send(errorText);
+        }
         return;
       }
 
       const data = await backendResponse.json();
-
       res.status(200).json({ message: 'Registration successful', data: data });
     } catch (error) {
       console.error('Registration error:', error);
