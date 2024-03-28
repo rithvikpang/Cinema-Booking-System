@@ -79,7 +79,7 @@ export default function Home() {
         />
       </div>
       {loginError && <div className="error-message">{loginError}</div>}
-      <div className="sign-in button">
+      <div className="sign-in button block">
         <button type="submit">Login</button>
       </div>
     </form>

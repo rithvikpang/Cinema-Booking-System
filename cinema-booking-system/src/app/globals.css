@@ -38,17 +38,17 @@ h1 {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: #ECF4FF;  
+  background-color: #ECF4FF;
 }
 
-.h-button {
+.home-btn {
   background-color: #ECF4FF;
-  padding: 10px
+  padding: 10px;
 }
 
 .edit-button {
   padding: 10px;
-  font-size: 20px;
+  font-size: 15px;
   border: none;
   border-radius: 25px;
   background-color: #ECF4FF;
@@ -172,7 +172,7 @@ h1 {
 
 .block button {
   padding: 10px;
-  font-size: 20px;
+  font-size: 15px;
   border-radius: 15px;
   background-color: #ACC3FF;
   color: #0A0F3A;
@@ -226,7 +226,8 @@ h1 {
 .check-boxes {
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding-bottom: 20px;
+  padding-top: 20px;
 }
 
 
@@ -296,6 +297,7 @@ input[type="text"] {
   flex-direction: row;
   justify-content: space-between;
   padding: 10px;
+  background-color: #ACC3FF;
 }
 
 .promo {
@@ -345,8 +347,9 @@ input[type="text"] {
   gap: 20px;
 }
 
-.rectangle {
+.form-section {
   background-color: #ACC3FF;
+  border: none;
   border-radius: 10px;
   padding: 20px;
 }
@@ -358,3 +361,51 @@ input[type="text"] {
   color:#060606;
 }
 
+.tickets-button {
+  background-color: #ACC3FF;
+  width: 10%;
+}
+
+.tickets-label {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #ACC3FF;
+  color:#060606
+}
+
+.ticket {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ACC3FF;
+  border: none;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.order-label {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 30px;
+}
+
+.site-name {
+  text-decoration: none;
+  padding: 10px;
+  font-size: 15px;
+  border: none;
+  border-radius: 25px;
+  background-color: #ECF4FF;
+  cursor: pointer;
+}
+
+.register-button {
+  display: flex;
+  justify-content: center;
+  width: 10%;
+}
