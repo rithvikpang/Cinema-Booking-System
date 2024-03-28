@@ -1,9 +1,12 @@
 package com.cinemabookingsystem.cinemadb.model;
 
 import java.time.Instant;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,6 +29,12 @@ public class User {
     private Instant created_at;
     private int user_id;
     private boolean isadmin;
+
+    @OneToMany(mappedBy = "user")
+    private Set<PaymentCard> PaymentCards;
+
+    @OneToOne(mappedBy = "user")
+    private BillingAddress billingAddress;
 
     // Constructors, getters, and setters
     public User() {
@@ -160,6 +169,20 @@ public class User {
         this.user_id = user_id;
     }
 
-    
+    public Set<PaymentCard> getPaymentCards() {
+        return PaymentCards;
+    }
+
+    public void setPaymentCards(Set<PaymentCard> paymentCards) {
+        PaymentCards = paymentCards;
+    }
+
+    public BillingAddress getBillingAddress() {
+        return billingAddress;
+    }
+
+    public void setBillingAddress(BillingAddress billingAddress) {
+        this.billingAddress = billingAddress;
+    }
 }
 
