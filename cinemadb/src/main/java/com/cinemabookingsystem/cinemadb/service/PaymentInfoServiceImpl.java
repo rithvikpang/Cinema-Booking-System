@@ -26,12 +26,20 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
     @Autowired
     private UserRepository userRepository;
 
+    // get all payment cards associated with a given user
+    @SuppressWarnings("null")
+    @Override
     public Set<PaymentCard> getUserPaymentCards(String email) {
-        return paymentCardRepository.findByUserEmail(email);
+        User user = userRepository.findById(email).orElseThrow();
+        return user.getPaymentCards();
     }
 
+    // get the billing address associated with a given user
+    @SuppressWarnings("null")
+    @Override
     public BillingAddress getUserBillingAddress(String email) {
-        return billingAddressRepository.findByUserEmail(email);
+        User user = userRepository.findById(email).orElseThrow();
+        return user.getBillingAddress();
     }
     
     // add payment info from edit card
@@ -75,9 +83,9 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
             existingBillingAddress.setZipCode(billingAddress.getZipCode());
             return billingAddressRepository.save(existingBillingAddress);
         }
-
     }
 
+    // edit payment cards
     @SuppressWarnings("null")
     @Transactional
     @Override
@@ -92,6 +100,24 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
             existingCard.setExpiryYear(paymentCard.getExpiryYear());
 
             return paymentCardRepository.save(existingCard);
+    }
+
+    // remove payment card
+    @SuppressWarnings("null")
+    @Override
+    @Transactional
+    public void removePaymentCard(Integer cardId) {
+        PaymentCard deletedCard = paymentCardRepository.findById(cardId).orElseThrow();
+        paymentCardRepository.delete(deletedCard);
+    }
+
+    // remove billing address
+    @SuppressWarnings("null")
+    @Override
+    @Transactional
+    public void removeBillingAddress(String email) {
+        BillingAddress deletedAddress = billingAddressRepository.findByUserEmail(email);
+        billingAddressRepository.delete(deletedAddress);
     }
 
 

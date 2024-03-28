@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cinemabookingsystem.cinemadb.model.BillingAddress;
 import com.cinemabookingsystem.cinemadb.model.PaymentCard;
 import com.cinemabookingsystem.cinemadb.service.PaymentInfoServiceImpl;
+
+import jakarta.transaction.Transactional;
 
 import java.util.Set;
 
@@ -71,5 +74,18 @@ public class UserController {
             paymentInfoService.editPaymentCard(paymentCard, cardId);
             return ResponseEntity.ok().body("Payment Card modified successfully");
         }
+
+    @DeleteMapping("delete-payment-card/{cardId}")
+    public ResponseEntity<?> deletePaymentCard(@PathVariable Integer cardId) {
+        paymentInfoService.removePaymentCard(cardId);
+        return ResponseEntity.ok().body("Payment Card deleted successfully");
+    }
+
+    @DeleteMapping("delete-billing-address/{email}")
+    public ResponseEntity<?> deleteBillingAddress(@PathVariable String email) {
+        paymentInfoService.removeBillingAddress(email);
+        return ResponseEntity.ok().body("Billing Address deleted successfully");
+    }
+
 }
 

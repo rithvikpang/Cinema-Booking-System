@@ -160,6 +160,20 @@ public class User {
         this.user_id = user_id;
     }
 
-    
+    public Set<PaymentCard> getPaymentCards() {
+        return PaymentCards;
+    }
+
+    public void setPaymentCards(Set<PaymentCard> paymentCards) {
+        PaymentCards = paymentCards;
+    }
+
+    public BillingAddress getBillingAddress() {
+        return billingAddress;
+    }
+
+    public void setBillingAddress(BillingAddress billingAddress) {
+        this.billingAddress = billingAddress;
+    }
 }
 
