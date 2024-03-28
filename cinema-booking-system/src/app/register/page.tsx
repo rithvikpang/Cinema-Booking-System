@@ -91,6 +91,7 @@ const Home = () => {
 
         // Store the JWT in localStorage
         localStorage.setItem('token', data.jwt);
+        console.log("Token value:", localStorage.getItem('token')); // Display token value in console
         
         console.log("Registration successful", data);
         // Redirect or show a success message

@@ -19,6 +19,7 @@ const Navbar = () => {
     // If token exists, assign value to token
     if (storedToken) {
       setToken(storedToken);
+      console.log("Token value:", storedToken); // Display token value in console
     }
   }, []);
 
