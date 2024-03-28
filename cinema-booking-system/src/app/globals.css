@@ -38,13 +38,12 @@ h1 {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: #ECF4FF;  
+  background-color: #ECF4FF;
 }
 
 .home-btn {
   background-color: #ECF4FF;
   padding: 10px;
-  width: 40%;
 }
 
 .edit-button {

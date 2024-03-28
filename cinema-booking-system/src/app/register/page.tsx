@@ -1,6 +1,7 @@
 // Assuming this file is located at: src/app/registration/page.tsx
 "use client"
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface FormData {
   firstname: string;
@@ -35,6 +36,7 @@ const initialState: FormData = {
 const Home = () => {
   const [formData, setFormData] = useState<FormData>(initialState);
   const [formErrors, setFormErrors] = useState<Partial<FormData>>({});
+  const router = useRouter();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = event.target;
@@ -86,6 +88,10 @@ const Home = () => {
       if (response.ok) {
         // Handle success
         const data = await response.json();
+
+        // Store the JWT in localStorage
+        localStorage.setItem('token', data.jwt);
+        
         console.log("Registration successful", data);
         // Redirect or show a success message
         // e.g., router.push('/registration-success');
@@ -95,6 +101,9 @@ const Home = () => {
         console.error("Registration failed", errorData.message);
         // Show error messages to the user
       }
+
+      router.push('/');
+
     } catch (error) {
       console.error("An error occurred:", error);
       // Handle network errors
