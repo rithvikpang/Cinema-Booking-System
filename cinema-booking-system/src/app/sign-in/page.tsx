@@ -74,8 +74,6 @@ export default function Home() {
           name="password"
           value={password}
           onChange={handlePasswordChange}
-          value={password}
-          onChange={handlePasswordChange}
           autoComplete="current-password"
           required
         />
