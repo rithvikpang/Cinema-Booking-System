@@ -10,6 +10,10 @@ interface Props {
 const TrailerPopup: React.FC<Props> = ({ isOpen, onClose, videoUrl }) => {
   if (!isOpen) return null;
 
+  const embedUrl = videoUrl.includes("watch?v=") 
+    ? videoUrl.replace(/watch\?v=/, "embed/") 
+    : videoUrl;
+
   return (
     <div style={{
       position: 'fixed',
@@ -29,7 +33,7 @@ const TrailerPopup: React.FC<Props> = ({ isOpen, onClose, videoUrl }) => {
       }} onClick={e => e.stopPropagation()} // Prevent click inside the modal from closing it
       >
         <iframe
-          src={videoUrl}
+          src={embedUrl}
           frameBorder="0"
           title="Movie Trailer"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"

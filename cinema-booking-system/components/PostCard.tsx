@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { Movie } from '../utils/types'; // Import the type
@@ -24,25 +25,22 @@ const PostCard = ({ movie }: Props) => {
               width={240}
               height={300}
               alt={`${movie.title} poster`}
-              layout="responsive" // Add this if you want the image to be responsive
             />
 
             <h3 className="description">{movie.title}</h3>
             <dl>
-                <dt className="description">{movie.duration} MIN | PG</dt> {/* Assuming duration is in minutes */}
+                <dt className="description">{movie.duration} MIN | {movie.rating}</dt>
                 <dt className="description">Released {movie.release_date}</dt>
             </dl>
             <div className="home-buttons block">
                 <div className="h-button block">
-                    {/* Update this button to call openTrailerModal when clicked */}
                     <button type="button" onClick={openTrailerModal}>Watch Trailer</button>
                 </div>
                 <div className="h-button block">
-                    <button type="button">Book Movie</button> {/* Changed type to 'button' */}
+                    <button type="button">Book Movie</button> 
                 </div>
             </div>
         </div>
-        {/* Include the TrailerModal component and pass the necessary props */}
         <TrailerModal
           isOpen={isTrailerModalOpen}
           onClose={closeTrailerModal}
@@ -51,5 +49,44 @@ const PostCard = ({ movie }: Props) => {
     </div>
   );
 }
+
+/*
+import Image from 'next/image';
+import React from 'react';
+import { Movie } from '../utils/types'; // Import the type
+
+
+interface Props {
+  movie: Movie;
+}
+
+const PostCard = ({ movie }: Props) => {
+  return (
+    <div className="three-col">
+        <div className="card">
+            <Image
+            src={movie.image_url}
+            width={240}
+            height={300}
+            alt={`${movie.title} poster`}/>
+
+            <h3 className="description">{movie.title}</h3>
+            <dl>
+                <dt className="description">{movie.duration} | PG</dt>
+                <dt className="description">Released {movie.release_date}</dt>
+            </dl>
+            <div className="home-buttons block">
+                <div className="h-button block">
+                    <button type="submit">Watch Trailer</button>
+                </div>
+                <div className="h-button block">
+                    <button type="submit">Book Movie</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  );
+}
+*/
 
 export default PostCard;
