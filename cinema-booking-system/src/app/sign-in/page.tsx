@@ -28,12 +28,10 @@ export default function Home() {
 
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem('userToken', data.data.userToken); // Storing the JWT token, make sure this is data.data
+        localStorage.setItem('token', data.data.token); // Storing the JWT token, make sure this is data.data
         console.log('Login successful:', data);
-        // const destination = data.isAdmin ? "/home" : "/home";
-        // window.location.href = destination;
-        window.location.replace("/");
-
+        const destination = data.isAdmin ? "/home" : "/home";
+        window.location.href = destination;
       } else {
         console.error('Login failed:', data.data.message);
         setLoginError(data.data.message);
@@ -47,7 +45,7 @@ export default function Home() {
 
   return (
     <form className="container" onSubmit={handleSignIn}>
-      <h1>User Sign In</h1>
+      <h1>Sign In</h1>
       <div className="email block">
         <label htmlFor="frm-email">Email</label>
         <input
