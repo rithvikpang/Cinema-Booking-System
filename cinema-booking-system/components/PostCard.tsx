@@ -38,8 +38,8 @@ const PostCard = ({ movie }: Props) => {
                     {/* Update this button to call openTrailerModal when clicked */}
                     <button type="button" onClick={openTrailerModal}>Watch Trailer</button>
                 </div>
-                <div className="h-button block">
-                    <Link href="/select-show-time">
+                <div>
+                    <Link className="home-btn block" href="/select-show-time">
                       <button type="button">Book Movie</button> 
                     </Link>
                 </div>

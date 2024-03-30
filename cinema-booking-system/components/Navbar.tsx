@@ -76,13 +76,8 @@ const Navbar = () => {
               </Link>
             </div>
             <div className="home-btn block">
-              <Link className="home-btn" href="/user-sign-in">
-                <button type="submit">User Sign In</button>
-              </Link>
-            </div>
-            <div className="home-btn block">
-              <Link className="home-btn" href="/admin-sign-in">
-                <button type="submit">Admin Sign In</button>
+              <Link className="home-btn" href="/sign-in">
+                <button type="submit">Sign In</button>
               </Link>
             </div>
             <div className="home-btn block">

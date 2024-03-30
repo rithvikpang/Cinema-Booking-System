@@ -47,7 +47,7 @@ export default function Home() {
 
   return (
     <form className="container" onSubmit={handleSignIn}>
-      <h1>User Sign In</h1>
+      <h1>Sign In</h1>
       <div className="email block">
         <label htmlFor="frm-email">Email</label>
         <input
