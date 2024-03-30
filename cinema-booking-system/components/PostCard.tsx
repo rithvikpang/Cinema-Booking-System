@@ -3,6 +3,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { Movie } from '../utils/types'; // Import the type
 import TrailerModal from './TrailerPopup'; // Make sure this path matches where you place the TrailerModal component
+import Link from 'next/Link';
 
 interface Props {
   movie: Movie;
@@ -38,7 +39,9 @@ const PostCard = ({ movie }: Props) => {
                     <button type="button" onClick={openTrailerModal}>Watch Trailer</button>
                 </div>
                 <div className="h-button block">
-                    <button type="button">Book Movie</button> 
+                    <Link href="/select-show-time">
+                      <button type="button">Book Movie</button> 
+                    </Link>
                 </div>
             </div>
         </div>
