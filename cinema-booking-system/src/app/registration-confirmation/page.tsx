@@ -1,4 +1,5 @@
 import React from "react";
+import Link from 'next/Link'
 
 export default function Home() {
     return (
@@ -9,7 +10,9 @@ export default function Home() {
                 <label htmlFor="message" style={{ textAlign: 'center', marginTop: '20px', fontSize: '40px' }}>Thank you for registering with CINEMA! You have been sent a confirmation email.</label>
             </div>
             <div className="button block">
-                <button type="submit" style={{marginTop: '20px' }}>Back to Home</button>
+                <Link href="/">
+                    <button type="submit" style={{marginTop: '20px' }}>Back to Home</button>
+                </Link>
             </div>
         </form>
     )

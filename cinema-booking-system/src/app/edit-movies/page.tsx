@@ -8,15 +8,15 @@ export default function Home() {
             <h1>Edit Movies</h1> 
             <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <div className='combobox'> 
-                    <button className='seats'>Select Movie</button>
+                    <button className="seats">Select Movie</button>
                     <ul className='dropdown'>
                         <li>Wonka</li>
                         <li>Dune: Part Two</li>
                         <li>Oppenheimer</li>
                     </ul>
                 </div>
-                <div className='add button'>
-                    <button className='seats'>Add Movie</button>
+                <div className="edit-movie-button">
+                    <button className="seats">Add Movie</button>
                 </div>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -122,8 +122,8 @@ export default function Home() {
                     required
                 />
             </div>
-            <div>
-                <button className='seats'>Save</button>
+            <div className="save-button block">
+                <button className="save-button block">Save</button>
             </div>
             
         </form>

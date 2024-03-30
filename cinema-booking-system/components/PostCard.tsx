@@ -28,7 +28,7 @@ const PostCard = ({ movie }: Props) => {
               alt={`${movie.title} poster`}
             />
 
-            <h3 className="description">{movie.title}</h3>
+            <h4 className="description">{movie.title}</h4>
             <dl>
                 <dt className="description">{movie.duration} MIN | {movie.rating}</dt>
                 <dt className="description">Released {movie.release_date}</dt>
