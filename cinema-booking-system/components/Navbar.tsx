@@ -24,7 +24,8 @@ const Navbar = () => {
   }, []);
 
 
-  useEffect(() => {
+  /**
+   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:4000/api/hospitals/'); // Replace with your server endpoint
@@ -36,6 +37,7 @@ const Navbar = () => {
 
     fetchData();
   }, []);
+   */
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -100,6 +102,11 @@ const Navbar = () => {
             <div className="edit-button">
               <Link className="edit-button" href="/profile">
                 <button className="edit-button">Profile</button>
+              </Link>
+            </div>
+            <div className="home-btn block">
+              <Link className="home-btn" href="/admin">
+                <button type="button">Admin</button>
               </Link>
             </div>
             <div className="home-btn block">
