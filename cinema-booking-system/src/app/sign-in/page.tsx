@@ -5,7 +5,7 @@ export default function Home() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
-
+  
   const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
@@ -33,12 +33,15 @@ export default function Home() {
       } else {
         const contentType = response.headers.get('content-type');
         if (contentType && contentType.includes('application/json')) {
-          const data = await response.json();
-          console.log('Login successful:', data);
+          const token = await response.json();
+          console.log('Login successful:', token);
           // Redirect user or update UI accordingly
 
+          localStorage.setItem('userToken', token);
+          console.log("Token value: ", token); // Display token value in console
+
           //for now, we have to make it so that admins and users land on different pages i guess?
-          window.location.replace("/home");
+          //window.location.replace("/");
         } else {
           console.error('Unexpected response:', contentType);
           setLoginError('An unexpected response was received. Please try again.');
