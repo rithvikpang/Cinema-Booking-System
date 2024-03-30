@@ -28,7 +28,7 @@ export default function Home() {
 
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem('userToken', data.data.userToken); // Storing the JWT token, make sure this is data.data
+        localStorage.setItem('token', data.data.token); // Storing the JWT token, make sure this is data.data
         console.log('Login successful:', data);
         // const destination = data.isAdmin ? "/home" : "/home";
         // window.location.href = destination;
