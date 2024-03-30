@@ -39,7 +39,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    router.push('/logout');
+    window.location.replace("/log-out");
   };
 
     if (!token) {

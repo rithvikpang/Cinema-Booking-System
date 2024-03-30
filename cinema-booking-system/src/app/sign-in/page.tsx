@@ -32,6 +32,8 @@ export default function Home() {
         console.log('Login successful:', data);
         // const destination = data.isAdmin ? "/home" : "/home";
         // window.location.href = destination;
+        window.location.replace("/");
+
       } else {
         console.error('Login failed:', data.data.message);
         setLoginError(data.data.message);
