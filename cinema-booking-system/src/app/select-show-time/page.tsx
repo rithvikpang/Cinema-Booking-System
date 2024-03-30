@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image'
+import Link from 'next/Link';
 
 export default function Home() {    
   return (
@@ -26,7 +27,12 @@ export default function Home() {
                         <li>March 16, 2024 at 17:00</li>
                     </ul>
                 </div>  
-            </div>      
+            </div>
+            <div className="h-button block">
+                <Link href="/select-seats">
+                    <button type="button">Next</button> 
+                </Link>
+            </div>  
         </form>
     </div>
   );

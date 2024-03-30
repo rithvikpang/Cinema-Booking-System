@@ -89,10 +89,7 @@ const Home = () => {
         // Handle success
         const data = await response.json();
 
-        // Store the JWT in localStorage
-        localStorage.setItem('token', data.data.token);
-        console.log("Token value:", localStorage.getItem('token')); // Display token value in console
-        
+        localStorage.setItem('token', data.data.token); // Store the JWT in localStorage
         console.log("Registration successful", data);
         // Redirect or show a success message
         // e.g., router.push('/registration-success');

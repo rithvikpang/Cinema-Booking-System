@@ -15,10 +15,10 @@ const Logout = () => {
     }, []);
 
     return (    
-      <div>
+      <div className="log-out-container">
         <h3>You have been succesfully logged out.</h3>
         <Link href='/'>
-        <h3>Click here to return to home</h3>
+            <h3>Click here to return to home</h3>
         </Link>
       </div>
     )

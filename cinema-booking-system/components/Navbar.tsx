@@ -1,15 +1,13 @@
 "use client";
-import React from 'react'
-import Image from 'next/image'
-import Link from 'next/link';
-import axios from 'axios';
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/Link';
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 
 
 const Navbar = () => {
 
-  const [hospitals, setHospitals] = useState([]);
   const [token, setToken] = useState<string | null>();
   const router = useRouter();
 
@@ -19,12 +17,23 @@ const Navbar = () => {
     // If token exists, assign value to token
     if (storedToken) {
       setToken(storedToken);
-      console.log("Token value:", storedToken); // Display token value in console
     }
   }, []);
 
 
-  useEffect(() => {
+  /**
+    useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+
+    // If token exists, assign value to token
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+   */
+
+  /**
+   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:4000/api/hospitals/'); // Replace with your server endpoint
@@ -36,6 +45,7 @@ const Navbar = () => {
 
     fetchData();
   }, []);
+   */
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -66,8 +76,13 @@ const Navbar = () => {
               </Link>
             </div>
             <div className="home-btn block">
-              <Link className="home-btn" href="/sign-in">
-                <button type="submit">Sign In</button>
+              <Link className="home-btn" href="/user-sign-in">
+                <button type="submit">User Sign In</button>
+              </Link>
+            </div>
+            <div className="home-btn block">
+              <Link className="home-btn" href="/admin-sign-in">
+                <button type="submit">Admin Sign In</button>
               </Link>
             </div>
             <div className="home-btn block">
@@ -80,6 +95,7 @@ const Navbar = () => {
       )
     }
     else {
+      
       return (
         <div className="navbar">
           <div className="navbar">
