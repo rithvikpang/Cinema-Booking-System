@@ -44,7 +44,6 @@ export default function Home() {
     }
   };
   
-
   return (
     <form className="container" onSubmit={handleSignIn}>
       <h1>Sign In</h1>

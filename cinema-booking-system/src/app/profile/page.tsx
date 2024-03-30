@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/Link';
 
 export default function Home() {
   return (
@@ -45,6 +46,11 @@ export default function Home() {
           required
         />
       </div>
+      <div className="left-button block">
+          <Link href="change-password">
+              <button type="submit">Change Password</button>
+          </Link>
+      </div>
       <div className="address block">
         <label htmlFor="frm-email">Address</label>
         <input
@@ -86,9 +92,6 @@ export default function Home() {
             required
           />
         </div>
-      </div>
-      <div className="left-button block">
-          <button type="submit">Change Password</button>
       </div>
       <div className="check-boxes">
         <div>
