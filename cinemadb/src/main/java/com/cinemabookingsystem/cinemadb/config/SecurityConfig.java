@@ -29,12 +29,17 @@ public class SecurityConfig {
            http
                    .csrf(csrf -> csrf.disable()) // Disable CSRF
                    .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                   .authorizeRequests(authorizeRequests ->
-                           authorizeRequests
-                                   .requestMatchers("/api/**").permitAll()
-                                   .anyRequest().authenticated() 
-                   )
-                   .addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class); 
+                //    .authorizeRequests(authorizeRequests ->
+                //            authorizeRequests
+                //                    .requestMatchers("/api/**").permitAll()
+                //                    .anyRequest().authenticated() 
+                //    )
+                   .authorizeHttpRequests(auth -> auth
+                                .requestMatchers("/api/**").permitAll()  // Allow all requests to /api/** without authentication
+                                .anyRequest().authenticated()  // Require authentication for all other requests
+                )
+                   .addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class)
+                   .httpBasic(httpBasic -> httpBasic.realmName("CinemaBooking"));
 
     return http.build();
 }

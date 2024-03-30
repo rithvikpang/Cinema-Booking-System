@@ -30,8 +30,8 @@ export default function Home() {
       if (response.ok) {
         localStorage.setItem('token', data.data.token); // Storing the JWT token, make sure this is data.data
         console.log('Login successful:', data);
-        // const destination = data.isAdmin ? "/home" : "/home";
-        // window.location.href = destination;
+        const destination = data.isAdmin ? "/home" : "/home";
+        window.location.href = destination;
       } else {
         console.error('Login failed:', data.data.message);
         setLoginError(data.data.message);
