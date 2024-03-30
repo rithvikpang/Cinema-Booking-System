@@ -142,18 +142,37 @@ private String getTokenFromRequest(HttpServletRequest request) {
 
 
     // Endpoint to update user profile information
-    // @PutMapping("/profile")
-    // public ResponseEntity<?> updateUserProfile(User user, 
-    //                                            Errors errors) {
-    //     if (errors.hasErrors()) {
-    //         // Return a bad request with the validation errors
-    //         return ResponseEntity.badRequest().body(errors.getAllErrors());
-    //     }
-    //     // Again, get the email from the Principal to ensure users can only modify their own data
-    //     String email = user.getEmail();
-    //     userService.updateUser(user, email);
-    //     return ResponseEntity.ok().body("Profile updated successfully");
-    // }
+    @PutMapping("/profile")
+    public ResponseEntity<?> updateUserProfile(@RequestBody User updatedUser, Errors errors) {
+        if (errors.hasErrors()) {
+            // Return a bad request with the validation errors
+            return ResponseEntity.badRequest().body(errors.getAllErrors());
+        }
+
+        String token = getTokenFromRequest(request);
+        if (token != null && !jwtUtil.isTokenExpired(token)) {
+            String email = jwtUtil.getUsernameFromToken(token);
+            User currentUser = userRepository.findById(email).orElse(null);
+
+            if (currentUser != null) {
+                // Update the necessary fields
+                currentUser.setFirstname(updatedUser.getFirstname());
+                currentUser.setLastname(updatedUser.getLastname());
+                // Do not update the email field as it should not be modified
+                // Update other fields but exclude email and password
+                
+                // Save the updated user back to the database
+                userRepository.save(currentUser);
+
+                // Return a successful response
+                return ResponseEntity.ok().body("Profile updated successfully");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        }
+
+        return ResponseEntity.badRequest().body("Invalid or expired token");
+    }
     
 
 }
