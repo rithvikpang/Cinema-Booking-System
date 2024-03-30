@@ -1,9 +1,14 @@
 package com.cinemabookingsystem.cinemadb.controller;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,16 +20,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cinemabookingsystem.cinemadb.model.BillingAddress;
 import com.cinemabookingsystem.cinemadb.model.PaymentCard;
+import com.cinemabookingsystem.cinemadb.model.User;
+import com.cinemabookingsystem.cinemadb.repository.UserRepository;
+import com.cinemabookingsystem.cinemadb.security.JwtUtil;
+import com.cinemabookingsystem.cinemadb.service.CustomUserDetailsService;
 import com.cinemabookingsystem.cinemadb.service.PaymentInfoServiceImpl;
+import com.cinemabookingsystem.cinemadb.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 
+import java.security.Principal;
 import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RestController
 @RequestMapping("api/user")
 public class UserController {
     
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private PaymentInfoServiceImpl paymentInfoService;
 
@@ -86,6 +102,59 @@ public class UserController {
         paymentInfoService.removeBillingAddress(email);
         return ResponseEntity.ok().body("Billing Address deleted successfully");
     }
+
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private HttpServletRequest request;
+
+    // Endpoint to get user profile information
+    @GetMapping("/profile")
+    public ResponseEntity<?> getUserProfile() {
+        String token = getTokenFromRequest(request);
+        if (token != null && !jwtUtil.isTokenExpired(token)) {
+            String email = jwtUtil.getUsernameFromToken(token);
+            logger.info("Email extracted from token: " + email);
+
+            User user = userRepository.findById(email).orElse(null);
+            if (user != null) {
+                // Consider creating a DTO to return user information
+                return ResponseEntity.ok().body(user);
+            }
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+private String getTokenFromRequest(HttpServletRequest request) {
+    String bearerToken = request.getHeader("Authorization");
+    if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+        return bearerToken.substring(7); // Extract the token by removing "Bearer "
+    }
+    return null; // Return null if the token is not found or doesn't start with "Bearer "
+}
+
+
+    // Endpoint to update user profile information
+    // @PutMapping("/profile")
+    // public ResponseEntity<?> updateUserProfile(User user, 
+    //                                            Errors errors) {
+    //     if (errors.hasErrors()) {
+    //         // Return a bad request with the validation errors
+    //         return ResponseEntity.badRequest().body(errors.getAllErrors());
+    //     }
+    //     // Again, get the email from the Principal to ensure users can only modify their own data
+    //     String email = user.getEmail();
+    //     userService.updateUser(user, email);
+    //     return ResponseEntity.ok().body("Profile updated successfully");
+    // }
+    
 
 }
 
