@@ -1,15 +1,16 @@
+"use client"
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import './css/Logout.css';
+// import './css/Logout.css';
 
 const Logout = () => {
     const [token, setToken] = useState<string | null>();
 
     useEffect(() => {
-        const token = localStorage.getItem("auth-token");
+        const token = localStorage.getItem("token");
         if (token) {
-            localStorage.removeItem("auth-token");
-            setToken(localStorage.getItem("auth-token"));
+            localStorage.removeItem("token");
+            setToken(localStorage.getItem("token"));
         }
     }, []);
 

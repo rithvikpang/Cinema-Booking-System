@@ -90,7 +90,7 @@ const Home = () => {
         const data = await response.json();
 
         // Store the JWT in localStorage
-        localStorage.setItem('token', data.jwt);
+        localStorage.setItem('token', data.data.token);
         console.log("Token value:", localStorage.getItem('token')); // Display token value in console
         
         console.log("Registration successful", data);

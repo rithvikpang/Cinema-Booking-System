@@ -14,7 +14,7 @@ const Navbar = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("auth-token");
+    const storedToken = localStorage.getItem("token");
 
     // If token exists, assign value to token
     if (storedToken) {
@@ -38,7 +38,7 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("auth-token");
+    localStorage.removeItem("token");
     router.push('/logout');
   };
 

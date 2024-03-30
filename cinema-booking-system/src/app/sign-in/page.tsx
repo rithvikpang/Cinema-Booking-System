@@ -16,7 +16,7 @@ export default function Home() {
 
   const handleSignIn = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-  
+
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
@@ -26,23 +26,15 @@ export default function Home() {
         body: JSON.stringify({ email, password }),
       });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Login failed:', errorText);
-        setLoginError('Login failed. Please check your credentials.');
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem('token', data.data.token); // Storing the JWT token, make sure this is data.data
+        console.log('Login successful:', data);
+        // const destination = data.isAdmin ? "/home" : "/home";
+        // window.location.href = destination;
       } else {
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          const data = await response.json();
-          console.log('Login successful:', data);
-          // Redirect user or update UI accordingly
-
-          //for now, we have to make it so that admins and users land on different pages i guess?
-          window.location.replace("/home");
-        } else {
-          console.error('Unexpected response:', contentType);
-          setLoginError('An unexpected response was received. Please try again.');
-        }
+        console.error('Login failed:', data.data.message);
+        setLoginError(data.data.message);
       }
     } catch (error) {
       console.error('Login error:', error);

@@ -28,6 +28,7 @@ public class User {
     private boolean isverified;
     private Instant created_at;
     private int user_id;
+    private boolean isadmin;
 
     @OneToMany(mappedBy = "user")
     private Set<PaymentCard> PaymentCards;
@@ -38,6 +39,14 @@ public class User {
     // Constructors, getters, and setters
     public User() {
 
+    }
+
+    public boolean isAdmin() {
+        return isadmin;
+    }
+
+    public void setAdmin(boolean isadmin) {
+        this.isadmin = isadmin;
     }
 
     public String getEmail() {
