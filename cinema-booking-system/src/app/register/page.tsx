@@ -100,7 +100,7 @@ const Home = () => {
         // Show error messages to the user
       }
 
-      router.push('/');
+      router.push('/registration-confirmation');
 
     } catch (error) {
       console.error("An error occurred:", error);

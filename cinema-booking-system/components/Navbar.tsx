@@ -70,19 +70,9 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="home-buttons">
-            <div className="edit-button">
-              <Link className="edit-button" href="/profile">
-                <button className="edit-button">Profile</button>
-              </Link>
-            </div>
             <div className="home-btn block">
-              <Link className="home-btn" href="/user-sign-in">
-                <button type="submit">User Sign In</button>
-              </Link>
-            </div>
-            <div className="home-btn block">
-              <Link className="home-btn" href="/admin-sign-in">
-                <button type="submit">Admin Sign In</button>
+              <Link className="home-btn" href="/sign-in">
+                <button type="submit">Sign In</button>
               </Link>
             </div>
             <div className="home-btn block">
@@ -95,7 +85,6 @@ const Navbar = () => {
       )
     }
     else {
-      
       return (
         <div className="navbar">
           <div className="navbar">
@@ -116,6 +105,11 @@ const Navbar = () => {
             <div className="edit-button">
               <Link className="edit-button" href="/profile">
                 <button className="edit-button">Profile</button>
+              </Link>
+            </div>
+            <div className="home-btn block">
+              <Link className="home-btn" href="/admin">
+                <button type="submit">Admin</button>
               </Link>
             </div>
             <div className="home-btn block">

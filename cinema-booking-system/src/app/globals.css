@@ -44,6 +44,7 @@ h1 {
 .home-btn {
   background-color: #ECF4FF;
   padding: 10px;
+  text-decoration: none;
 }
 
 .edit-button {
@@ -479,4 +480,28 @@ input[type="text"] {
 
 .seats {
   background-color: #a88bf8;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Add a smooth transition effect */
+  
+    /* Optional: Add hover effect */
+    &:hover {
+      background-color: #628efd; /* Darker tan on hover */
+    }
+}
+
+.edit-movie-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: #a88bf8;
+}
+
+.save-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: #ACC3FF;
+  padding: 40px;
 }

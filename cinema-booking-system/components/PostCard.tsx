@@ -28,7 +28,7 @@ const PostCard = ({ movie }: Props) => {
               alt={`${movie.title} poster`}
             />
 
-            <h3 className="description">{movie.title}</h3>
+            <h4 className="description">{movie.title}</h4>
             <dl>
                 <dt className="description">{movie.duration} MIN | {movie.rating}</dt>
                 <dt className="description">Released {movie.release_date}</dt>
@@ -38,8 +38,8 @@ const PostCard = ({ movie }: Props) => {
                     {/* Update this button to call openTrailerModal when clicked */}
                     <button type="button" onClick={openTrailerModal}>Watch Trailer</button>
                 </div>
-                <div className="h-button block">
-                    <Link href="/select-show-time">
+                <div>
+                    <Link className="home-btn block" href="/select-show-time">
                       <button type="button">Book Movie</button> 
                     </Link>
                 </div>
