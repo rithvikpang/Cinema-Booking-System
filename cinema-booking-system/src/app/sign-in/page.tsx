@@ -70,8 +70,8 @@ export default function Home() {
           required
         />
       </div>
-      <Link className="forgot-password" href="/forgot-password">
-        <label className="forgot-password">Forgot Password</label>
+      <Link className="link" href="/forgot-password">
+        <label className="link">Forgot Password</label>
       </Link>
       {loginError && <div className="error-message">{loginError}</div>}
       <div className="sign-in button block">

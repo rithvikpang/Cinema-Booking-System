@@ -522,7 +522,7 @@ input[type="text"] {
   padding: 40px;
 }
 
-.forgot-password {
+.link {
   color: #848afa;
   text-decoration: none;
   cursor: pointer;
@@ -534,7 +534,7 @@ input[type="text"] {
     }
 }
 
-.forgot-password:hover {
+.link:hover {
   text-decoration: underline;
 }
 
