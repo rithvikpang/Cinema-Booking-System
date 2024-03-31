@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, FormEvent, ChangeEvent } from 'react';
+import Link from 'next/Link'
 
 export default function Home() {
   const [email, setEmail] = useState('');
@@ -70,6 +71,9 @@ export default function Home() {
           required
         />
       </div>
+      <Link className="forgot-password" href="/forgot-password">
+        <label className="forgot-password">Forgot Password</label>
+      </Link>
       {loginError && <div className="error-message">{loginError}</div>}
       <div className="sign-in button block">
         <button type="submit">Login</button>
