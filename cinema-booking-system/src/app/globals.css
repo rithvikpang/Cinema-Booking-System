@@ -503,3 +503,19 @@ input[type="text"] {
   color: #ACC3FF;
   padding: 40px;
 }
+
+.forgot-password {
+  color: #848afa;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Add a smooth transition effect */
+  
+    /* Optional: Add hover effect */
+    &:hover {
+      color: #adc3fc; /* Darker tan on hover */
+    }
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
