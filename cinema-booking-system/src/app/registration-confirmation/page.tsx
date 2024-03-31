@@ -4,16 +4,10 @@ import Link from 'next/Link'
 export default function Home() {
     return (
         <div className="log-out-container">
-            <h3>Registration Confirmation</h3>
-            <hr></hr>
-            <div>
-                <label htmlFor="message" style={{ textAlign: 'center', marginTop: '20px', fontSize: '20px' }}>Thank you for registering with CINEMA! You have been sent a confirmation email.</label>
-            </div>
-            <div className="button block">
-                <Link href="/">
-                    <button type="submit" style={{marginTop: '20px' }}>Back to Home</button>
-                </Link>
-            </div>
+            <h3>Thank you for registering with CINEMA BOOKING! You have been sent a confirmation email.</h3>
+            <Link className="link" href='/'>
+                <h3>Click here to return to home</h3>
+            </Link>
         </div>
     )
 }
