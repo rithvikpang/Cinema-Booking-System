@@ -103,7 +103,7 @@ interface UserProfile {
             <div className="movie-name block">
                 <label htmlFor="frm-movie">Movie Name</label>
                 <input
-                    id="frm-movie"
+                    id="inp"
                     type="text"
                     name="movie-name"
                     autoComplete="movie-name"
@@ -113,7 +113,7 @@ interface UserProfile {
             <div className="category block">
                 <label htmlFor="frm-category">Category</label>
                 <input
-                    id="frm-category"
+                    id="inp"
                     type="text"
                     name="category"
                     autoComplete="category"
@@ -123,7 +123,7 @@ interface UserProfile {
             <div className="genre block">
                 <label htmlFor="frm-genre">Genre</label>
                 <input
-                    id="frm-genre"
+                    id="inp"
                     type="text"
                     name="genre"
                     autoComplete="genre"
@@ -133,7 +133,7 @@ interface UserProfile {
             <div className="cast block">
                 <label htmlFor="frm-cast">Cast</label>
                 <input
-                    id="frm-cast"
+                    id="inp"
                     type="text"
                     name="cast"
                     autoComplete="cast"
@@ -143,7 +143,7 @@ interface UserProfile {
             <div className="director block">
                 <label htmlFor="frm-cast">Director</label>
                 <input
-                    id="frm-director"
+                    id="inp"
                     type="text"
                     name="director"
                     autoComplete="director"
@@ -153,7 +153,7 @@ interface UserProfile {
             <div className="summary block">
                 <label htmlFor="frm-description">Description</label>
                 <input
-                    id="frm-description"
+                    id="inp"
                     type="text"
                     name="description"
                     autoComplete="description"
@@ -163,7 +163,7 @@ interface UserProfile {
             <div className="duration block">
                 <label htmlFor="frm-duration">Duration</label>
                 <input
-                    id="frm-duration"
+                    id="inp"
                     type="text"
                     name="duration"
                     autoComplete="duration"
@@ -173,7 +173,7 @@ interface UserProfile {
             <div className="rating block">
                 <label htmlFor="frm-rating">Rating</label>
                 <input
-                    id="frm-rating"
+                    id="inp"
                     type="text"
                     name="rating"
                     autoComplete="rating"
@@ -183,7 +183,7 @@ interface UserProfile {
             <div className="movie-image block">
                 <label htmlFor="frm-movieimage">Movie Poster</label>
                 <input
-                    id="frm-movieimage"
+                    id="inp"
                     type="text"
                     name="movieimage"
                     autoComplete="movieimage"
@@ -193,7 +193,7 @@ interface UserProfile {
             <div className="movie-trailer block">
                 <label htmlFor="frm-trailer">Trailer Link</label>
                 <input
-                    id="frm-trailer"
+                    id="inp"
                     type="text"
                     name="trailer"
                     autoComplete="trailer"

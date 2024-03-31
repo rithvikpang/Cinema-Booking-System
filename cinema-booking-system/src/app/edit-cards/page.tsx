@@ -15,7 +15,7 @@ export default function Home() {
             <div className="name block">
                 <label htmlFor="frm-name">Name on Payment Card</label>
                 <input
-                id="frm-name"
+                id="inp"
                 type="text"
                 name="name"
                 autoComplete="name"
@@ -25,7 +25,7 @@ export default function Home() {
             <div className="card-num block">
                 <label htmlFor="frm-card-num">Card Number</label>
                 <input
-                id="frm-card-num"
+                id="inp"
                 type="card-num"
                 name="text"
                 autoComplete="card-num"
@@ -36,7 +36,7 @@ export default function Home() {
                 <div>
                 <label htmlFor="frm-exp">State</label>
                 <input
-                    id="frm-exp"
+                    id="inp"
                     type="text"
                     name="exp"
                     autoComplete="exp"
@@ -46,7 +46,7 @@ export default function Home() {
                 <div>
                 <label htmlFor="frm-cvv">Zip Code</label>
                 <input
-                    id="frm-cvv"
+                    id="inp"
                     type="text"
                     name="cvv"
                     autoComplete="cvv"

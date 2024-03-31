@@ -126,7 +126,7 @@ interface UserProfile {
             <div className="first-name block">
                 <label htmlFor="frm-first">Promotion Name</label>
                 <input
-                    id="frm-first"
+                    id="inp"
                     type="text"
                     name="first"
                     autoComplete="given-name"
@@ -136,7 +136,7 @@ interface UserProfile {
             <div className="first-name block">
                 <label htmlFor="frm-first">Promo Code</label>
                 <input
-                    id="frm-first"
+                    id="inp"
                     type="text"
                     name="first"
                     autoComplete="given-name"
@@ -146,7 +146,7 @@ interface UserProfile {
             <div className="first-name block">
                 <label htmlFor="frm-first">Expiration Date</label>
                 <input
-                    id="frm-first"
+                    id="inp"
                     type="text"
                     name="first"
                     autoComplete="given-name"
@@ -156,14 +156,14 @@ interface UserProfile {
             <div className="first-name block">
                 <label htmlFor="frm-first">Discount</label>
                 <input
-                    id="frm-first"
+                    id="inp"
                     type="text"
                     name="first"
                     autoComplete="given-name"
                     required
                 />
             </div>
-            <div className="button block">
+            <div className="save-button block">
                 <button type="submit">Add</button>
             </div>
         </form>
