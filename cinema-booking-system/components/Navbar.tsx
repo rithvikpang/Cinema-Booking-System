@@ -3,21 +3,67 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/Link';
 import { useState, useEffect } from "react";
-import { useRouter } from 'next/navigation';
 
-
-const Navbar = () => {
-
+interface UserProfile {
+  admin: boolean;
+  // Add other fields as they are defined in your database
+}
+ 
+const Navbar: React.FC = () => {
+  const [profile, setProfile] = useState<UserProfile>({
+    admin: false,
+    // Initialize other fields as needed
+  });
   const [token, setToken] = useState<string | null>();
-  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>('');
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
+      const storedToken = localStorage.getItem("token");
 
     // If token exists, assign value to token
     if (storedToken) {
       setToken(storedToken);
     }
+    
+  }, []);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setError('No token found in localStorage');
+        setLoading(false);
+        return;
+      }
+ 
+      try {
+        const response = await fetch('http://localhost:8080/api/user/profile', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+ 
+        if (!response.ok) {
+          throw new Error(`Failed to fetch profile: ${response.status} ${response.statusText}`);
+        }
+ 
+        const data: UserProfile = await response.json();
+        setProfile(data);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+ 
+    fetchProfile();
   }, []);
 
 
@@ -47,10 +93,13 @@ const Navbar = () => {
   }, []);
    */
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.replace("/log-out");
-  };
+  const c = profile.admin;
+  console.log("admin: " + c);
+  
+    const handleLogout = () => {
+      localStorage.removeItem("token");
+      window.location.replace("/log-out");
+    };
 
     if (!token) {
       return (
@@ -78,6 +127,37 @@ const Navbar = () => {
             <div className="home-btn block">
               <Link className="home-btn" href="/register">
                 <button type="submit">Register</button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )
+    } else if (profile.admin == false) {
+      return (
+        <div className="navbar">
+          <div className="navbar">
+            <Link href="/">
+              <Image
+              className="navbar"
+              src="/camera.png"
+              width={100}
+              height={100}
+              alt="camera"
+              />
+            </Link>
+            <Link className="site-name" href="/">
+              <h1 className="navbar">Cinema Booking</h1>
+            </Link>
+          </div>
+          <div className="home-buttons">
+            <div className="edit-button">
+              <Link className="edit-button" href="/profile">
+                <button className="edit-button">Profile</button>
+              </Link>
+            </div>
+            <div className="home-btn block">
+              <Link className="home-btn" href="/">
+                <button type="button" onClick={handleLogout}>Log Out</button>
               </Link>
             </div>
           </div>
@@ -121,6 +201,7 @@ const Navbar = () => {
         </div>
       )
     }
+    
 }
 
-export default Navbar
+export default Navbar;

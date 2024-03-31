@@ -42,7 +42,6 @@ export default function Home() {
       setLoginError('An error occurred during login. Please try again later.');
     }
   };
-  
 
   return (
     <form className="container" onSubmit={handleSignIn}>
