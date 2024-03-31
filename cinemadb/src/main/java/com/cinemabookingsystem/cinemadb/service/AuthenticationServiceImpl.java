@@ -1,6 +1,8 @@
 package com.cinemabookingsystem.cinemadb.service;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,24 +34,25 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     /**
      * @Return SUCCESS if authentication is successful
-     * @Return USER_NOT_VERIFIED if password is authenticated, but user is not verified
+     * @Return USER_NOT_VERIFIED if password is authenticated, but user is not
+     *         verified
      * @Return INCORRECT_PASSWORD if the password is incorrct
      */
     // @Override
     // public int authenticate(String email, String rawPassword) {
-    //     String hashedPassword = getHashedPassword(email);
-    //     boolean isVerified = isUserVerified(email);
-    //     int response = 0;
-    //     if(passwordEncoder.matches(rawPassword, hashedPassword) 
-    //         && isVerified) {
-    //             response = StatusCode.SUCCESS;
-    //     } else if ((passwordEncoder.matches(rawPassword, hashedPassword) 
-    //         && !isVerified)) {
-    //             response = StatusCode.USER_NOT_VERIFIED;
-    //     } else if (!passwordEncoder.matches(rawPassword, hashedPassword)){
-    //             response = StatusCode.INCORRECT_PASSWORD;
-    //     }
-    //     return response;
+    // String hashedPassword = getHashedPassword(email);
+    // boolean isVerified = isUserVerified(email);
+    // int response = 0;
+    // if(passwordEncoder.matches(rawPassword, hashedPassword)
+    // && isVerified) {
+    // response = StatusCode.SUCCESS;
+    // } else if ((passwordEncoder.matches(rawPassword, hashedPassword)
+    // && !isVerified)) {
+    // response = StatusCode.USER_NOT_VERIFIED;
+    // } else if (!passwordEncoder.matches(rawPassword, hashedPassword)){
+    // response = StatusCode.INCORRECT_PASSWORD;
+    // }
+    // return response;
     // }
 
     @Override
@@ -62,10 +65,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         User customUser = userRepository.findById(email)
-                        .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
         boolean isPasswordMatch = passwordEncoder.matches(rawPassword, userDetails.getPassword());
-        boolean isVerified = customUser.isVerified(); 
+        boolean isVerified = customUser.isVerified();
 
         if (isPasswordMatch && isVerified) {
             return StatusCode.SUCCESS;
@@ -76,14 +79,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails, boolean isAdmin) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("sub", userDetails.getUsername());
+        claims.put("created", new Date());
+        claims.put("admin", isAdmin);
         long now = System.currentTimeMillis();
         return Jwts.builder()
-            .setSubject(userDetails.getUsername())
-            .setIssuedAt(new Date(now))
-            .setExpiration(new Date(now + 1000 * 60 * 60)) // 1 hour validity
-            .signWith(SignatureAlgorithm.HS512, "secretKey") // Use a proper secret key
-            .compact();
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(now))
+                .setExpiration(new Date(now + 1000 * 60 * 60)) // 1 hour validity
+                .signWith(SignatureAlgorithm.HS512, "secretKey") // Use a proper secret key
+                .compact();
     }
 
     // private method to getHashedPassword for security
@@ -98,5 +105,5 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = userRepository.findById(email).orElseThrow();
         return user.isVerified();
     }
-    
+
 }

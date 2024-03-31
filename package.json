@@ -2,6 +2,8 @@
   "dependencies": {
     "@types/mysql": "^2.15.25",
     "jsonwebtoken": "^9.0.2",
-    "prettier": "^3.2.5"
+    "next": "^14.1.4",
+    "prettier": "^3.2.5",
+    "react": "^18.2.0"
   }
 }
