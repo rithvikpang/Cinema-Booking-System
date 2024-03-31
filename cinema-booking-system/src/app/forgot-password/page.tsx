@@ -7,7 +7,7 @@ export default function Home() {
             <div className="email block">
                 <label htmlFor="frm-email">Email</label>
                 <input
-                id="frm-email"
+                id="inp"
                 type="email"
                 name="text"
                 autoComplete="email"

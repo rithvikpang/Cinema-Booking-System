@@ -122,7 +122,7 @@ const ProfilePage: React.FC = () => {
       <div className="first-name block">
         <label htmlFor="firstname">First Name</label>
         <input
-          id="firstname"
+          id="inp"
           type="text"
           name="firstname"
           value={profile.firstname}
@@ -133,7 +133,7 @@ const ProfilePage: React.FC = () => {
       <div className="last-name block">
         <label htmlFor="lastname">Last Name</label>
         <input
-          id="lastname"
+          id="inp"
           type="text"
           name="lastname"
           value={profile.lastname}
@@ -144,7 +144,7 @@ const ProfilePage: React.FC = () => {
       <div className="age block">
         <label htmlFor="lastname">Age</label>
         <input
-          id="age"
+          id="inp"
           type="text"
           name="age"
           value={profile.age}
@@ -156,7 +156,7 @@ const ProfilePage: React.FC = () => {
       <div className="email block">
         <label htmlFor="email">Email</label>
         <input
-          id="email"
+          id="inp"
           type="text"
           name="email"
           value={profile.email}
@@ -166,7 +166,7 @@ const ProfilePage: React.FC = () => {
       <div className="address block">
         <label htmlFor="email">Address</label>
         <input
-          id="address"
+          id="inp"
           type="text"
           name="address"
           value={profile.address}
@@ -177,7 +177,7 @@ const ProfilePage: React.FC = () => {
         <div className="city block">
           <label htmlFor="email">City</label>
           <input
-            id="city"
+            id="inp"
             type="text"
             name="city"
             value={profile.city}
@@ -187,7 +187,7 @@ const ProfilePage: React.FC = () => {
         <div className="state block">
           <label htmlFor="email">State</label>
           <input
-            id="state"
+            id="inp"
             type="text"
             name="state"
             value={profile.state}
@@ -197,7 +197,7 @@ const ProfilePage: React.FC = () => {
         <div className="zip block">
           <label htmlFor="email">Zip Code</label>
           <input
-            id="zip-code"
+            id="inp"
             type="text"
             name="zip-code"
             value={profile.zip}

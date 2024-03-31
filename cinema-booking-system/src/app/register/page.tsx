@@ -117,7 +117,7 @@ const Home = () => {
   <div className="first-name block">
     <label htmlFor="frm-first">First Name*</label>
     <input
-      id="frm-first"
+      id="inp"
       type="text"
       name="firstname"
       value={formData.firstname}
@@ -131,7 +131,7 @@ const Home = () => {
   <div className="last-name block">
     <label htmlFor="frm-last">Last Name*</label>
     <input
-      id="frm-last"
+      id="inp"
       type="text"
       name="lastname"
       value={formData.lastname}
@@ -145,7 +145,7 @@ const Home = () => {
   <div className="age block">
     <label htmlFor="from-age">Age*</label>
     <input
-      id="from-age"
+      id="inp"
       type="text"
       name="age"
       value={formData.age}
@@ -159,7 +159,7 @@ const Home = () => {
   <div className="email block">
     <label htmlFor="frm-email">Email*</label>
     <input
-      id="frm-email"
+      id="inp"
       type="email"
       name="email"
       value={formData.email}
@@ -173,7 +173,7 @@ const Home = () => {
   <div className="address block">
     <label htmlFor="frm-address">Address*</label>
     <input
-      id="frm-address"
+      id="inp"
       type="text"
       name="address"
       value={formData.address}
@@ -187,7 +187,7 @@ const Home = () => {
   <div className="block">
     <label htmlFor="frm-city">City*</label>
     <input
-      id="frm-city"
+      id="inp"
       type="text"
       name="city"
       value={formData.city}
@@ -201,7 +201,7 @@ const Home = () => {
   <div className="block">
     <label htmlFor="frm-state">State*</label>
     <input
-      id="frm-state"
+      id="inp"
       type="text"
       name="state"
       value={formData.state}
@@ -215,7 +215,7 @@ const Home = () => {
   <div className="block">
     <label htmlFor="frm-zip">Zip Code*</label>
     <input
-      id="frm-zip"
+      id="inp"
       type="text"
       name="zip"
       value={formData.zip}
@@ -229,7 +229,7 @@ const Home = () => {
   <div className="password block">
     <label htmlFor="frm-password">Enter Password*</label>
     <input
-      id="frm-password"
+      id="inp"
       type="password"
       name="password"
       value={formData.password}
@@ -243,7 +243,7 @@ const Home = () => {
   <div className="block">
     <label htmlFor="frm-confirmPassword">Re-enter Password*</label>
     <input
-      id="frm-confirmPassword"
+      id="inp"
       type="password"
       name="confirmPassword"
       value={formData.confirmPassword}

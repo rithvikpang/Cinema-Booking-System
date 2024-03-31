@@ -49,7 +49,7 @@ export default function Home() {
       <div className="email block">
         <label htmlFor="frm-email">Email</label>
         <input
-          id="frm-email"
+          id="inp"
           type="email"
           name="email"
           value={email}
@@ -61,7 +61,7 @@ export default function Home() {
       <div className="password block">
         <label htmlFor="frm-password">Password</label>
         <input
-          id="frm-password"
+          id="inp"
           type="password"
           name="password"
           value={password}
