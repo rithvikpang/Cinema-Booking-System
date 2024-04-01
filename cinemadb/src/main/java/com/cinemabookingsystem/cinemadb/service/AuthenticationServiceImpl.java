@@ -1,9 +1,5 @@
 package com.cinemabookingsystem.cinemadb.service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,6 +12,8 @@ import com.cinemabookingsystem.cinemadb.repository.UserRepository;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+
+import java.util.*;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -79,13 +77,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    public String generateToken(UserDetails userDetails, boolean isAdmin) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("sub", userDetails.getUsername());
-        claims.put("created", new Date());
-        claims.put("admin", isAdmin);
+    public String generateToken(UserDetails userDetails) {
         long now = System.currentTimeMillis();
+        Map<String, Object> claims = new HashMap<>();
+
+        boolean isAdmin = userDetails.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> "ROLE_ADMIN".equals(grantedAuthority.getAuthority()));
+
+        claims.put("isAdmin", isAdmin); // Add isAdmin to the claims
+
         return Jwts.builder()
+                .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + 1000 * 60 * 60)) // 1 hour validity
