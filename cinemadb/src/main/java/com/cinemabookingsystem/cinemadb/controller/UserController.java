@@ -162,8 +162,8 @@ public class UserController {
         return ResponseEntity.badRequest().body("Invalid or expired token");
     }
 
-    @PostMapping("/forgot-password")
-    public ResponseEntity<?> forgotPassword(String email) {
+    @PostMapping("{email}/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestParam String email) {
         User user = userService.getUserByEmail(email);
         if (user != null) {
             userService.sendVerificationCode(user);
