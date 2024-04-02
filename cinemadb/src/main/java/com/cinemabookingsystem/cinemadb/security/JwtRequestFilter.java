@@ -15,7 +15,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
+import java.util.*;
 
 public class JwtRequestFilter extends OncePerRequestFilter {
 
@@ -33,8 +33,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         String username = null;
         String jwtToken = null;
-
-        // JWT Token is in the form "Bearer token". Remove Bearer word and get only the Token
+        // JWT Token is in the form "Bearer token". Remove Bearer word and get only the
+        // Token
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
             try {
@@ -63,7 +63,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
 
-                // After setting the Authentication in the context, we specify that the current user is authenticated. So it passes the Spring Security Configurations successfully.
+                // After setting the Authentication in the context, we specify that the current
+                // user is authenticated. So it passes the Spring Security Configurations
+                // successfully.
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }

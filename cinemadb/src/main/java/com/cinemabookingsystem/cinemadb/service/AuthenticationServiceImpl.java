@@ -1,7 +1,5 @@
 package com.cinemabookingsystem.cinemadb.service;
 
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,6 +12,8 @@ import com.cinemabookingsystem.cinemadb.repository.UserRepository;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+
+import java.util.*;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -32,24 +32,25 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     /**
      * @Return SUCCESS if authentication is successful
-     * @Return USER_NOT_VERIFIED if password is authenticated, but user is not verified
+     * @Return USER_NOT_VERIFIED if password is authenticated, but user is not
+     *         verified
      * @Return INCORRECT_PASSWORD if the password is incorrct
      */
     // @Override
     // public int authenticate(String email, String rawPassword) {
-    //     String hashedPassword = getHashedPassword(email);
-    //     boolean isVerified = isUserVerified(email);
-    //     int response = 0;
-    //     if(passwordEncoder.matches(rawPassword, hashedPassword) 
-    //         && isVerified) {
-    //             response = StatusCode.SUCCESS;
-    //     } else if ((passwordEncoder.matches(rawPassword, hashedPassword) 
-    //         && !isVerified)) {
-    //             response = StatusCode.USER_NOT_VERIFIED;
-    //     } else if (!passwordEncoder.matches(rawPassword, hashedPassword)){
-    //             response = StatusCode.INCORRECT_PASSWORD;
-    //     }
-    //     return response;
+    // String hashedPassword = getHashedPassword(email);
+    // boolean isVerified = isUserVerified(email);
+    // int response = 0;
+    // if(passwordEncoder.matches(rawPassword, hashedPassword)
+    // && isVerified) {
+    // response = StatusCode.SUCCESS;
+    // } else if ((passwordEncoder.matches(rawPassword, hashedPassword)
+    // && !isVerified)) {
+    // response = StatusCode.USER_NOT_VERIFIED;
+    // } else if (!passwordEncoder.matches(rawPassword, hashedPassword)){
+    // response = StatusCode.INCORRECT_PASSWORD;
+    // }
+    // return response;
     // }
 
     @SuppressWarnings("null")
@@ -63,10 +64,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         User customUser = userRepository.findById(email)
-                        .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
         boolean isPasswordMatch = passwordEncoder.matches(rawPassword, userDetails.getPassword());
-        boolean isVerified = customUser.isVerified(); 
+        boolean isVerified = customUser.isVerified();
 
         if (isPasswordMatch && isVerified) {
             return StatusCode.SUCCESS;
@@ -79,11 +80,33 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public String generateToken(UserDetails userDetails) {
         long now = System.currentTimeMillis();
+        Map<String, Object> claims = new HashMap<>();
+
+        boolean isAdmin = userDetails.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> "ROLE_ADMIN".equals(grantedAuthority.getAuthority()));
+
+        claims.put("isAdmin", isAdmin); // Add isAdmin to the claims
+
         return Jwts.builder()
-            .setSubject(userDetails.getUsername())
-            .setIssuedAt(new Date(now))
-            .setExpiration(new Date(now + 1000 * 60 * 60)) // 1 hour validity
-            .signWith(SignatureAlgorithm.HS512, "secretKey") // Use a proper secret key
-            .compact();
+                .setClaims(claims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(now))
+                .setExpiration(new Date(now + 1000 * 60 * 60)) // 1 hour validity
+                .signWith(SignatureAlgorithm.HS512, "secretKey") // Use a proper secret key
+                .compact();
     }
+
+    // private method to getHashedPassword for security
+    @SuppressWarnings("null")
+    private String getHashedPassword(String email) {
+        User user = userRepository.findById(email).orElseThrow();
+        return user.getPassword();
+    }
+
+    @SuppressWarnings("null")
+    private boolean isUserVerified(String email) {
+        User user = userRepository.findById(email).orElseThrow();
+        return user.isVerified();
+    }
+
 }

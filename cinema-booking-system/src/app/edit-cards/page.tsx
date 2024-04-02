@@ -1,13 +1,60 @@
-export default function Home() {    
+"use client"
+import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import Link from "next/link"
+
+interface Card {
+    cardNumber: string;
+    id: number
+}
+
+export default function Home() {
+    
+    const [cards, setCards] = useState<Card[]>([]);
+    useEffect(() => {
+        const fetchCards = async () => {
+          const token = localStorage.getItem('token'); // Retrieve the stored JWT token
+          const response = await fetch('/api/user/get-payment-cards', {
+            headers: new Headers({
+              'Authorization': `Bearer ${token}`,
+            }),
+          });
+          if (response.ok) {
+            const data: Card[] = await response.json();
+            setCards(data);
+          }
+        };
+        
+        fetchCards();
+      }, []);
+
+      const handleDelete = async (id: number) => {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`/api/user/delete-payment-card/${id}`, { // Adjust endpoint as needed
+          method: 'DELETE',
+          headers: new Headers({
+            'Authorization': `Bearer ${token}`,
+          }),
+        });
+        
+        if (response.ok) {
+          // Remove the deleted card from the state to update the UI
+          setCards(cards.filter(card => card.id !== id));
+        }
+      };
+    
     return (
         <div className="container">
             <h1>Edit Cards</h1>
             <h2>Cards:</h2>
             <div className="cards">
-            <h3>XXXX-XXXX-XXXX-1234</h3>
-            <div className="delete block">
-                <button type="submit">Delete</button>
-            </div>
+                {cards.map(card => (
+                <div key={card.id} className="card">
+                    <h3>{card.cardNumber}</h3>
+                    <div className="delete block">
+                        <button onClick={() => handleDelete(card.id)} type="button">Delete</button>
+                    </div>
+                </div>
+                ))}
             </div>
             <div>
                 <h2>Add Card</h2>
