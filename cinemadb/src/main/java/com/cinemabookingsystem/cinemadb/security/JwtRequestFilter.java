@@ -24,6 +24,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final String secretKey = "secretKey"; // Replace with a secure way to retrieve the secret key
 
+    @SuppressWarnings("null")
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {

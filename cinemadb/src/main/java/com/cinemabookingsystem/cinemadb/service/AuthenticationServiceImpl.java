@@ -52,6 +52,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     //     return response;
     // }
 
+    @SuppressWarnings("null")
     @Override
     public int authenticate(String email, String rawPassword) {
         UserDetails userDetails;
@@ -85,18 +86,4 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             .signWith(SignatureAlgorithm.HS512, "secretKey") // Use a proper secret key
             .compact();
     }
-
-    // private method to getHashedPassword for security
-    @SuppressWarnings("null")
-    private String getHashedPassword(String email) {
-        User user = userRepository.findById(email).orElseThrow();
-        return user.getPassword();
-    }
-
-    @SuppressWarnings("null")
-    private boolean isUserVerified(String email) {
-        User user = userRepository.findById(email).orElseThrow();
-        return user.isVerified();
-    }
-    
 }

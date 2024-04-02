@@ -3,9 +3,9 @@ package com.cinemabookingsystem.cinemadb.model;
 import java.time.Instant;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -32,10 +32,10 @@ public class User {
     private int user_id;
     private boolean isadmin;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<PaymentCard> PaymentCards;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private BillingAddress billingAddress;
 
     // Constructors, getters, and setters

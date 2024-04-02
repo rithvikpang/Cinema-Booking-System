@@ -1,6 +1,5 @@
 package com.cinemabookingsystem.cinemadb.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.cinemabookingsystem.cinemadb.model.User;
 import com.cinemabookingsystem.cinemadb.repository.UserRepository;
@@ -10,11 +9,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    @Autowired
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    @SuppressWarnings("null")
     @Override
     public User getUserByEmail(String email) {
         User user = userRepository.findById(email)
@@ -22,6 +21,7 @@ public class UserServiceImpl implements UserService {
         return user; // Assume you have a method to convert a User entity to a UserDTO
     }
 
+    @SuppressWarnings("null")
     @Override
     public void updateUser(User user, String email) {
         // Fetch the existing user from the database

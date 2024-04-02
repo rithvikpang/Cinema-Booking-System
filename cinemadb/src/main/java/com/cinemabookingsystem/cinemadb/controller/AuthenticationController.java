@@ -15,6 +15,7 @@ import com.cinemabookingsystem.cinemadb.service.AuthenticationServiceImpl;
 import com.cinemabookingsystem.cinemadb.service.CustomUserDetailsService;
 import com.cinemabookingsystem.cinemadb.service.MailServiceImpl;
 import com.cinemabookingsystem.cinemadb.config.StatusCode;
+import com.cinemabookingsystem.cinemadb.dto.LoginRequest;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -70,7 +71,7 @@ public class AuthenticationController {
                 response.put("token", jwtToken);
                 return ResponseEntity.ok(response);
             case StatusCode.USER_NOT_VERIFIED:
-                // mailService.sendVerificationEmail(loginRequest.getEmail());
+                mailService.sendVerificationEmail(loginRequest.getEmail(), siteUrl);
                 response.put("message", "User is not verified. Please check your email for a verification link.");
                 return ResponseEntity.status(401).body(response);
             case StatusCode.INCORRECT_PASSWORD:
@@ -79,29 +80,6 @@ public class AuthenticationController {
             default:
                 response.put("message", "Authentication failed.");
                 return ResponseEntity.status(401).body(response);
-        }
-    }
-
-    // Login request 
-    static class LoginRequest {
-        private String email;
-        private String password;
-
-        // Getters and Setters
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
         }
     }
 }

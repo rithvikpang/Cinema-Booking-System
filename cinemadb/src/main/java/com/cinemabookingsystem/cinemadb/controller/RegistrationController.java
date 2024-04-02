@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.cinemabookingsystem.cinemadb.dto.RegistrationRequest;
+import com.cinemabookingsystem.cinemadb.model.BillingAddress;
+import com.cinemabookingsystem.cinemadb.model.PaymentCard;
 import com.cinemabookingsystem.cinemadb.model.User;
 import com.cinemabookingsystem.cinemadb.service.RegistrationServiceImpl;
 
@@ -23,14 +26,18 @@ public class RegistrationController {
     public final String siteUrl = "http://localhost:8080/api/registration";
 
     @PostMapping
-    public ResponseEntity<?> registerUser(@Validated @RequestBody User user, Errors errors) {
+    public ResponseEntity<?> registerUser(@Validated @RequestBody RegistrationRequest registrationRequest, Errors errors) {
         if (errors.hasErrors()) {
             // Return a bad request with the validation errors
             return ResponseEntity.badRequest().body(errors.getAllErrors());
-       }
+        }
+
+        User user = registrationRequest.getUser();
+        PaymentCard paymentCard = registrationRequest.getPaymentCard();
+        BillingAddress billingAddress = registrationRequest.getBillingAddress();
+
         user.setStatus("Inactive");
-        // Hash password and save user
-        registrationService.registerUser(user, siteUrl);
+        registrationService.registerUser(user, paymentCard, billingAddress, siteUrl);
         return ResponseEntity.ok().body("User registered successfully");
     }
 
