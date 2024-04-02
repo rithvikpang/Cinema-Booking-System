@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cinemabookingsystem.cinemadb.model.BillingAddress;
@@ -39,7 +40,7 @@ import org.slf4j.LoggerFactory;
 @RestController
 @RequestMapping("api/user")
 public class UserController {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private PaymentInfoServiceImpl paymentInfoService;
@@ -53,43 +54,43 @@ public class UserController {
     public BillingAddress getBillingAddress(@PathVariable String email, Errors errors) {
         return paymentInfoService.getUserBillingAddress(email);
     }
-    
+
     @PostMapping("{email}/add-payment-card")
     public ResponseEntity<?> addPaymentCard(@PathVariable String email,
-        @Validated @RequestBody PaymentCard newPaymentCard, 
-        Errors errors) {
-            if (errors.hasErrors()) {
+            @Validated @RequestBody PaymentCard newPaymentCard,
+            Errors errors) {
+        if (errors.hasErrors()) {
             // Return a bad request with the validation errors
             return ResponseEntity.badRequest().body(errors.getAllErrors());
-            }
-            paymentInfoService.addPaymentCard(newPaymentCard, email);
+        }
+        paymentInfoService.addPaymentCard(newPaymentCard, email);
         return ResponseEntity.ok().body("Payment card added successfully");
     }
 
     @PostMapping("{email}/add-or-update-billing-address")
-    public ResponseEntity<?> addOrUpdateBillingAddress(@Validated @RequestBody BillingAddress billingAddress, 
-        @PathVariable String email,
-        Errors errors) {
-        
-            if (errors.hasErrors()) {
+    public ResponseEntity<?> addOrUpdateBillingAddress(@Validated @RequestBody BillingAddress billingAddress,
+            @PathVariable String email,
+            Errors errors) {
+
+        if (errors.hasErrors()) {
             // Return a bad request with the validation errors
             return ResponseEntity.badRequest().body(errors.getAllErrors());
-            }
+        }
         paymentInfoService.addOrUpdateBillingAddress(billingAddress, email);
         return ResponseEntity.ok().body("Updated billing address successfully");
     }
 
     @PutMapping("edit-payment-card/{cardId}")
     public ResponseEntity<?> editPaymentCard(@PathVariable Integer cardId,
-        @Validated @RequestBody PaymentCard paymentCard,
-        Errors errors) {
-                if (errors.hasErrors()) {
-                // Return a bad request with the validation errors
-                return ResponseEntity.badRequest().body(errors.getAllErrors());
-                }
-            paymentInfoService.editPaymentCard(paymentCard, cardId);
-            return ResponseEntity.ok().body("Payment Card modified successfully");
+            @Validated @RequestBody PaymentCard paymentCard,
+            Errors errors) {
+        if (errors.hasErrors()) {
+            // Return a bad request with the validation errors
+            return ResponseEntity.badRequest().body(errors.getAllErrors());
         }
+        paymentInfoService.editPaymentCard(paymentCard, cardId);
+        return ResponseEntity.ok().body("Payment Card modified successfully");
+    }
 
     @DeleteMapping("delete-payment-card/{cardId}")
     public ResponseEntity<?> deletePaymentCard(@PathVariable Integer cardId) {
@@ -132,14 +133,13 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
-private String getTokenFromRequest(HttpServletRequest request) {
-    String bearerToken = request.getHeader("Authorization");
-    if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-        return bearerToken.substring(7); // Extract the token by removing "Bearer "
+    private String getTokenFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7); // Extract the token by removing "Bearer "
+        }
+        return null; // Return null if the token is not found or doesn't start with "Bearer "
     }
-    return null; // Return null if the token is not found or doesn't start with "Bearer "
-}
-
 
     // Endpoint to update user profile information
     @PutMapping("/profile")
@@ -160,7 +160,7 @@ private String getTokenFromRequest(HttpServletRequest request) {
                 currentUser.setLastname(updatedUser.getLastname());
                 // Do not update the email field as it should not be modified
                 // Update other fields but exclude email and password
-                
+
                 // Save the updated user back to the database
                 userRepository.save(currentUser);
 
@@ -173,7 +173,40 @@ private String getTokenFromRequest(HttpServletRequest request) {
 
         return ResponseEntity.badRequest().body("Invalid or expired token");
     }
-    
+
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestParam String email) {
+        User user = userService.getUserByEmail(email);
+        if (user != null) {
+            userService.sendVerificationCode(user);
+            return ResponseEntity.ok().body("Verification code sent to email");
+        }
+        return ResponseEntity.badRequest().body("User not found");
+    }
+
+    @PostMapping("/verify-code")
+    public ResponseEntity<?> verifyCode(@RequestParam String code) {
+        if (userService.validateVerificationCode(code)) {
+            return ResponseEntity.ok().body("Code is valid");
+        }
+        return ResponseEntity.badRequest().body("Invalid code");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestParam String email,
+            @RequestParam String newPassword) {
+        try {
+            boolean isPasswordReset = userService.resetPassword(email, newPassword);
+            if (!isPasswordReset) {
+                return ResponseEntity.badRequest().body("Password reset failed");
+            }
+            return ResponseEntity.ok().body("Password reset successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error resetting password");
+        }
+    }
 
 }
-

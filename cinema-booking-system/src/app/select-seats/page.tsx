@@ -1,6 +1,6 @@
 import React from 'react';
 import Grid from '../../../components/SeatsGrid';
-import Link from 'next/Link';
+import Link from 'next/link';
 
 const MyPage: React.FC = () => {
   return (

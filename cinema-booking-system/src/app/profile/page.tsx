@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import Link from "next/Link"
+import Link from "next/link"
  
 interface UserProfile {
   email: string;
@@ -94,6 +94,10 @@ const ProfilePage: React.FC = () => {
           firstname: profile.firstname,
           lastname: profile.lastname,
           address: profile.address,
+          age: profile.age,
+          city: profile.city,
+          state: profile.state,
+          zip: profile.zip,
           // Exclude email and other fields that should not be updated
         }),
       });
@@ -170,7 +174,8 @@ const ProfilePage: React.FC = () => {
           type="text"
           name="address"
           value={profile.address}
-          readOnly // Make the email field read-only
+          onChange={handleChange}
+          required // Make the email field read-only
         />
       </div>
       <div className="loc block">

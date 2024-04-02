@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, FormEvent, ChangeEvent } from 'react';
-import Link from 'next/Link'
+import Link from 'next/link'
 
 export default function Home() {
   const [email, setEmail] = useState('');
