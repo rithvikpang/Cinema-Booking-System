@@ -26,6 +26,7 @@ import com.cinemabookingsystem.cinemadb.security.JwtUtil;
 import com.cinemabookingsystem.cinemadb.service.CustomUserDetailsService;
 import com.cinemabookingsystem.cinemadb.service.PaymentInfoServiceImpl;
 import com.cinemabookingsystem.cinemadb.service.UserService;
+import com.cinemabookingsystem.cinemadb.service.UserServiceImpl;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -43,6 +44,9 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private PaymentInfoServiceImpl paymentInfoService;
+
+    @Autowired
+    private UserServiceImpl userService;
 
     @GetMapping("{email}/get-payment-cards")
     public Set<PaymentCard> getPaymentCards(@PathVariable String email, Errors errors) {
@@ -132,13 +136,13 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
-private String getTokenFromRequest(HttpServletRequest request) {
-    String bearerToken = request.getHeader("Authorization");
-    if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-        return bearerToken.substring(7); // Extract the token by removing "Bearer "
+    private String getTokenFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7); // Extract the token by removing "Bearer "
+        }
+        return null; // Return null if the token is not found or doesn't start with "Bearer "
     }
-    return null; // Return null if the token is not found or doesn't start with "Bearer "
-}
 
 
     // Endpoint to update user profile information
@@ -152,28 +156,10 @@ private String getTokenFromRequest(HttpServletRequest request) {
         String token = getTokenFromRequest(request);
         if (token != null && !jwtUtil.isTokenExpired(token)) {
             String email = jwtUtil.getUsernameFromToken(token);
-            User currentUser = userRepository.findById(email).orElse(null);
-
-            if (currentUser != null) {
-                // Update the necessary fields
-                currentUser.setFirstname(updatedUser.getFirstname());
-                currentUser.setLastname(updatedUser.getLastname());
-                // Do not update the email field as it should not be modified
-                // Update other fields but exclude email and password
-                
-                // Save the updated user back to the database
-                userRepository.save(currentUser);
-
-                // Return a successful response
-                return ResponseEntity.ok().body("Profile updated successfully");
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        }
-
+            userService.updateUser(updatedUser, email);
+            return ResponseEntity.ok().body("Profile updated successfully");
+            } 
         return ResponseEntity.badRequest().body("Invalid or expired token");
     }
-    
-
 }
 

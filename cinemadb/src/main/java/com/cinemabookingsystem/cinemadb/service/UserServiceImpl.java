@@ -29,14 +29,15 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
 
         // Update the user's details
-        // Be sure not to update the email or password fields if that's not intended
         existingUser.setFirstname(user.getFirstname());
         existingUser.setLastname(user.getLastname());
-        // ... set other fields, but do NOT set email or password here
+        existingUser.setAddress(user.getAddress());
+        existingUser.setAge(user.getAge());
+        existingUser.setCity(user.getCity());
+        existingUser.setState(user.getState());
+        existingUser.setZip(user.getZip());
 
         // Save the updated user back to the database
         userRepository.save(existingUser);
     }
-    
-    // Implement other methods as needed
 }
