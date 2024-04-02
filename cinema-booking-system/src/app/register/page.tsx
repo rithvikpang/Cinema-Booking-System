@@ -14,6 +14,10 @@ interface FormData {
   zip: string;
   password: string;
   confirmPassword: string;
+  paymentCardName: string;
+  cardNumber: string;
+  expirationDate: string;
+  zipCode: string;
   promotions: boolean; // For "Register for Promotions" checkbox
   rememberMe: boolean; // For "Remember Me" checkbox
 }
@@ -29,6 +33,10 @@ const initialState: FormData = {
   zip: "",
   password: "",
   confirmPassword: "",
+  paymentCardName: "",
+  cardNumber: "",
+  expirationDate: "",
+  zipCode: "",
   promotions: false,
   rememberMe: false,
 };
@@ -251,6 +259,55 @@ const Home = () => {
       required
     />
     {formErrors.confirmPassword && <p className="error">{formErrors.confirmPassword}</p>}
+  </div>
+
+  <h1>Add Payment Card (Optional)</h1>
+  <div className="block">
+    <label htmlFor="frm-confirmPassword">Name on Payment Card</label>
+    <input
+      id="inp"
+      type="password"
+      name="confirmPassword"
+      value={formData.paymentCardName}
+      onChange={handleChange}
+    />
+    {formErrors.paymentCardName && <p className="error">{formErrors.paymentCardName}</p>}
+  </div> 
+
+  <div className="block">
+    <label htmlFor="frm-confirmPassword">Card Number</label>
+    <input
+      id="inp"
+      type="password"
+      name="confirmPassword"
+      value={formData.cardNumber}
+      onChange={handleChange}
+    />
+    {formErrors.cardNumber && <p className="error">{formErrors.cardNumber}</p>}
+  </div>
+
+  <div className="block">
+    <label htmlFor="frm-confirmPassword">Expiration Date</label>
+    <input
+      id="inp"
+      type="password"
+      name="confirmPassword"
+      value={formData.expirationDate}
+      onChange={handleChange}
+    />
+    {formErrors.expirationDate && <p className="error">{formErrors.expirationDate}</p>}
+  </div>
+
+  <div className="block">
+    <label htmlFor="frm-confirmPassword">Zip Code</label>
+    <input
+      id="inp"
+      type="password"
+      name="confirmPassword"
+      value={formData.zipCode}
+      onChange={handleChange}
+    />
+    {formErrors.zipCode && <p className="error">{formErrors.zipCode}</p>}
   </div>
 
   {/* Additional Fields as Needed... */}

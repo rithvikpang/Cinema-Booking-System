@@ -163,7 +163,7 @@ public class UserController {
     }
 
     @PostMapping("/forgot-password")
-    public ResponseEntity<?> forgotPassword(@RequestParam String email) {
+    public ResponseEntity<?> forgotPassword(String email) {
         User user = userService.getUserByEmail(email);
         if (user != null) {
             userService.sendVerificationCode(user);
