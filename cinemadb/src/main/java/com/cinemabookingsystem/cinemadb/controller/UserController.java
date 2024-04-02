@@ -163,7 +163,6 @@ public class UserController {
     }
 
     @Autowired
-    private UserService userService;
 
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestParam String email) {
