@@ -1,10 +1,13 @@
 "use client";
 import React, { useState, FormEvent, ChangeEvent } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 
 const ForgotPassword: React.FC = () => {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
+    const router = useRouter();
   
     const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
       setEmail(event.target.value);
@@ -12,16 +15,18 @@ const ForgotPassword: React.FC = () => {
   
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
+      const encodedEmail = encodeURIComponent(email);
       try {
-        const response = await fetch('/api/user/forgot-password', {
+        const response = await fetch('http://localhost:8080/api/user/${encodedEmail}/forgot-password/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email }),
         });
   
-        if (response.status === 200) {
+        if (response.ok) {
             localStorage.setItem('resetEmail', email);
             setMessage('If an account with that email exists, we have sent you a reset email.');
+            router.push('/forgot-code');
         } else {
           setMessage('Email not found.');
         }

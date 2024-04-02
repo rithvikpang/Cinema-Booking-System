@@ -11,14 +11,15 @@ interface Card {
 interface NewCardDetails {
   name: string;
   cardNumber: string;
-  expiry: string; // Simplified for this example
+  expiryMonth: string;
+  expiryYear: string // Simplified for this example
   zipCode: string;
 }
 
 export default function Home() {
     
     const [cards, setCards] = useState<Card[]>([]);
-    const [newCard, setNewCard] = useState<NewCardDetails>({ name: '', cardNumber: '', expiry: '', zipCode: '' });
+    const [newCard, setNewCard] = useState<NewCardDetails>({ name: '', cardNumber: '', expiryMonth: '', expiryYear: '', zipCode: '' });
 
     useEffect(() => {
         const fetchCards = async () => {
@@ -79,7 +80,7 @@ export default function Home() {
         if (response.ok) {
             const addedCard: Card = await response.json();
             setCards([...cards, addedCard]);
-            setNewCard({ name: '', cardNumber: '', expiry: '', zipCode: '' }); // Reset form
+            setNewCard({ name: '', cardNumber: '', expiryMonth: '', expiryYear:'' , zipCode: '' }); // Reset form
         }
         // Add error handling as needed
     };
@@ -126,7 +127,7 @@ export default function Home() {
             </div>
             <div className="card-info block">
                 <div>
-                <label htmlFor="frm-exp">Expiration Date</label>
+                <label htmlFor="frm-exp">Expiration Month</label>
                 <input
                     onChange={handleInputChange}
                     id="inp"
@@ -136,7 +137,20 @@ export default function Home() {
                     required
                 />
                 </div>
+                <div className="card-info block">
                 <div>
+                <label htmlFor="frm-exp">Expiration Year</label>
+                <input
+                    onChange={handleInputChange}
+                    id="inp"
+                    type="text"
+                    name="exp"
+                    autoComplete="exp"
+                    required
+                />
+                </div>
+              </div>
+              <div>
                 <label htmlFor="frm-cvv">Zip Code</label>
                 <input
                     onChange={handleInputChange}
