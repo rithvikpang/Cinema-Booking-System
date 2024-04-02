@@ -17,7 +17,7 @@ const ForgotPassword: React.FC = () => {
       event.preventDefault();
       const encodedEmail = encodeURIComponent(email);
       try {
-        const response = await fetch('http://localhost:8080/user/forgot-password/${encodedEmail}', {
+        const response = await fetch('http://localhost:8080/api/user/${encodedEmail}/forgot-password/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email }),
