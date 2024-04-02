@@ -1,19 +1,36 @@
 "use client"
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import Link from "next/link"
+import { jwtDecode } from 'jwt-decode';
 
 interface Card {
     cardNumber: string;
     id: number
 }
 
+interface NewCardDetails {
+  name: string;
+  cardNumber: string;
+  expiry: string; // Simplified for this example
+  zipCode: string;
+}
+
 export default function Home() {
     
     const [cards, setCards] = useState<Card[]>([]);
+    const [newCard, setNewCard] = useState<NewCardDetails>({ name: '', cardNumber: '', expiry: '', zipCode: '' });
+
     useEffect(() => {
         const fetchCards = async () => {
           const token = localStorage.getItem('token'); // Retrieve the stored JWT token
-          const response = await fetch('/api/user/get-payment-cards', {
+          if (!token) {
+            console.error('No token found in localStorage');
+            return;
+          }
+          const decodedToken = jwtDecode(token);
+          const email = decodedToken.sub;
+          const encodedEmail = email ? encodeURIComponent(email) : '';
+          const response = await fetch('/api/user/${encodedEmail}/get-payment-cards', {
             headers: new Headers({
               'Authorization': `Bearer ${token}`,
             }),
@@ -41,6 +58,31 @@ export default function Home() {
           setCards(cards.filter(card => card.id !== id));
         }
       };
+
+      const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setNewCard({ ...newCard, [name]: value });
+    };
+
+    const handleAddCard = async (event: FormEvent) => {
+        event.preventDefault();
+        const token = localStorage.getItem('token');
+        const response = await fetch('/api/user/${encodedEmail}/add-payment-card', {
+            method: 'POST',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            }),
+            body: JSON.stringify(newCard),
+        });
+
+        if (response.ok) {
+            const addedCard: Card = await response.json();
+            setCards([...cards, addedCard]);
+            setNewCard({ name: '', cardNumber: '', expiry: '', zipCode: '' }); // Reset form
+        }
+        // Add error handling as needed
+    };
     
     return (
         <div className="container">
@@ -59,9 +101,11 @@ export default function Home() {
             <div>
                 <h2>Add Card</h2>
             </div>
+            <form onSubmit={handleAddCard}>
             <div className="name block">
                 <label htmlFor="frm-name">Name on Payment Card</label>
-                <input
+                <input 
+                onChange={handleInputChange}
                 id="inp"
                 type="text"
                 name="name"
@@ -72,6 +116,7 @@ export default function Home() {
             <div className="card-num block">
                 <label htmlFor="frm-card-num">Card Number</label>
                 <input
+                onChange={handleInputChange}
                 id="inp"
                 type="card-num"
                 name="text"
@@ -81,8 +126,9 @@ export default function Home() {
             </div>
             <div className="card-info block">
                 <div>
-                <label htmlFor="frm-exp">State</label>
+                <label htmlFor="frm-exp">Expiration Date</label>
                 <input
+                    onChange={handleInputChange}
                     id="inp"
                     type="text"
                     name="exp"
@@ -93,6 +139,7 @@ export default function Home() {
                 <div>
                 <label htmlFor="frm-cvv">Zip Code</label>
                 <input
+                    onChange={handleInputChange}
                     id="inp"
                     type="text"
                     name="cvv"
@@ -101,6 +148,7 @@ export default function Home() {
                 />
                 </div>
             </div>
+            </form>
             <div className="button block">
                 <button type="submit">Add Card</button>
             </div>
