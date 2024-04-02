@@ -1,11 +1,20 @@
 package com.cinemabookingsystem.cinemadb.service;
 
+import java.util.Date;
+
+import javax.crypto.SecretKey;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.cinemabookingsystem.cinemadb.model.User;
 import com.cinemabookingsystem.cinemadb.util.UserIdGenerator;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
 @Service
 public class MailServiceImpl implements MailService {
@@ -23,6 +32,23 @@ public class MailServiceImpl implements MailService {
         verificationEmail.setSubject("Registration Verification");
         verificationEmail.setText("Click this link to verify your email for the cinema booking system: " 
             + url + "/verify?email=" + targetEmail + "&code=" + newRandomUserId);
+        mailSender.send(verificationEmail);
+    }
+
+    private final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    
+    public void sendVerificationCode(User user) {
+        String verificationCode = Jwts.builder()
+                .setSubject(String.valueOf(user.getUserId()))
+                .setExpiration(new Date(System.currentTimeMillis() + 15 * 60 * 1000)) // 15 minutes
+                .signWith(key)
+                .compact();
+
+        SimpleMailMessage verificationEmail = new SimpleMailMessage();
+        verificationEmail.setFrom("teamb8cinema@gmail.com");
+        verificationEmail.setTo(user.getEmail());
+        verificationEmail.setSubject("Password Reset Token");
+        verificationEmail.setText("Use the code to reset your password: " + verificationCode);
         mailSender.send(verificationEmail);
     }
 }

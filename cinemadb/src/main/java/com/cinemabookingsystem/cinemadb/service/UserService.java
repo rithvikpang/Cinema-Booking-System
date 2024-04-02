@@ -9,8 +9,6 @@ public interface UserService {
 
     void updateUser(User user, String email);
 
-    void createAndSendPasswordResetToken(User user, String targetEmail);
-
     boolean validateResetToken(String token);
 
     public void sendVerificationCode(User user);
