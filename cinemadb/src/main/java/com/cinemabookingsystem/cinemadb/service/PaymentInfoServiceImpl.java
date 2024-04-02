@@ -9,6 +9,7 @@ import com.cinemabookingsystem.cinemadb.model.User;
 import com.cinemabookingsystem.cinemadb.repository.BillingAddressRepository;
 import com.cinemabookingsystem.cinemadb.repository.PaymentCardRepository;
 import com.cinemabookingsystem.cinemadb.repository.UserRepository;
+import com.cinemabookingsystem.cinemadb.util.CardEncrypter;
 
 import jakarta.transaction.Transactional;
 
@@ -31,7 +32,12 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
     @Override
     public Set<PaymentCard> getUserPaymentCards(String email) {
         User user = userRepository.findById(email).orElseThrow();
-        return user.getPaymentCards();
+        Set<PaymentCard> existingCards = user.getPaymentCards();
+
+        for (PaymentCard card : existingCards) {
+            card.setCardNumber(decryptCard(card.getCardNumber()));
+        }
+        return existingCards;
     }
 
     // get the billing address associated with a given user
@@ -58,6 +64,7 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
             throw new IllegalStateException("User cannot have more than 3 payment cards");
         }
         newPaymentCard.setUser(user);
+        newPaymentCard.setCardNumber(encryptCard(newPaymentCard.getCardNumber()));
         return paymentCardRepository.save(newPaymentCard);
     }
 
@@ -95,7 +102,7 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
 
             // set fields of updated card
             existingCard.setCardholderName(paymentCard.getCardholderName());
-            existingCard.setCardNumber(paymentCard.getCardNumber());
+            existingCard.setCardNumber(encryptCard(paymentCard.getCardNumber()));
             existingCard.setExpiryMonth(paymentCard.getExpiryMonth());
             existingCard.setExpiryYear(paymentCard.getExpiryYear());
 
@@ -120,5 +127,26 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
         billingAddressRepository.delete(deletedAddress);
     }
 
+    private String encryptCard(String cardNumber) {
+        String encryptedCardNumber;
+        try {
+            encryptedCardNumber = CardEncrypter.encrypt(cardNumber);
+        } catch (Exception e) {
+            encryptedCardNumber = null;
+            e.printStackTrace();
+        }
+        return encryptedCardNumber;
+    }
+
+    private String decryptCard(String encryptedCardNumber) {
+        String decryptedCardNumber;
+        try {
+            decryptedCardNumber = CardEncrypter.decrypt(encryptedCardNumber);
+        } catch (Exception e) {
+            decryptedCardNumber = null;
+            e.printStackTrace();
+        }
+        return decryptedCardNumber;
+    }
 
 }
