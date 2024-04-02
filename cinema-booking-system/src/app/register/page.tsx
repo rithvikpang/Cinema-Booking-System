@@ -170,9 +170,11 @@ const Home = () => {
       </div>
   
       {/* Toggle for Payment Card Information */}
-      <button type="button" onClick={() => setShowPaymentCard(prev => !prev)}>
+      <div className='sign-in button bloc'>
+      <button type="submit" onClick={() => setShowPaymentCard(prev => !prev)}>
         {showPaymentCard ? "Remove Payment Card Information" : "Add Payment Card Information"}
       </button>
+      </div>
   
       {showPaymentCard && (
         <div className="form-section">
@@ -195,9 +197,11 @@ const Home = () => {
       )}
   
       {/* Toggle for Billing Address */}
-      <button type="button" onClick={() => setShowBillingAddress(prev => !prev)}>
+      <div className='sign-in button bloc'>
+      <button type="submit" onClick={() => setShowBillingAddress(prev => !prev)}>
         {showBillingAddress ? "Remove Billing Address" : "Add Billing Address"}
       </button>
+      </div>
   
       {showBillingAddress && (
         <div className="form-section">
@@ -218,7 +222,7 @@ const Home = () => {
         </div>
       )}
   
-      <div className="submit-button">
+      <div className="sign-in button bloc">
         <button type="submit">Register</button>
       </div>
     </form>

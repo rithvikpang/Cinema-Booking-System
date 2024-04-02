@@ -103,65 +103,65 @@ export default function Home() {
                 <h2>Add Card</h2>
             </div>
             <form onSubmit={handleAddCard}>
-            <div className="name block">
-                <label htmlFor="frm-name">Name on Payment Card</label>
-                <input 
-                onChange={handleInputChange}
-                id="inp"
-                type="text"
-                name="name"
-                autoComplete="name"
-                required
-                />
-            </div>
-            <div className="card-num block">
-                <label htmlFor="frm-card-num">Card Number</label>
-                <input
-                onChange={handleInputChange}
-                id="inp"
-                type="card-num"
-                name="text"
-                autoComplete="card-num"
-                required
-                />
-            </div>
-            <div className="card-info block">
-                <div>
-                <label htmlFor="frm-exp">Expiration Month</label>
-                <input
-                    onChange={handleInputChange}
-                    id="inp"
-                    type="text"
-                    name="exp"
-                    autoComplete="exp"
-                    required
-                />
-                </div>
-                <div className="card-info block">
-                <div>
-                <label htmlFor="frm-exp">Expiration Year</label>
-                <input
-                    onChange={handleInputChange}
-                    id="inp"
-                    type="text"
-                    name="exp"
-                    autoComplete="exp"
-                    required
-                />
-                </div>
+              <div className="name block">
+                  <label htmlFor="frm-name">Name on Payment Card</label>
+                  <input 
+                  onChange={handleInputChange}
+                  id="inp"
+                  type="text"
+                  name="name"
+                  autoComplete="name"
+                  required
+                  />
               </div>
-              <div>
-                <label htmlFor="frm-cvv">Zip Code</label>
-                <input
-                    onChange={handleInputChange}
-                    id="inp"
-                    type="text"
-                    name="cvv"
-                    autoComplete="cvv"
-                    required
-                />
+              <div className="card-num block">
+                  <label htmlFor="frm-card-num">Card Number</label>
+                  <input
+                  onChange={handleInputChange}
+                  id="inp"
+                  type="card-num"
+                  name="text"
+                  autoComplete="card-num"
+                  required
+                  />
+              </div>
+              <div className="card-info block">
+                  <div>
+                  <label htmlFor="frm-exp">Expiration Month</label>
+                  <input
+                      onChange={handleInputChange}
+                      id="inp"
+                      type="text"
+                      name="exp"
+                      autoComplete="exp"
+                      required
+                  />
+                  </div>
+                  <div className="card-info block">
+                  <div>
+                  <label htmlFor="frm-exp">Expiration Year</label>
+                  <input
+                      onChange={handleInputChange}
+                      id="inp"
+                      type="text"
+                      name="exp"
+                      autoComplete="exp"
+                      required
+                  />
+                  </div>
                 </div>
-            </div>
+                <div>
+                  <label htmlFor="frm-cvv">Zip Code</label>
+                  <input
+                      onChange={handleInputChange}
+                      id="inp"
+                      type="text"
+                      name="cvv"
+                      autoComplete="cvv"
+                      required
+                  />
+                  </div>
+              </div>
             </form>
             <div className="button block">
                 <button type="submit">Add Card</button>
