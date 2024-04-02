@@ -25,7 +25,9 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private PasswordResetTokenRepository tokenRepository;
-    private JavaMailSender mailSender;
+    
+    @Autowired
+    private MailServiceImpl mailService;
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -68,18 +70,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void sendVerificationCode(User user) {
-        String verificationCode = Jwts.builder()
-                .setSubject(String.valueOf(user.getUserId()))
-                .setExpiration(new Date(System.currentTimeMillis() + 15 * 60 * 1000)) // 15 minutes
-                .signWith(key)
-                .compact();
-
-        SimpleMailMessage verificationEmail = new SimpleMailMessage();
-        verificationEmail.setFrom("teamb8cinema@gmail.com");
-        verificationEmail.setTo(user.getEmail());
-        verificationEmail.setSubject("Password Reset Token");
-        verificationEmail.setText("Use the code to reset your password: " + verificationCode);
-        mailSender.send(verificationEmail);
+        mailService.sendVerificationCode(user);
     }
 
     @Override
@@ -105,25 +96,6 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return true;
-    }
-
-    @Override
-    public void createAndSendPasswordResetToken(User user, String targetEmail) {
-        String token = UUID.randomUUID().toString();
-        PasswordResetToken resetToken = new PasswordResetToken();
-        resetToken.setUser(user);
-        resetToken.setToken(token);
-        resetToken.setExpiryDate(Instant.now().plus(java.time.Duration.ofMinutes(10))); // Token expires in 1 hour
-        tokenRepository.save(resetToken);
-
-        // Send token to user's email (implement email sending)
-        SimpleMailMessage verificationEmail = new SimpleMailMessage();
-        verificationEmail.setFrom("teamb8cinema@gmail.com");
-        verificationEmail.setTo(targetEmail);
-        verificationEmail.setSubject("Password Reset Token");
-        verificationEmail.setText("Use the code to reset your password: " + token);
-        mailSender.send(verificationEmail);
-
     }
 
     @Override

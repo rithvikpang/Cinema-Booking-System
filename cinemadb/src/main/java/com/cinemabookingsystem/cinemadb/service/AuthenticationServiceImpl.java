@@ -12,6 +12,7 @@ import com.cinemabookingsystem.cinemadb.repository.UserRepository;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
 import java.util.*;
 
@@ -92,7 +93,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + 1000 * 60 * 60)) // 1 hour validity
-                .signWith(SignatureAlgorithm.HS512, "secretKey") // Use a proper secret key
+                .signWith(Keys.secretKeyFor(SignatureAlgorithm.HS512)) // Use a proper secret key
                 .compact();
     }
 

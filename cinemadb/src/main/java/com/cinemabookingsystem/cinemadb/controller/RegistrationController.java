@@ -5,8 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cinemabookingsystem.cinemadb.dto.RegistrationRequest;
 import com.cinemabookingsystem.cinemadb.model.BillingAddress;
@@ -38,7 +36,7 @@ public class RegistrationController {
 
         user.setStatus("Inactive");
         registrationService.registerUser(user, paymentCard, billingAddress, siteUrl);
-        return ResponseEntity.ok().body("User registered successfully");
+        return ResponseEntity.ok().body("{\"message\":\"User registered successfully\"}");
     }
 
     @GetMapping("/verify")
