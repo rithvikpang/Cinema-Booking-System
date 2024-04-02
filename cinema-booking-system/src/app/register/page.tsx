@@ -1,9 +1,9 @@
 // Assuming this file is located at: src/app/registration/page.tsx
 "use client"
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'; // Adjusted import for next/router
 
-interface FormData {
+interface UserData {
   firstname: string;
   lastname: string;
   age: string;
@@ -13,333 +13,217 @@ interface FormData {
   state: string;
   zip: string;
   password: string;
-  confirmPassword: string;
-  paymentCardName: string;
-  cardNumber: string;
-  expirationDate: string;
-  zipCode: string;
-  promotions: boolean; // For "Register for Promotions" checkbox
-  rememberMe: boolean; // For "Remember Me" checkbox
+  promotions: boolean;
+  rememberMe: boolean;
 }
 
-const initialState: FormData = {
-  firstname: "",
-  lastname: "",
-  age: "",
-  email: "",
-  address: "",
-  city: "",
-  state: "",
-  zip: "",
-  password: "",
-  confirmPassword: "",
-  paymentCardName: "",
-  cardNumber: "",
-  expirationDate: "",
-  zipCode: "",
-  promotions: false,
-  rememberMe: false,
+interface PaymentCardData {
+  cardholderName: string;
+  cardNumber: string;
+  expiryMonth: string;
+  expiryYear: string;
+}
+
+interface BillingAddressData {
+  addressLine: string;
+  city: string;
+  state: string;
+  country: string;
+  zipCode: string;
+}
+
+interface RegisterData {
+  user: UserData;
+  paymentCard?: PaymentCardData; // Make these optional
+  billingAddress?: BillingAddressData;
+}
+
+const initialState: RegisterData = {
+  user: {
+    firstname: "",
+    lastname: "",
+    age: "",
+    email: "",
+    address: "",
+    city: "",
+    state: "",
+    zip: "",
+    password: "",
+    promotions: false,
+    rememberMe: false,
+  },
+  // Initially, these are not part of the state unless added by the user
 };
 
 const Home = () => {
-  const [formData, setFormData] = useState<FormData>(initialState);
-  const [formErrors, setFormErrors] = useState<Partial<FormData>>({});
+  const [formData, setFormData] = useState<RegisterData>(initialState);
+  const [formErrors, setFormErrors] = useState<Partial<RegisterData>>({});
+  const [showPaymentCard, setShowPaymentCard] = useState(false);
+  const [showBillingAddress, setShowBillingAddress] = useState(false);
   const router = useRouter();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = event.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value,
-    });
+    const [section, field] = name.split(".");
+
+    if(section === "user" || section === "paymentCard" || section === "billingAddress") {
+      setFormData(prev => ({
+        ...prev,
+        [section]: {
+          ...prev[section],
+          [field]: type === 'checkbox' ? checked : value,
+        },
+      }));
+    }
   };
 
-  const validateForm = (): boolean => {
-    let errors: Partial<FormData> = {};
+  // Example validation logic, should be expanded as per your form requirements
+  const validateForm = () => {
+    let errors: RegisterData = { ...initialState }; // Initialize errors with empty values
     let isValid = true;
-
-    // Example validation
-    if (!formData.firstname.trim()) {
+  
+    // Validate user information
+    if (!formData.user.firstname.trim()) {
+      errors.user.firstname = "First name is required";
       isValid = false;
-      errors.firstname = "First Name is required";
     }
-
-    if (!formData.email.includes('@')) {
+  
+    // Example: Validate email format
+    if (!/\S+@\S+\.\S+/.test(formData.user.email)) {
+      errors.user.email = "Email is invalid";
       isValid = false;
-      errors.email = "Email is invalid";
     }
-
-    if (formData.password !== formData.confirmPassword) {
+  
+    // Example: Validate password length
+    if (formData.user.password.length < 6) {
+      errors.user.password = "Password must be at least 6 characters long";
       isValid = false;
-      errors.confirmPassword = "Passwords do not match";
     }
-
-    setFormErrors(errors);
+  
+    // Add more validations as needed...
+  
+    setFormErrors(errors); // Update the state with the errors found
     return isValid;
   };
+  
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     if (!validateForm()) {
       console.error("Validation failed");
       return;
     }
+
+    // Adjusting to only include sections that are filled out
+    const payload = {
+      user: formData.user,
+      ...(showPaymentCard && { paymentCard: formData.paymentCard }),
+      ...(showBillingAddress && { billingAddress: formData.billingAddress }),
+    };
+
     try {
       const response = await fetch('/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
-  
+
       if (response.ok) {
-        // Handle success
+        // Handle success scenario
         const data = await response.json();
-
-        localStorage.setItem('token', data.data.token); // Store the JWT in localStorage
         console.log("Registration successful", data);
-        // Redirect or show a success message
-        // e.g., router.push('/registration-success');
+        localStorage.setItem('token', data.token); // Adjust as needed
+        router.push('/registration-confirmation'); // Redirect on success
       } else {
-        // Handle server errors
-        const errorData = await response.json();
-        console.error("Registration failed", errorData.message);
-        // Show error messages to the user
+        // Handle error scenario
+        console.error("Registration failed", await response.json());
       }
-
-      router.push('/registration-confirmation');
-
     } catch (error) {
       console.error("An error occurred:", error);
-      // Handle network errors
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="container">
-  <h1>Register</h1>
-  <h4>* = required</h4>
-
-  {/* First Name */}
-  <div className="first-name block">
-    <label htmlFor="frm-first">First Name*</label>
-    <input
-      id="inp"
-      type="text"
-      name="firstname"
-      value={formData.firstname}
-      onChange={handleChange}
-      required
-    />
-    {formErrors.firstname && <p className="error">{formErrors.firstname}</p>}
-  </div>
-
-  {/* Last Name */}
-  <div className="last-name block">
-    <label htmlFor="frm-last">Last Name*</label>
-    <input
-      id="inp"
-      type="text"
-      name="lastname"
-      value={formData.lastname}
-      onChange={handleChange}
-      required
-    />
-    {formErrors.lastname && <p className="error">{formErrors.lastname}</p>}
-  </div>
-
-  {/* Age */}
-  <div className="age block">
-    <label htmlFor="from-age">Age*</label>
-    <input
-      id="inp"
-      type="text"
-      name="age"
-      value={formData.age}
-      onChange={handleChange}
-      required
-    />
-    {formErrors.age && <p className="error">{formErrors.age}</p>}
-  </div>
-
-  {/* Email */}
-  <div className="email block">
-    <label htmlFor="frm-email">Email*</label>
-    <input
-      id="inp"
-      type="email"
-      name="email"
-      value={formData.email}
-      onChange={handleChange}
-      required
-    />
-    {formErrors.email && <p className="error">{formErrors.email}</p>}
-  </div>
-
-  {/* Address */}
-  <div className="address block">
-    <label htmlFor="frm-address">Address*</label>
-    <input
-      id="inp"
-      type="text"
-      name="address"
-      value={formData.address}
-      onChange={handleChange}
-      required
-    />
-    {formErrors.address && <p className="error">{formErrors.address}</p>}
-  </div>
-
-  {/* City */}
-  <div className="block">
-    <label htmlFor="frm-city">City*</label>
-    <input
-      id="inp"
-      type="text"
-      name="city"
-      value={formData.city}
-      onChange={handleChange}
-      required
-    />
-    {formErrors.city && <p className="error">{formErrors.city}</p>}
-  </div>
-
-  {/* State */}
-  <div className="block">
-    <label htmlFor="frm-state">State*</label>
-    <input
-      id="inp"
-      type="text"
-      name="state"
-      value={formData.state}
-      onChange={handleChange}
-      required
-    />
-    {formErrors.state && <p className="error">{formErrors.state}</p>}
-  </div>
-
-  {/* Zip Code */}
-  <div className="block">
-    <label htmlFor="frm-zip">Zip Code*</label>
-    <input
-      id="inp"
-      type="text"
-      name="zip"
-      value={formData.zip}
-      onChange={handleChange}
-      required
-    />
-    {formErrors.zip && <p className="error">{formErrors.zip}</p>}
-  </div>
-
-  {/* Password */}
-  <div className="password block">
-    <label htmlFor="frm-password">Enter Password*</label>
-    <input
-      id="inp"
-      type="password"
-      name="password"
-      value={formData.password}
-      onChange={handleChange}
-      required
-    />
-    {formErrors.password && <p className="error">{formErrors.password}</p>}
-  </div>
-
-  {/* Re-enter Password */}
-  <div className="block">
-    <label htmlFor="frm-confirmPassword">Re-enter Password*</label>
-    <input
-      id="inp"
-      type="password"
-      name="confirmPassword"
-      value={formData.confirmPassword}
-      onChange={handleChange}
-      required
-    />
-    {formErrors.confirmPassword && <p className="error">{formErrors.confirmPassword}</p>}
-  </div>
-
-  <h1>Add Payment Card (Optional)</h1>
-  <div className="block">
-    <label htmlFor="frm-confirmPassword">Name on Payment Card</label>
-    <input
-      id="inp"
-      type="password"
-      name="confirmPassword"
-      value={formData.paymentCardName}
-      onChange={handleChange}
-    />
-    {formErrors.paymentCardName && <p className="error">{formErrors.paymentCardName}</p>}
-  </div> 
-
-  <div className="block">
-    <label htmlFor="frm-confirmPassword">Card Number</label>
-    <input
-      id="inp"
-      type="password"
-      name="confirmPassword"
-      value={formData.cardNumber}
-      onChange={handleChange}
-    />
-    {formErrors.cardNumber && <p className="error">{formErrors.cardNumber}</p>}
-  </div>
-
-  <div className="block">
-    <label htmlFor="frm-confirmPassword">Expiration Date</label>
-    <input
-      id="inp"
-      type="password"
-      name="confirmPassword"
-      value={formData.expirationDate}
-      onChange={handleChange}
-    />
-    {formErrors.expirationDate && <p className="error">{formErrors.expirationDate}</p>}
-  </div>
-
-  <div className="block">
-    <label htmlFor="frm-confirmPassword">Zip Code</label>
-    <input
-      id="inp"
-      type="password"
-      name="confirmPassword"
-      value={formData.zipCode}
-      onChange={handleChange}
-    />
-    {formErrors.zipCode && <p className="error">{formErrors.zipCode}</p>}
-  </div>
-
-  {/* Additional Fields as Needed... */}
-
-<div className="check-boxes">
-  {/* Register for Promotions */}
-  <label>
-    <input
-      type="checkbox"
-      name="promotions"
-      checked={formData.promotions}
-      onChange={handleChange} // Reuse the existing handleChange function
-    /> Register for Promotions
-  </label>
-
-  {/* Remember Me */}
-  <label>
-    <input
-      type="checkbox"
-      name="rememberMe"
-      checked={formData.rememberMe}
-      onChange={handleChange} // Reuse the existing handleChange function
-    /> Remember Me
-  </label>
-</div>
+      <h1>Register</h1>
   
-  <div className="register-button block">
-    <button type="submit">Register</button>
-  </div>
-</form>
-
+      <div className="form-section">
+        <h2>User Information</h2>
+        {/* Iterate over UserData fields */}
+        {Object.entries(formData.user).map(([key, value]) => (
+          <div key={key} className="input-group">
+            <label htmlFor={`user.${key}`}>{key.charAt(0).toUpperCase() + key.slice(1)}</label>
+            <input
+              id={`user.${key}`}
+              type={key === 'password' ? 'password' : key === 'promotions' || key === 'rememberMe' ? 'checkbox' : 'text'}
+              name={`user.${key}`}
+              checked={key === 'promotions' || key === 'rememberMe' ? value : undefined}
+              value={key === 'promotions' || key === 'rememberMe' ? undefined : value}
+              onChange={handleChange}
+              required={!(key === 'promotions' || key === 'rememberMe')}
+            />
+          </div>
+        ))}
+      </div>
+  
+      {/* Toggle for Payment Card Information */}
+      <button type="button" onClick={() => setShowPaymentCard(prev => !prev)}>
+        {showPaymentCard ? "Remove Payment Card Information" : "Add Payment Card Information"}
+      </button>
+  
+      {showPaymentCard && (
+        <div className="form-section">
+          <h2>Payment Card Information</h2>
+          {/* Iterate over PaymentCardData fields */}
+          {formData.paymentCard && Object.entries(formData.paymentCard).map(([key, value]) => (
+            <div key={key} className="input-group">
+              <label htmlFor={`paymentCard.${key}`}>{key.charAt(0).toUpperCase() + key.slice(1)}</label>
+              <input
+                id={`paymentCard.${key}`}
+                type="text"
+                name={`paymentCard.${key}`}
+                value={value}
+                onChange={handleChange}
+              />
+            
+            </div>
+          ))}
+        </div>
+      )}
+  
+      {/* Toggle for Billing Address */}
+      <button type="button" onClick={() => setShowBillingAddress(prev => !prev)}>
+        {showBillingAddress ? "Remove Billing Address" : "Add Billing Address"}
+      </button>
+  
+      {showBillingAddress && (
+        <div className="form-section">
+          <h2>Billing Address</h2>
+          {/* Iterate over BillingAddressData fields */}
+          {formData.billingAddress && Object.entries(formData.billingAddress).map(([key, value]) => (
+            <div key={key} className="input-group">
+              <label htmlFor={`billingAddress.${key}`}>{key.charAt(0).toUpperCase() + key.slice(1)}</label>
+              <input
+                id={`billingAddress.${key}`}
+                type="text"
+                name={`billingAddress.${key}`}
+                value={value}
+                onChange={handleChange}
+              />
+            </div>
+          ))}
+        </div>
+      )}
+  
+      <div className="submit-button">
+        <button type="submit">Register</button>
+      </div>
+    </form>
   );
+  
 };
 
 export default Home;
