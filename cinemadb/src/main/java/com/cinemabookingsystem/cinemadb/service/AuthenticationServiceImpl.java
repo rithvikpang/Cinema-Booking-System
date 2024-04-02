@@ -16,6 +16,8 @@ import io.jsonwebtoken.security.Keys;
 
 import java.util.*;
 
+import javax.crypto.SecretKey;
+
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
 
@@ -79,6 +81,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
+    @Autowired
+    private SecretKey jwtSecretKey;
+
     public String generateToken(UserDetails userDetails) {
         long now = System.currentTimeMillis();
         Map<String, Object> claims = new HashMap<>();
@@ -93,7 +98,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(now))
                 .setExpiration(new Date(now + 1000 * 60 * 60)) // 1 hour validity
-                .signWith(Keys.secretKeyFor(SignatureAlgorithm.HS512)) // Use a proper secret key
+                .signWith(jwtSecretKey) // Use a proper secret key
                 .compact();
     }
 
