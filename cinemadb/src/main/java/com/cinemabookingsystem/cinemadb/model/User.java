@@ -1,6 +1,7 @@
 package com.cinemabookingsystem.cinemadb.model;
 
 import java.time.Instant;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -37,6 +38,9 @@ public class User {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private BillingAddress billingAddress;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private LinkedHashSet<Booking> bookings;
 
     // Constructors, getters, and setters
     public User() {
@@ -171,6 +175,14 @@ public class User {
         this.user_id = user_id;
     }
 
+    public boolean isIsadmin() {
+        return isadmin;
+    }
+
+    public void setIsadmin(boolean isadmin) {
+        this.isadmin = isadmin;
+    }
+
     public Set<PaymentCard> getPaymentCards() {
         return PaymentCards;
     }
@@ -185,6 +197,14 @@ public class User {
 
     public void setBillingAddress(BillingAddress billingAddress) {
         this.billingAddress = billingAddress;
+    }
+
+    public LinkedHashSet<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(LinkedHashSet<Booking> bookings) {
+        this.bookings = bookings;
     }
 }
 
