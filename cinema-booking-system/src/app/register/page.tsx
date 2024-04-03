@@ -95,7 +95,7 @@ const Home = () => {
     }
   
     // Example: Validate password length
-    if (formData.user.password.length < 6) {
+    if (formData.user.password.length < 4) {
       errors.user.password = "Password must be at least 6 characters long";
       isValid = false;
     }
@@ -109,125 +109,293 @@ const Home = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+  
+    // Ensure form validation is passed before proceeding
     if (!validateForm()) {
       console.error("Validation failed");
       return;
     }
-
-    // Adjusting to only include sections that are filled out
+  
+    // Adjusting payload to include only sections that are filled out
     const payload = {
       user: formData.user,
       ...(showPaymentCard && { paymentCard: formData.paymentCard }),
       ...(showBillingAddress && { billingAddress: formData.billingAddress }),
     };
-
+  
     try {
       const response = await fetch('/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(payload), // Use the adjusted payload
       });
-
+  
       if (response.ok) {
-        // Handle success scenario
         const data = await response.json();
+  
+        // Assuming `data.data.token` is the correct path to the token in the response
+        // localStorage.setItem('token', data.data.token); // Store the JWT in localStorage
         console.log("Registration successful", data);
-        localStorage.setItem('token', data.token); // Adjust as needed
-        router.push('/registration-confirmation'); // Redirect on success
+  
+        // Redirect or show a success message
+        router.push('/registration-confirmation'); // Adjust as necessary for your application
       } else {
-        // Handle error scenario
-        console.error("Registration failed", await response.json());
+        // Handle server errors
+        const errorData = await response.json();
+        console.error("Registration failed", errorData.message);
+        // Optionally, show error messages to the user
       }
     } catch (error) {
       console.error("An error occurred:", error);
+      // Handle network errors
     }
   };
+  
 
   return (
     <form onSubmit={handleSubmit} className="container">
       <h1>Register</h1>
-  
-      <div className="form-section">
+
+      <div className="frm-section">
         <h2>User Information</h2>
-        {/* Iterate over UserData fields */}
-        {Object.entries(formData.user).map(([key, value]) => (
-          <div key={key} className="input-group">
-            <label htmlFor={`user.${key}`}>{key.charAt(0).toUpperCase() + key.slice(1)}</label>
+        <div className="input-group">
+          <label htmlFor="user.firstname">First Name</label>
+          <input
+            id="user.firstname"
+            type="text"
+            name="user.firstname"
+            value={formData.user.firstname}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="user.lastname">Last Name</label>
+          <input
+            id="user.lastname"
+            type="text"
+            name="user.lastname"
+            value={formData.user.lastname}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="user.age">Age</label>
+          <input
+            id="user.age"
+            type="text"
+            name="user.age"
+            value={formData.user.age}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="user.email">Email</label>
+          <input
+            id="user.email"
+            type="email"
+            name="user.email"
+            value={formData.user.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="user.address">Address</label>
+          <input
+            id="user.address"
+            type="text"
+            name="user.address"
+            value={formData.user.address}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="user.city">City</label>
+          <input
+            id="user.city"
+            type="text"
+            name="user.city"
+            value={formData.user.city}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="user.state">State</label>
+          <input
+            id="user.state"
+            type="text"
+            name="user.state"
+            value={formData.user.state}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="user.zip">Zip</label>
+          <input
+            id="user.zip"
+            type="text"
+            name="user.zip"
+            value={formData.user.zip}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="input-group">
+          <label htmlFor="user.password">Password</label>
+          <input
+            id="user.password"
+            type="password"
+            name="user.password"
+            value={formData.user.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="input-group">
+          <label>
             <input
-              id={`user.${key}`}
-              type={key === 'password' ? 'password' : key === 'promotions' || key === 'rememberMe' ? 'checkbox' : 'text'}
-              name={`user.${key}`}
-              checked={key === 'promotions' || key === 'rememberMe' ? value : undefined}
-              value={key === 'promotions' || key === 'rememberMe' ? undefined : value}
+              type="checkbox"
+              name="user.promotions"
+              checked={formData.user.promotions}
               onChange={handleChange}
-              required={!(key === 'promotions' || key === 'rememberMe')}
+            /> Sign up for promotions?
+          </label>
+        </div>
+
+        <div className="input-group">
+          <label>
+            <input
+              type="checkbox"
+              name="user.rememberMe"
+              checked={formData.user.rememberMe}
+              onChange={handleChange}
+            /> Remember me
+          </label>
+        </div>
+      </div>
+
+      {/* Add buttons for toggling payment card and billing address information */}
+      {/* Add the rest of the form for payment card and billing address based on the showPaymentCard and showBillingAddress state */}
+
+      <div className="button block">
+        <button type="button" onClick={() => setShowPaymentCard(!showPaymentCard)}>
+          {showPaymentCard ? 'Hide Payment Card Information' : 'Add Payment Card Information'}
+        </button>
+        {showPaymentCard && (
+          <div className="payment-card-section">
+            <h2>Payment Card Information</h2>
+            {/* Payment Card Inputs */}
+            <label htmlFor="cardholderName">Cardholder Name:</label>
+            <input
+              type="text"
+              id="cardholderName"
+              name="paymentCard.cardholderName"
+              onChange={handleChange}
+              // Add other props as needed
+            />
+            <label htmlFor="cardNumber">Card Number:</label>
+            <input
+              type="text"
+              id="cardNumber"
+              name="paymentCard.cardNumber"
+              onChange={handleChange}
+              // Add other props as needed
+            />
+            <label htmlFor="expiryMonth">Expiration Month:</label>
+            <input
+              type="text"
+              id="expiryMonth"
+              name="paymentCard.expiryMonth"
+              onChange={handleChange}
+              // Add other props as needed
+            />
+            <label htmlFor="expiryYear">Expiration Year:</label>
+            <input
+              type="text"
+              id="expiryYear"
+              name="paymentCard.expiryYear"
+              onChange={handleChange}
+              // Add other props as needed
             />
           </div>
-        ))}
+        )}
       </div>
-  
-      {/* Toggle for Payment Card Information */}
-      <div className='sign-in button bloc'>
-      <button type="submit" onClick={() => setShowPaymentCard(prev => !prev)}>
-        {showPaymentCard ? "Remove Payment Card Information" : "Add Payment Card Information"}
-      </button>
+
+      <div className="button block">
+        <button type="button" onClick={() => setShowBillingAddress(!showBillingAddress)}>
+          {showBillingAddress ? 'Hide Billing Address' : 'Add Billing Address'}
+        </button>
+        {showBillingAddress && (
+          <div className="billing-address-section">
+            <h2>Billing Address</h2>
+            {/* Billing Address Inputs */}
+            <label htmlFor="addressLine">Address Line:</label>
+            <input
+              type="text"
+              id="addressLine"
+              name="billingAddress.addressLine"
+              onChange={handleChange}
+              // Add other props as needed
+            />
+            <label htmlFor="city">City:</label>
+            <input
+              type="text"
+              id="city"
+              name="billingAddress.city"
+              onChange={handleChange}
+              // Add other props as needed
+            />
+            <label htmlFor="state">State:</label>
+            <input
+              type="text"
+              id="state"
+              name="billingAddress.state"
+              onChange={handleChange}
+              // Add other props as needed
+            />
+            <label htmlFor="zipCode">Zip Code:</label>
+            <input
+              type="text"
+              id="zipCode"
+              name="billingAddress.zipCode"
+              onChange={handleChange}
+              // Add other props as needed
+            />
+            <label htmlFor="country">Country:</label>
+            <input
+              type="text"
+              id="country"
+              name="billingAddress.country"
+              onChange={handleChange}
+              // Add other props as needed
+            />
+          </div>
+        )}
       </div>
-  
-      {showPaymentCard && (
-        <div className="form-section">
-          <h2>Payment Card Information</h2>
-          {/* Iterate over PaymentCardData fields */}
-          {formData.paymentCard && Object.entries(formData.paymentCard).map(([key, value]) => (
-            <div key={key} className="input-group">
-              <label htmlFor={`paymentCard.${key}`}>{key.charAt(0).toUpperCase() + key.slice(1)}</label>
-              <input
-                id={`paymentCard.${key}`}
-                type="text"
-                name={`paymentCard.${key}`}
-                value={value}
-                onChange={handleChange}
-              />
-            
-            </div>
-          ))}
-        </div>
-      )}
-  
-      {/* Toggle for Billing Address */}
-      <div className='sign-in button bloc'>
-      <button type="submit" onClick={() => setShowBillingAddress(prev => !prev)}>
-        {showBillingAddress ? "Remove Billing Address" : "Add Billing Address"}
-      </button>
-      </div>
-  
-      {showBillingAddress && (
-        <div className="form-section">
-          <h2>Billing Address</h2>
-          {/* Iterate over BillingAddressData fields */}
-          {formData.billingAddress && Object.entries(formData.billingAddress).map(([key, value]) => (
-            <div key={key} className="input-group">
-              <label htmlFor={`billingAddress.${key}`}>{key.charAt(0).toUpperCase() + key.slice(1)}</label>
-              <input
-                id={`billingAddress.${key}`}
-                type="text"
-                name={`billingAddress.${key}`}
-                value={value}
-                onChange={handleChange}
-              />
-            </div>
-          ))}
-        </div>
-      )}
-  
-      <div className="sign-in button bloc">
+
+      {/* Submission button */}
+      <div className="button block">
         <button type="submit">Register</button>
       </div>
     </form>
   );
-  
 };
 
 export default Home;

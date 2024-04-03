@@ -29,7 +29,6 @@ public class RegistrationController {
             // Return a bad request with the validation errors
             return ResponseEntity.badRequest().body(errors.getAllErrors());
         }
-
         User user = registrationRequest.getUser();
         PaymentCard paymentCard = registrationRequest.getPaymentCard();
         BillingAddress billingAddress = registrationRequest.getBillingAddress();
