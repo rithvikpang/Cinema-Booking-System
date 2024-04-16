@@ -15,13 +15,28 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer booking_id;
-    private int show_id;
-    private int promotion_id;
+    
+    @ManyToOne
+    @JoinColumn(name = "show_id", referencedColumnName = "show_id")
+    private Show show;
+
+    @ManyToOne
+    @JoinColumn(name = "promotion_id", referencedColumnName = "promotion_id")
+    private Promotion promotion;
+
     private int ticket_count;
     
     @ManyToOne
     @JoinColumn(name = "user_email", referencedColumnName = "email")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "card_id", referencedColumnName = "card_id")
+    private PaymentCard paymentCard;
+
+    public Booking() {
+
+    }
 
     public Integer getBookingId() {
         return booking_id;
@@ -31,20 +46,20 @@ public class Booking {
         this.booking_id = booking_id;
     }
 
-    public int getShowId() {
-        return show_id;
+    public Show getShow() {
+        return show;
     }
 
-    public void setShowId(int show_id) {
-        this.show_id = show_id;
+    public void setShow(Show show) {
+        this.show = show;
     }
 
-    public int getPromotionId() {
-        return promotion_id;
+    public Promotion getPromotion() {
+        return promotion;
     }
 
-    public void setPromotionId(int promotion_id) {
-        this.promotion_id = promotion_id;
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
     }
 
     public int getTicketCount() {
@@ -61,6 +76,14 @@ public class Booking {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public PaymentCard getPaymentCard() {
+        return paymentCard;
+    }
+
+    public void setPaymentCard(PaymentCard paymentCard) {
+        this.paymentCard = paymentCard;
     }
     
 }
