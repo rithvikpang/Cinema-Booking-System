@@ -235,6 +235,8 @@ h1 {
   align-items: center;
   flex-direction: row;
   padding: 10px;
+  text-decoration: none;
+
 }
 
 .cancel-save {
@@ -540,4 +542,9 @@ input[type="text"] {
 
 #inp {
   font-size: 15px;
+}
+
+.descr {
+  padding: 10px;
+  color: #ACC3FF;
 }
