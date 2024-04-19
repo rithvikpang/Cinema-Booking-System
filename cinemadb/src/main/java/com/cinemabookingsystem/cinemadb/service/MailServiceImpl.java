@@ -1,6 +1,7 @@
 package com.cinemabookingsystem.cinemadb.service;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.crypto.SecretKey;
 
@@ -10,6 +11,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.cinemabookingsystem.cinemadb.model.User;
+import com.cinemabookingsystem.cinemadb.repository.UserRepository;
 import com.cinemabookingsystem.cinemadb.util.UserIdGenerator;
 
 import io.jsonwebtoken.Jwts;
@@ -21,6 +23,8 @@ public class MailServiceImpl implements MailService {
     
     @Autowired
     private JavaMailSender mailSender;
+    @Autowired
+    private UserRepository userRepository;
 
     public void sendVerificationEmail(String targetEmail, String url) {
         SimpleMailMessage verificationEmail = new SimpleMailMessage();
@@ -50,5 +54,15 @@ public class MailServiceImpl implements MailService {
         verificationEmail.setSubject("Password Reset Token");
         verificationEmail.setText("Use the code to reset your password: " + verificationCode);
         mailSender.send(verificationEmail);
+    }
+
+    @Override
+    public void sendPromotionEmails(User user) {
+        SimpleMailMessage promotionEmail = new SimpleMailMessage();
+        promotionEmail.setFrom("teamb8cinema@gmail.com");
+        promotionEmail.setTo(user.getEmail());
+        promotionEmail.setSubject("New Promotion Alert");
+        promotionEmail.setText("Check out our latest promotions! Visit our website for more details.");
+        mailSender.send(promotionEmail);
     }
 }

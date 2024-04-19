@@ -5,14 +5,20 @@ import org.springframework.stereotype.Service;
 
 import com.cinemabookingsystem.cinemadb.dto.ShowRequest;
 import com.cinemabookingsystem.cinemadb.model.Movie;
+import com.cinemabookingsystem.cinemadb.model.Promotion;
 import com.cinemabookingsystem.cinemadb.model.Show;
 import com.cinemabookingsystem.cinemadb.model.Showroom;
+import com.cinemabookingsystem.cinemadb.model.User;
 import com.cinemabookingsystem.cinemadb.repository.MovieRepository;
+import com.cinemabookingsystem.cinemadb.repository.PromotionRepository;
 import com.cinemabookingsystem.cinemadb.repository.ShowRepository;
 import com.cinemabookingsystem.cinemadb.repository.ShowroomRepository;
+import com.cinemabookingsystem.cinemadb.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -25,6 +31,12 @@ public class AdminServiceImpl implements AdminService {
     private MovieRepository movieRepository;
     @Autowired
     private ShowroomRepository showroomRepository;
+    @Autowired
+    private PromotionRepository promotionRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private MailServiceImpl mailService;
     
     @SuppressWarnings("null")
     @Override
@@ -84,9 +96,47 @@ public class AdminServiceImpl implements AdminService {
         return isShowroomBooked;
         }
 
+        @Override
+        public Promotion createPromotion(Promotion promotion) {
+            return promotionRepository.save(promotion);
+        }
 
+        @Override
+        public List<Promotion> getAllPromotions() {
+            return promotionRepository.findAll();
+        }
+    
+        @Override
+        public Optional<Promotion> getPromotionById(Integer id) {
+            return promotionRepository.findById(id);
+        }
+    
+        @Override
+        public Promotion updatePromotion(Integer id, Promotion updatedPromotion) {
+            Optional<Promotion> existingPromotionOptional = promotionRepository.findById(id);
+            if (existingPromotionOptional.isPresent()) {
+                Promotion existingPromotion = existingPromotionOptional.get();
+                existingPromotion.setStartDate(updatedPromotion.getStartDate());
+                existingPromotion.setEndDate(updatedPromotion.getEndDate());
+                existingPromotion.setCode(updatedPromotion.getCode());
+                existingPromotion.setDiscount(updatedPromotion.getDiscount());
+                return promotionRepository.save(existingPromotion);
+            } else {
+                throw new IllegalArgumentException("Promotion with ID " + id + " not found");
+            }
+        }
+    
+        @Override
+        public void deletePromotion(Integer id) {
+            promotionRepository.deleteById(id);
+        }
 
-
-
+        @Override
+        public void sendPromotionEmails() {
+            List<User> usersWithPromotions = userRepository.findByPromotions(true); // Assuming "promotions" is the field in the User entity indicating if the user wants to be emailed about promotions
+            for (User user : usersWithPromotions) {
+                mailService.sendPromotionEmails(user);
+            }
+        }
 
 }
