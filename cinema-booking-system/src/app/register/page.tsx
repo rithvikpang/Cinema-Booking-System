@@ -158,7 +158,7 @@ const Home = () => {
     <form onSubmit={handleSubmit} className="container">
       <h1>Register</h1>
 
-      <div className="frm-section">
+      <div>
         <h2>User Information</h2>
         <div className="input-group">
           <label htmlFor="user.firstname">First Name</label>
@@ -391,7 +391,7 @@ const Home = () => {
       </div>
 
       {/* Submission button */}
-      <div className="button block">
+      <div className="left-button block">
         <button type="submit">Register</button>
       </div>
     </form>

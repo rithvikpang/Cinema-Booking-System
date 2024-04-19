@@ -206,7 +206,6 @@ h1 {
     &:hover {
       background-color: #628efd; /* Darker tan on hover */
     }
-
 }
 
 .seats {
@@ -274,6 +273,22 @@ textarea {
 }
 
 input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+input[type="password"] {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
