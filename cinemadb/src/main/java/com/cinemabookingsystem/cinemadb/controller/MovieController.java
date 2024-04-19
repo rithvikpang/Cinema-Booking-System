@@ -24,14 +24,7 @@ public class MovieController {
     @Autowired
     private MovieRepository movieRepository;
 
-
-    @PostMapping("/add")
-    public String addMovie(@RequestBody Movie movie) {
-        movieService.saveMovie(movie);
-        return "Movie added successfuly";
-    }
-
-    @GetMapping("getAll")
+    @GetMapping("/getAll")
     public List<Movie> getAllMovies() {
         return movieService.getAllMovies();
     }
