@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { Movie } from '../utils/types'; // Import the type
 import TrailerModal from './TrailerPopup'; // Make sure this path matches where you place the TrailerModal component
-import Link from 'next/Link';
+import MovieInfo from './MovieInfo'
 
 interface Props {
   movie: Movie;
@@ -17,6 +17,11 @@ const PostCard = ({ movie }: Props) => {
 
   // Function to close the trailer modal
   const closeTrailerModal = () => setIsTrailerModalOpen(false);
+
+  const handleClick = () => {
+    // Handle click event to show more information about the movie
+    alert(`Title: ${movie.title}`);
+  }
 
   return (
     <div className="three-col">
@@ -35,20 +40,22 @@ const PostCard = ({ movie }: Props) => {
             </dl>
             <div className="home-buttons">
                 <div className="home-btn block">
-                    {/* Update this button to call openTrailerModal when clicked */}
-                    <button type="button" onClick={openTrailerModal}>Watch Trailer</button>
-                </div>
-                <div>
-                    <Link className="home-btn block" href="/select-show-time">
-                      <button type="button">Book Movie</button> 
-                    </Link>
+                <button onClick={openTrailerModal}>
+                    More Info
+                </button>
                 </div>
             </div>
         </div>
-        <TrailerModal
+
+        <MovieInfo
           isOpen={isTrailerModalOpen}
           onClose={closeTrailerModal}
-          videoUrl={movie.trailer_url}
+          trailer={movie.trailer_url}
+          title={movie.title}
+          rating={movie.rating}
+          cast={movie.cast}
+          director={movie.director}
+          descr={movie.description}
         />
     </div>
   );
