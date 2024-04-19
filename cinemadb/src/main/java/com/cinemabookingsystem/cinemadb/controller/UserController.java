@@ -3,9 +3,6 @@ package com.cinemabookingsystem.cinemadb.controller;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,16 +23,13 @@ import com.cinemabookingsystem.cinemadb.repository.UserRepository;
 import com.cinemabookingsystem.cinemadb.security.JwtUtil;
 import com.cinemabookingsystem.cinemadb.service.CustomUserDetailsService;
 import com.cinemabookingsystem.cinemadb.service.PaymentInfoServiceImpl;
-import com.cinemabookingsystem.cinemadb.service.UserService;
 import com.cinemabookingsystem.cinemadb.service.UserServiceImpl;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.transaction.Transactional;
 
-import java.security.Principal;
 import java.util.Set;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RestController

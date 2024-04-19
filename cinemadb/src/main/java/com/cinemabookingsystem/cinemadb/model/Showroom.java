@@ -44,8 +44,8 @@ public class Showroom {
         return shows;
     }
 
-    public void setShows(Set<Show> shows) {
-        this.shows = shows;
+    public void setShow(Show show) {
+        this.shows.add(show);
     }
 
     public Theater getTheater() {

@@ -1,7 +1,5 @@
 package com.cinemabookingsystem.cinemadb.service;
 
-import java.util.Optional;
-
 import com.cinemabookingsystem.cinemadb.model.User;
 
 public interface UserService {
