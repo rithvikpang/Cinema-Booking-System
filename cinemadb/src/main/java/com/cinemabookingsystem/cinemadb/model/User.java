@@ -1,7 +1,9 @@
 package com.cinemabookingsystem.cinemadb.model;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -40,7 +42,7 @@ public class User {
     private BillingAddress billingAddress;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private LinkedHashSet<Booking> bookings;
+    private Set<Booking> bookings;
 
     // Constructors, getters, and setters
     public User() {
@@ -199,11 +201,11 @@ public class User {
         this.billingAddress = billingAddress;
     }
 
-    public LinkedHashSet<Booking> getBookings() {
+    public Set<Booking> getBookings() {
         return bookings;
     }
 
-    public void setBookings(LinkedHashSet<Booking> bookings) {
+    public void setBookings(Set<Booking> bookings) {
         this.bookings = bookings;
     }
 }
