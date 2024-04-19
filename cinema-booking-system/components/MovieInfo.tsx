@@ -1,6 +1,5 @@
 // components/TrailerPopup.tsx
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import Link from "next/link"
 
 interface Props {
   isOpen: boolean;
@@ -11,29 +10,37 @@ interface Props {
   cast: string;
   director: string;
   descr: string;
+  imageUrl: string;
 }
 
-const TrailerPopup: React.FC<Props> = ({ isOpen, onClose, trailer, title, rating, cast, director, descr }) => {
+const TrailerPopup: React.FC<Props> = ({ isOpen, onClose, trailer, title, rating, cast, director, descr, imageUrl}) => {
 
-  if (!isOpen) return null;
+    const embedUrl = trailer.includes("watch?v=") 
+        ? trailer.replace(/watch\?v=/, "embed/") 
+        : trailer;
 
-  const embedUrl = trailer.includes("watch?v=") 
-    ? trailer.replace(/watch\?v=/, "embed/") 
-    : trailer;
+        // Creates url string with movie info
+        const handleBookClick = () => {
+            const queryString = `?title=${encodeURIComponent(title)}&imageUrl=${encodeURIComponent(imageUrl)}`;
+            window.location.href = `/select-show-time${queryString}`;
+            onClose(); // Close the modal after navigating to the booking page
+        };
 
-  return (
-    <div>
-        <div style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 1000,
+    if (!isOpen) return null;
+
+    return (
+        <div>
+            <div style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                zIndex: 1000,
             }}
             onClick={onClose}>
             <div style={{
@@ -68,10 +75,8 @@ const TrailerPopup: React.FC<Props> = ({ isOpen, onClose, trailer, title, rating
                     <h4 className="descr">Cast: {cast}</h4>
                     <h4 className="descr">Sypnosis: {descr}</h4>
 
-                    <div className="select-time">
-                        <Link className="left-button block" href="/select-show-time">
-                            <button className="left-button block" type="submit">Click to Book Movie</button>
-                        </Link>
+                    <div className="select-time block">
+                        <button className="left-button block" onClick={handleBookClick}>Click to Book Movie</button>
                     </div>
                 </div>
             </div>

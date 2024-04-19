@@ -56,6 +56,7 @@ const PostCard = ({ movie }: Props) => {
           cast={movie.cast}
           director={movie.director}
           descr={movie.description}
+          imageUrl={movie.image_url}
         />
     </div>
   );
