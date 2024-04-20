@@ -152,6 +152,7 @@ h1 {
   font-size: 10px;
 }
 
+
 .container h1 {
   text-align: center;
   font-weight: 600;
@@ -563,4 +564,21 @@ input[type="password"] {
 .descr {
   padding: 10px;
   color: #ACC3FF;
+}
+
+/* CSS file */
+.options-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.option-item {
+  cursor: pointer;
+  padding: 8px 16px;
+}
+
+.option-item:hover {
+  background-color: #848afa;
+  border-radius: 15px;
 }

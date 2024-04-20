@@ -10,6 +10,8 @@ export interface Movie {
     director: string;
     image_url: string;
     trailer_url: string;
+    producer: string
+    reviews: string
   }
   
  export interface FormData {
