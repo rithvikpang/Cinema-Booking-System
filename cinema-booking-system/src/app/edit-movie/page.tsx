@@ -1,22 +1,45 @@
 "use client"
-import React from 'react';
+import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from "react";
 
 interface UserProfile {
     admin: boolean;
-    // Add other fields as they are defined in your database
-  }
+}
+
+interface Movie {
+    title: string;
+    descr: string;
+    duration: number; // Assuming duration is in minutes
+    release_date: string; // Or Date, if you want to convert the string to a Date object
+    genre_id: number;
+    rating: string;
+    category: string;
+    cast: string;
+    director: string;
+    image_url: string;
+    trailer_url: string;
+}
    
   const ManageMovies: React.FC = () => {
+    
     const [profile, setProfile] = useState<UserProfile>({
       admin: true,
       // Initialize other fields as needed
     });
     
-
-    //const test1 = profile.admin;
-    //console.log("admin test 1: " + test1);
+    const [movie, setMovie] = useState<Movie>({
+        title: '',
+        descr: '',
+        duration: 0, // Assuming duration is in minutes
+        release_date: '', // Or Date, if you want to convert the string to a Date object
+        genre_id: 0,
+        rating: '',
+        category: '',
+        cast: '',
+        director: '',
+        image_url: '',
+        trailer_url: '',
+      });
 
     const [token, setToken] = useState<string | null>();
     const [loading, setLoading] = useState<boolean>(true);
@@ -72,8 +95,63 @@ interface UserProfile {
       fetchProfile();
     }, []);
 
-    //const test2 = profile.admin;
-    //console.log("admin test 2: " + test2);
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setProfile(prevProfile => ({
+          ...prevProfile,
+          [name]: value,
+        }));
+      };
+     
+      const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const token = localStorage.getItem('token');
+        if (!token) {
+          setError('No token found in localStorage');
+          return;
+        }
+     
+        try {
+          const response = await fetch('http://localhost:8080/api/user/movies', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+    
+            body: JSON.stringify({
+              title: movie.title,
+              descr: movie.descr,
+              duration: movie.duration,
+              release_date: movie.release_date,
+              genre_id: movie.genre_id,
+              rating: movie.rating,
+              category: movie.category,
+              cast: movie.cast,
+              director: movie.director,
+              image_url: movie.image_url,
+              trailer_url: movie.trailer_url,
+
+              // Exclude email and other fields that should not be updated
+            }),
+          });
+     
+          if (!response.ok) {
+            throw new Error(`Failed to update movie: ${response.status} ${response.statusText}`);
+          }
+     
+          alert('Movie updated successfully');
+        } catch (err: unknown) {
+          if (err instanceof Error) {
+            setError(err.message);
+          } else {
+            setError('An unknown error occurred');
+          }
+        }
+      };
+     
+      if (loading) return <div>Loading...</div>;
+      if (error) return <div>Error: {error}</div>;
 
     // Does not allow users and non-logged in users to access this page
     if (profile.admin == false) {
@@ -83,10 +161,7 @@ interface UserProfile {
     
     return (
         <form className="container">
-            <h1>Manage Movies</h1> 
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <img src="/wonka.jpg" alt="movie poster" style={{width: '200px', height: '250px'}}/>
-            </div>
+            <h1>Edit Movie Details</h1> 
             <div className="movie-name block">
                 <label htmlFor="frm-movie">Movie Name</label>
                 <input
@@ -196,54 +271,3 @@ interface UserProfile {
 }
 
 export default ManageMovies;
-
-
-/*
-export default function Home() {
-    return (
-        <form className="container">
-            <div className = 'leftThirdContent'>
-                <div className="combobox">
-                    <input type="text" placeholder="Select Movie to Edit"/>
-                    <ul className="dropdown">
-                        <li>Wonka</li>
-                        <li>Dune: Part Two</li>
-                        <li>Oppenheimer</li>
-                    </ul>
-                </div>
-                <div className="add button">
-                    <button type="submit">Add</button>
-                </div>
-            </div>
-        </form>
-    )
-
-}
-*/
-
-/*
-const Home = () => {
-    return (
-      <div className="grid-container">
-        <LeftThirdContent>
-          
-            <div className = 'leftThirdContent'>
-                <div className="combobox">
-                    <input type="text" placeholder="Select Movie to Edit"/>
-                    <ul className="dropdown">
-                        <li>Wonka</li>
-                        <li>Dune: Part Two</li>
-                        <li>Oppenheimer</li>
-                    </ul>
-                </div>
-                <div className="add button">
-                    <button type="submit">Add</button>
-                </div>
-            </div>
-        </LeftThirdContent>
-      </div>
-    );
-  };
-  
-  export default Home;
-  */

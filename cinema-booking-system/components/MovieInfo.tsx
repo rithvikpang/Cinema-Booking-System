@@ -1,7 +1,7 @@
 // components/TrailerPopup.tsx
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 
-interface Props {
+interface Movie {
   isOpen: boolean;
   onClose: () => void;
   trailer: string;
@@ -16,7 +16,15 @@ interface Props {
   reviews: string;
 }
 
-const TrailerPopup: React.FC<Props> = ({ isOpen, onClose, trailer, title, rating, genre, cast, director, descr, imageUrl, producer, reviews}) => {
+// Add to backend
+interface ShowTime {
+    date: string;
+    time: string;
+    showroom: string;
+    movie_id: number;
+}
+
+const TrailerPopup: React.FC<Movie> = ({ isOpen, onClose, trailer, title, rating, genre, cast, director, descr, imageUrl, producer, reviews}) => {
 
     const embedUrl = trailer.includes("watch?v=") 
         ? trailer.replace(/watch\?v=/, "embed/") 

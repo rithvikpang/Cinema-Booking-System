@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import PostCard from '../../../components/PostCard';
+import ManageMovie from '../../../components/ManageMovie';
 import { Movie } from '../../../utils/types'; // Import the type
 
 const Body = () => {
@@ -48,7 +48,7 @@ const Body = () => {
     <div className="container">
         <div className="three-col">
             {displayedMovies.map((movie, index) => (
-                <PostCard key={`${movie.title}-${index}`} movie={movie} />
+                <ManageMovie key={`${movie.title}-${index}`} movie={movie} />
             ))}
         </div>
     </div>

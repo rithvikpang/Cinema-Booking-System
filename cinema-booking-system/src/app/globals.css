@@ -582,3 +582,21 @@ input[type="password"] {
   background-color: #848afa;
   border-radius: 15px;
 }
+
+.manage-button {
+  padding: 10px;
+  font-size: 15px;
+  border: none;
+  border-radius: 25px;
+  background-color: #ECF4FF;
+  color: #0A0F3A;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Add a smooth transition effect */
+  
+}
+
+.delete-button {
+  
+  background-color: #ff0000;
+  color: #ffffff;
+}

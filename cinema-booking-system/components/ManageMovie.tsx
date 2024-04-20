@@ -2,8 +2,8 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { Movie } from '../utils/types'; // Import the type
-import TrailerModal from './TrailerPopup'; // Make sure this path matches where you place the TrailerModal component
 import MovieInfo from './MovieInfo'
+import Link from 'next/link'
 
 interface Props {
   movie: Movie;
@@ -40,8 +40,14 @@ const PostCard = ({ movie }: Props) => {
             </dl>
             <div className="home-buttons">
                 <div className="home-btn block">
-                <button onClick={openTrailerModal}>
-                    More Info
+                <Link className="manage-button" href="/edit-movie">
+                    <button type="button">Edit Details</button> 
+                </Link>
+                <Link className="manage-button" href="/select-seats">
+                    <button type="button">Edit Showtimes</button> 
+                </Link>
+                <button className="delete-button" onClick={openTrailerModal}>
+                    Delete
                 </button>
                 </div>
             </div>
