@@ -54,6 +54,9 @@ public class Movie {
     @Column(name = "movie_trailer", length = 255)
     private String trailer_url;
 
+    private String producer;
+    private String reviews;
+
     // Constructors, Getters, and Setters
     public Movie() {
 
@@ -145,6 +148,22 @@ public class Movie {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getProducer() {
+        return producer;
+    }
+
+    public void setProducer(String producer) {
+        this.producer = producer;
+    }
+
+    public String getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(String reviews) {
+        this.reviews = reviews;
     }
 
 }
