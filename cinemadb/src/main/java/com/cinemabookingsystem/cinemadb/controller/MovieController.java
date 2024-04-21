@@ -3,13 +3,16 @@ package com.cinemabookingsystem.cinemadb.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.cinemabookingsystem.cinemadb.model.Movie;
-import com.cinemabookingsystem.cinemadb.repository.MovieRepository;
 import com.cinemabookingsystem.cinemadb.service.MovieService;
 
+import java.security.InvalidParameterException;
 import java.util.List;
+import java.util.Set;
+import java.time.LocalDate;
 
 
 @RestController
@@ -21,19 +24,48 @@ public class MovieController {
     @Autowired
     private MovieService movieService;
 
-    @Autowired
-    private MovieRepository movieRepository;
-
     @GetMapping("/getAll")
     public List<Movie> getAllMovies() {
         return movieService.getAllMovies();
     }
 
-    @GetMapping("/search")
-    public List<Movie> searchMovies(@RequestParam String term) {
-        List<Movie> searchResults = movieRepository.findByTitleContainingIgnoreCase(term);
-        return searchResults;
+    @GetMapping("/search/by-title")
+    public ResponseEntity<?> searchMovieByTitle(@RequestParam String title) {
+        List<Movie> searchResults;
+        try {
+            searchResults = movieService.searchMoviesByTitle(title);
+        } catch (InvalidParameterException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok(searchResults);
     }
+
+    @GetMapping("/search/by-genre")
+    public ResponseEntity<?> searchMovieByGenre(@RequestParam String genreName) {
+        List<Movie> searchResults;
+        try {
+            searchResults = movieService.searchMoviesByGenre(genreName);
+        } catch (InvalidParameterException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok(searchResults);
+    }
+
+    @GetMapping("search/by-show-date")
+    public ResponseEntity<?> searchMoviesByShowDate(@RequestParam LocalDate showDate) {
+        Set<Movie> searchResults;
+        try { 
+            searchResults = movieService.searchMoviesByShowDate(showDate);
+        } catch (InvalidParameterException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok(searchResults);
+    }
+
+
     
     
 

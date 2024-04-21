@@ -75,12 +75,12 @@ public class Show {
         this.showroom = showroom;
     }
 
-    public Movie getMoive() {
+    public Movie getMovie() {
         return movie;
     }
 
-    public void setMoive(Movie moive) {
-        this.movie = moive;
+    public void setMovie(Movie movie) {
+        this.movie = movie;
     }
 
 }

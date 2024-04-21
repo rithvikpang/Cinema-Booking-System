@@ -1,15 +1,19 @@
 package com.cinemabookingsystem.cinemadb.model;
 
-import java.time.LocalDate;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+
+import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(schema = "cinema_db", name = "movies")
@@ -34,7 +38,7 @@ public class Movie {
     private LocalDate release_date;
 
     @Column(name = "genre_id")
-    private int genre_id;
+    private int genreId;
 
     @Column(name = "rating", length = 5)
     private String rating;
@@ -56,6 +60,9 @@ public class Movie {
 
     private String producer;
     private String reviews;
+
+    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Show> shows;
 
     // Constructors, Getters, and Setters
     public Movie() {
@@ -134,12 +141,12 @@ public class Movie {
         this.release_date = release_date;
     }
 
-    public int getGenre_id() {
-        return genre_id;
+    public int getGenreId() {
+        return genreId;
     }
 
-    public void setGenre_id(int genre_id) {
-        this.genre_id = genre_id;
+    public void setGenreId(int genreId) {
+        this.genreId = genreId;
     }
 
     public String getCategory() {
@@ -164,6 +171,14 @@ public class Movie {
 
     public void setReviews(String reviews) {
         this.reviews = reviews;
+    }
+
+    public Set<Show> getShows() {
+        return shows;
+    }
+
+    public void setShow(Show show) {
+        this.shows.add(show);
     }
 
 }

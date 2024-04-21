@@ -13,4 +13,5 @@ import java.time.LocalDate;
 @Repository
 public interface ShowRepository extends JpaRepository<Show, Integer> {
     Set<Show> findByDateAndShowroom(LocalDate date, Showroom showroom);
+    Set<Show> findByDate(LocalDate date);
 }
