@@ -11,6 +11,8 @@ import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(schema = "cinema_db", name = "shows")
 public class Show {
@@ -27,6 +29,7 @@ public class Show {
     @JoinColumn(name = "showroom_id", referencedColumnName = "showroom_id")
     private Showroom showroom;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "movie_id", referencedColumnName = "movie_id")
     private Movie movie;

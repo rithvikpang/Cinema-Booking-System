@@ -69,7 +69,6 @@ public class AdminServiceImpl implements AdminService {
         show.setMovie(movie);
         show.setShowroom(showroom);
         // add this show to the showroom's set of shows
-        showroom.setShow(show);
         movie.setShow(show);
         return show; 
     }

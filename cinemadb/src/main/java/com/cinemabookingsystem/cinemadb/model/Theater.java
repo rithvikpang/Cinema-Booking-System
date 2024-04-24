@@ -1,11 +1,14 @@
 package com.cinemabookingsystem.cinemadb.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.Set;
 
@@ -19,7 +22,8 @@ public class Theater {
 
     private String location;
 
-    @OneToMany(mappedBy = "theater")
+    @JsonManagedReference
+    @OneToMany(mappedBy = "theater", cascade = CascadeType.ALL)
     private Set<Showroom> showrooms;
     
     public Integer getTheaterId() {
@@ -42,7 +46,7 @@ public class Theater {
         return showrooms;
     }
 
-    public void setShowrooms(Set<Showroom> showrooms) {
-        this.showrooms = showrooms;
+    public void setShowroom(Showroom showroom) {
+        this.showrooms.add(showroom);
     }
 }

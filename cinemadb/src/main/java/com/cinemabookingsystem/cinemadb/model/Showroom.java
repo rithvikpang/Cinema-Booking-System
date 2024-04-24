@@ -9,6 +9,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.util.Set;
 
 @Entity
@@ -19,9 +21,7 @@ public class Showroom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer showroom_id;
 
-    @OneToMany(mappedBy = "showroom")
-    private Set<Show> shows; 
-
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "theater_id", referencedColumnName = "theater_id")
     private Theater theater;
@@ -38,14 +38,6 @@ public class Showroom {
 
     public void setShowroomId(Integer showroom_id) {
         this.showroom_id = showroom_id;
-    }
-
-    public Set<Show> getShows() {
-        return shows;
-    }
-
-    public void setShow(Show show) {
-        this.shows.add(show);
     }
 
     public Theater getTheater() {

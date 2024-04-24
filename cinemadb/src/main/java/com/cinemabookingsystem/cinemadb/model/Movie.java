@@ -15,6 +15,8 @@ import jakarta.persistence.TemporalType;
 import java.time.LocalDate;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(schema = "cinema_db", name = "movies")
 public class Movie {
@@ -61,7 +63,8 @@ public class Movie {
     private String producer;
     private String reviews;
 
-    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private Set<Show> shows;
 
     // Constructors, Getters, and Setters
