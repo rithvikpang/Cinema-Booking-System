@@ -142,7 +142,7 @@ const Body = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/api/movies/search?term=${encodeURIComponent(query)}`);
+      const response = await fetch(`http://localhost:8080/api/movies/search/by-title?title=${encodeURIComponent(query)}`);
       const data: Movie[] = await response.json();
       setSearchResults(data);
     } catch (error) {
