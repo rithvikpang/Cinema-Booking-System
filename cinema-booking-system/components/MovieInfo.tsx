@@ -26,7 +26,7 @@ const TrailerPopup: React.FC<Movie> = ({ isOpen, onClose, trailer, title, rating
 
     // Creates url string with movie info
     const handleBookClick = () => {
-        const queryString = `?title=${encodeURIComponent(title)}&imageUrl=${encodeURIComponent(imageUrl)}&show1=${encodeURIComponent(shows[0].date)}&show2=${encodeURIComponent(shows[1].date)}&show3=${encodeURIComponent(shows[2].date)}&show1Time=${encodeURIComponent(shows[0].time)}&show2Time=${encodeURIComponent(shows[0].time)}&show3Time=${encodeURIComponent(shows[0].time)}`;
+        const queryString = `?title=${encodeURIComponent(title)}&imageUrl=${encodeURIComponent(imageUrl)}&show1=${encodeURIComponent(shows[0].date)}&show2=${encodeURIComponent(shows[1].date)}&show3=${encodeURIComponent(shows[2].date)}&show1Time=${encodeURIComponent(shows[0].time)}&show2Time=${encodeURIComponent(shows[1].time)}&show3Time=${encodeURIComponent(shows[2].time)}`;
         window.location.href = `/select-show-time${queryString}`;
         onClose(); // Close the modal after navigating to the booking page
     };
