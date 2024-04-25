@@ -45,6 +45,28 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public Movie editMovie(Integer movieId, Movie movie) {
+        Movie existingMovie = movieRepository.findById(movieId)
+            .orElseThrow(() -> new IllegalStateException("Movie not found with id: " + movieId));
+        
+        // set fields of updated movie
+        existingMovie.setTitle(movie.getTitle());
+        existingMovie.setDescription(movie.getDescription());
+        existingMovie.setDuration(movie.getDuration());
+        existingMovie.setReleaseDate(movie.getReleaseDate());
+        existingMovie.setGenreId(movie.getGenreId());
+        existingMovie.setRating(movie.getRating());
+        existingMovie.setCategory(movie.getCategory());
+        existingMovie.setCast(movie.getCast());
+        existingMovie.setDirector(movie.getDirector());
+        existingMovie.setImageUrl(movie.getImageUrl());
+        existingMovie.setTrailerUrl(movie.getTrailerUrl());
+        existingMovie.setProducer(movie.getProducer());
+        existingMovie.setReviews(movie.getReviews());
+        return movieRepository.save(existingMovie);
+    }
+
+    @Override
     public Show scheduleShow(ShowRequest showRequest) {
         // Get movie
         Movie movie = movieRepository.findById(showRequest.getMovieId())

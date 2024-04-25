@@ -13,6 +13,7 @@ import java.util.Optional;
 
 public interface AdminService {
     Movie addMovie(Movie movie);
+    Movie editMovie(Integer movieId, Movie movie);
     Show scheduleShow(ShowRequest showRequest);
     boolean isShowroomBooked(Showroom showroom, LocalDate date, LocalTime time, int duration);
     Promotion createPromotion(Promotion promotion);

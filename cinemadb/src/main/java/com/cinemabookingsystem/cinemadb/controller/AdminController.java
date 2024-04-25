@@ -41,6 +41,23 @@ public class AdminController {
         return ResponseEntity.ok().body("Movie added successfully");
     }
 
+    @PutMapping("/edit-movie/{movieId}")
+    public ResponseEntity<?> editMovie(@Validated @RequestBody Movie movie, 
+        @PathVariable Integer movieId, Errors errors) {
+        // new movie to return
+        Movie updatedMovie = new Movie();
+        if (errors.hasErrors()) {
+            return ResponseEntity.badRequest().body(errors.getAllErrors());
+        }
+        try {
+            updatedMovie = adminService.editMovie(movieId, movie);
+        } catch (IllegalStateException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return new ResponseEntity<>(updatedMovie, HttpStatus.OK);
+    }
+
     @PostMapping("/schedule-show")
     public ResponseEntity<?> scheduleShow(@Validated @RequestBody ShowRequest showRequest, Errors errors) {
         if (errors.hasErrors()) {

@@ -72,19 +72,19 @@ public class Movie {
 
     }
 
-    public String getImage_url() {
+    public String getImageUrl() {
         return image_url;
     }
 
-    public void setImage_url(String image_url) {
+    public void setImageUrl(String image_url) {
         this.image_url = image_url;
     }
 
-    public String getTrailer_url() {
+    public String getTrailerUrl() {
         return trailer_url;
     }
 
-    public void setTrailer_url(String trailer_url) {
+    public void setTrailerUrl(String trailer_url) {
         this.trailer_url = trailer_url;
     }
 
@@ -136,11 +136,11 @@ public class Movie {
         this.duration = duration;
     }
 
-    public LocalDate getRelease_date() {
+    public LocalDate getReleaseDate() {
         return release_date;
     }
 
-    public void setRelease_date(LocalDate release_date) {
+    public void setReleaseDate(LocalDate release_date) {
         this.release_date = release_date;
     }
 
