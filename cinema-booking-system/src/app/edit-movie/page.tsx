@@ -83,7 +83,7 @@ interface UserProfile {
     
     return (
         <form className="container">
-            <h1>Manage Movies</h1> 
+            <h1>Edit Movies</h1> 
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <img src="/wonka.jpg" alt="movie poster" style={{width: '200px', height: '250px'}}/>
             </div>
