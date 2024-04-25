@@ -2,21 +2,19 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from "react";
+import EditMoviePostCard from '../../../components/EditMoviePostCard'
 
-interface UserProfile {
-    admin: boolean;
-    // Add other fields as they are defined in your database
-  }
+interface Movie {
+    movie: Movie;
+}
    
   const ManageMovies: React.FC = () => {
-    const [profile, setProfile] = useState<UserProfile>({
-      admin: true,
-      // Initialize other fields as needed
-    });
-    
 
-    //const test1 = profile.admin;
-    //console.log("admin test 1: " + test1);
+    /*
+    const [profile, setProfile] = useState<UserProfile>({
+    admin: true,
+    });
+    */
 
     const [token, setToken] = useState<string | null>();
     const [loading, setLoading] = useState<boolean>(true);
@@ -71,9 +69,6 @@ interface UserProfile {
    
       fetchProfile();
     }, []);
-
-    //const test2 = profile.admin;
-    //console.log("admin test 2: " + test2);
 
     // Does not allow users and non-logged in users to access this page
     if (profile.admin == false) {
@@ -196,54 +191,3 @@ interface UserProfile {
 }
 
 export default ManageMovies;
-
-
-/*
-export default function Home() {
-    return (
-        <form className="container">
-            <div className = 'leftThirdContent'>
-                <div className="combobox">
-                    <input type="text" placeholder="Select Movie to Edit"/>
-                    <ul className="dropdown">
-                        <li>Wonka</li>
-                        <li>Dune: Part Two</li>
-                        <li>Oppenheimer</li>
-                    </ul>
-                </div>
-                <div className="add button">
-                    <button type="submit">Add</button>
-                </div>
-            </div>
-        </form>
-    )
-
-}
-*/
-
-/*
-const Home = () => {
-    return (
-      <div className="grid-container">
-        <LeftThirdContent>
-          
-            <div className = 'leftThirdContent'>
-                <div className="combobox">
-                    <input type="text" placeholder="Select Movie to Edit"/>
-                    <ul className="dropdown">
-                        <li>Wonka</li>
-                        <li>Dune: Part Two</li>
-                        <li>Oppenheimer</li>
-                    </ul>
-                </div>
-                <div className="add button">
-                    <button type="submit">Add</button>
-                </div>
-            </div>
-        </LeftThirdContent>
-      </div>
-    );
-  };
-  
-  export default Home;
-  */
