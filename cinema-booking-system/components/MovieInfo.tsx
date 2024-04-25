@@ -1,7 +1,4 @@
-// components/TrailerPopup.tsx
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-
-interface Props {
+interface Movie {
   isOpen: boolean;
   onClose: () => void;
   trailer: string;
@@ -14,17 +11,22 @@ interface Props {
   imageUrl: string;
   producer: string;
   reviews: string;
+  shows: Show[];
 }
 
-const TrailerPopup: React.FC<Props> = ({ isOpen, onClose, trailer, title, rating, genre, cast, director, descr, imageUrl, producer, reviews}) => {
+interface Show {
+    date: string;
+    time: string;
+}
 
+const TrailerPopup: React.FC<Movie> = ({ isOpen, onClose, trailer, title, rating, genre, cast, director, descr, imageUrl, producer, reviews, shows}) => {
     const embedUrl = trailer.includes("watch?v=") 
         ? trailer.replace(/watch\?v=/, "embed/") 
         : trailer;
 
     // Creates url string with movie info
     const handleBookClick = () => {
-        const queryString = `?title=${encodeURIComponent(title)}&imageUrl=${encodeURIComponent(imageUrl)}`;
+        const queryString = `?title=${encodeURIComponent(title)}&imageUrl=${encodeURIComponent(imageUrl)}&show1=${encodeURIComponent(shows[0].date)}&show2=${encodeURIComponent(shows[1].date)}&show3=${encodeURIComponent(shows[2].date)}&show1Time=${encodeURIComponent(shows[0].time)}&show2Time=${encodeURIComponent(shows[0].time)}&show3Time=${encodeURIComponent(shows[0].time)}`;
         window.location.href = `/select-show-time${queryString}`;
         onClose(); // Close the modal after navigating to the booking page
     };

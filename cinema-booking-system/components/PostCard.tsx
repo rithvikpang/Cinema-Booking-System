@@ -2,7 +2,6 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { Movie } from '../utils/types'; // Import the type
-import TrailerModal from './TrailerPopup'; // Make sure this path matches where you place the TrailerModal component
 import MovieInfo from './MovieInfo'
 
 interface Props {
@@ -60,6 +59,7 @@ const PostCard = ({ movie }: Props) => {
           imageUrl={movie.image_url}
           producer={movie.producer}
           reviews={movie.reviews}
+          shows={movie.shows}
         />
     </div>
   );

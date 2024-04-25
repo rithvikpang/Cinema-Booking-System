@@ -1,3 +1,4 @@
+
 export interface Movie {
     title: string;
     description: string;
@@ -10,9 +11,18 @@ export interface Movie {
     director: string;
     image_url: string;
     trailer_url: string;
-    producer: string
-    reviews: string
+    producer: string;
+    reviews: string;
+    movie_id: number;
+    shows: Show[];
   }
+
+export interface Show {
+    show_id: number;
+    date: string;
+    time: string;
+    duration: number;
+}
   
  export interface FormData {
     firstname: string;

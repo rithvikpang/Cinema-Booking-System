@@ -1,44 +1,49 @@
-// components/ComboBox.tsx
 import React, { useState } from 'react';
 
-interface ComboBoxProps {
-  options: string[];
-  onSelect: (selectedOption: string) => void;
-  className?: string; // Optional class name prop
+interface Props {
+  options: (string | null)[] | null;
 }
 
-const ComboBox: React.FC<ComboBoxProps> = ({ options, onSelect, className }) => {
-  const [selectedOption, setSelectedOption] = useState<string>('');
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+const ComboBox: React.FC<Props> = ({ options }) => {
+  const [selectedOption, setSelectedOption] = useState<string | null>('');
 
-  const handleSelectOption = (option: string) => {
+  const [showOptions, setShowOptions] = useState<boolean>(false);
+  const [activeOptionIndex, setActiveOptionIndex] = useState<number | null>(null);
+
+  const toggleOptions = () => {
+    setShowOptions(!showOptions);
+  };
+
+  const handleOptionClick = (index: number | null, option: string | null) => {
     setSelectedOption(option);
-    onSelect(option);
-    setIsOpen(false);
+    setShowOptions(false); // Hide options after selection
+    setActiveOptionIndex(index);
   };
 
   return (
-    <div className={className}>
-      <input
-        type="text"
-        value={selectedOption}
-        placeholder="Select an showtime"
-        style={{ fontSize: '16px' }} 
-        readOnly
-        onClick={() => setIsOpen(!isOpen)}
-      />
-      {isOpen && (
-        <ul className="options-list">
-          {options.map((option, index) => (
-            <li
+    <div className="combo-box-container">
+      <div
+        className="combo-box-selected"
+        onClick={toggleOptions}
+        style={{
+          backgroundColor: selectedOption ? '#007bff' : '#fff',
+          color: selectedOption ? '#fff' : '#000',
+        }}
+      >
+        {selectedOption || 'Select an option'}
+      </div>
+      {showOptions && (
+        <div className="combo-box-options">
+          {options?.map((option, index) => (
+            <div
               key={index}
-              onClick={() => handleSelectOption(option)}
-              className="option-item"
+              className={`combo-box-option ${index === activeOptionIndex ? 'active' : ''}`}
+              onClick={() => handleOptionClick(index, option)}
             >
-              {option}
-            </li>
+              {option || 'None'}
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
