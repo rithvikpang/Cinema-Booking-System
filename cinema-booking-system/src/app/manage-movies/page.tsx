@@ -46,6 +46,7 @@ const Body = () => {
 
   return (
     <div className="container">
+        <h1>Manage Movies</h1>
         <div className="three-col">
             {displayedMovies.map((movie, index) => (
                 <PostCard key={`${movie.title}-${index}`} movie={movie} />
