@@ -3,15 +3,17 @@ import React, { useEffect, useState } from 'react';
 import EditMoviePostCard from '../../../components/EditMoviePostCard';
 import { Movie } from '../../../utils/types'; // Import the type
 import { useRouter } from 'next/navigation';
+import Link from 'next/link'
 
 interface UserProfile {
   admin: boolean;
   // Add other fields as they are defined in your database
 }
-const Body = () => {
+const ManageMovies: React.FC = () => {
   const [profile, setProfile] = useState<UserProfile>({
     admin: true,
   });
+
   const [token, setToken] = useState<string | null>();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
@@ -89,9 +91,12 @@ const Body = () => {
   return (
     <div className="container">
       <h1>Manage Movies</h1>
-        <button type="submit" className="seats" onClick={() => router.push('add-movie')}>
+      <button type="submit" className="purple-btn" onClick={() => router.push('add-movie')}>
                 Add Movie
           </button>
+          <Link href="/schedule-movie">
+                <button type="button" className="purple-btn">Schedule Movie</button> 
+          </Link>        
       <div className="three-col">
         {displayedMovies.map((movie, index) => (
           <EditMoviePostCard key={`${movie.title}-${index}`} movie={movie} />
@@ -101,4 +106,4 @@ const Body = () => {
   );
 }
 
-export default Body;
+export default ManageMovies;
