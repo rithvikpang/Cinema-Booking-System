@@ -32,6 +32,10 @@ export default function Home() {
         }
     }, [router]);
 
+    const handleBack = () => {
+        router.push('/manage-movies');  // Use `router.back()` to go back in history
+    };
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         setFormData(prevState => ({
@@ -231,6 +235,9 @@ export default function Home() {
             </div>
             <button type="submit" className='seats' disabled={isLoading}>
                     {isLoading ? 'Saving...' : 'Save'}
+            </button>
+            <button type="submit" className="seats" onClick={handleBack}>
+                Back
             </button>
             
         </form>

@@ -25,6 +25,16 @@ h1 {
   padding: 20px;
 }
 
+.movie-cat {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: left;
+  color: #ACC3FF;
+  font-size: 25px;
+  padding: 20px;
+}
+
 .navbar {
   display: flex;
   flex-direction: row;

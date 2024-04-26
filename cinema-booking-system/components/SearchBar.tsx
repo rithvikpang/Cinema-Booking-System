@@ -202,7 +202,6 @@ const SearchBar: React.FC<Props> = ({ onSearch }) => {
                   type="text"
                   name="search"
                   autoComplete="off"
-                  required
                   value={searchQuery} 
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
