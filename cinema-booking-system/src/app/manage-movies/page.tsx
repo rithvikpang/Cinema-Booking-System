@@ -10,21 +10,7 @@ interface UserProfile {
 }
 
 interface Movies {
-  movies: Movie;
-  isOpen: boolean;
-  onClose: () => void;
-  trailer: string;
-  title: string;
-  rating: string;
-  genre: number;
-  cast: string;
-  director: string;
-  descr: string;
-  imageUrl: string;
-  producer: string;
-  reviews: string;
-  shows: Show[];
-  page: string;
+  movie: Movie;
 }
 
 interface Show {
@@ -33,7 +19,7 @@ interface Show {
 }
 
 
-const ManageMovies: React.FC<Movies> = ({title, page, onClose, movie}) => {
+const ManageMovies: React.FC<Movies> = ({movie}) => {
 
   const [profile, setProfile] = useState<UserProfile>({
     admin: true,
@@ -126,7 +112,7 @@ if (profile.admin == false) {
         <h1>Manage Movies</h1>
         <div className="three-col">
             {displayedMovies.map((movie, index) => (
-                <EditMoviePostCard key={`${movie.title}-${index}`} movie={movie} title={title} page={page} onClose={onClose} trailer={trailer} rating={rating} genre={genre} cast={cast} director={director} descr={descr} imageUrl={imageUrl} producer={producer} reviews={reviews} shows={shows}/>
+                <EditMoviePostCard key={`${movie.title}-${index}`} movie={movie} />
             ))}
         </div>
     </div>
