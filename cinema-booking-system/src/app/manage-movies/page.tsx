@@ -89,6 +89,9 @@ const Body = () => {
   return (
     <div className="container">
       <h1>Manage Movies</h1>
+        <button type="submit" className="seats" onClick={() => router.push('add-movie')}>
+                Add Movie
+          </button>
       <div className="three-col">
         {displayedMovies.map((movie, index) => (
           <EditMoviePostCard key={`${movie.title}-${index}`} movie={movie} />
