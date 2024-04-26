@@ -95,7 +95,6 @@ const TrailerPopup: React.FC<Movie> = ({ isOpen, onClose, trailer, title, rating
                 <div >
                     <h2 className="descr">{title}</h2>
                     <h4 className="descr">Rated {rating}</h4>
-                    <h4 className="descr">Genre: {movie_genre}</h4>
                     <h4 className="descr">Director: {director}</h4>
                     <h4 className="descr">Producer: {producer}</h4>
                     <h4 className="descr">Cast: {cast}</h4>
