@@ -92,7 +92,7 @@ public class AdminServiceImpl implements AdminService {
         show.setShowroom(showroom);
         // add this show to the showroom's set of shows
         movie.setShow(show);
-        return show; 
+        return showRepository.save(show); 
     }
 
     @Override
