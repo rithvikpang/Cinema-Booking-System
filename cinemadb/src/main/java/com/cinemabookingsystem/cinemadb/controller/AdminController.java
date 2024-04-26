@@ -1,5 +1,6 @@
 package com.cinemabookingsystem.cinemadb.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,11 +19,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.cinemabookingsystem.cinemadb.dto.PromotionDTO;
 import com.cinemabookingsystem.cinemadb.dto.ShowRequest;
 import com.cinemabookingsystem.cinemadb.model.Movie;
 import com.cinemabookingsystem.cinemadb.model.Promotion;
 import com.cinemabookingsystem.cinemadb.model.Show;
 import com.cinemabookingsystem.cinemadb.service.AdminServiceImpl;
+import com.cinemabookingsystem.cinemadb.util.DateParser;
 
 @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RestController
@@ -74,7 +77,19 @@ public class AdminController {
     }
 
     @PostMapping("/add-promotion")
-    public ResponseEntity<Promotion> createPromotion(@RequestBody Promotion promotion) {
+    public ResponseEntity<Promotion> createPromotion(@RequestBody PromotionDTO promotionDTO) {
+        // Parse the start_date and end_date strings to LocalDate
+        LocalDate startDate = DateParser.parseDate(promotionDTO.getStart_date());
+        LocalDate endDate = DateParser.parseDate(promotionDTO.getEnd_date());
+
+        // Create a new Promotion object with parsed dates
+        Promotion promotion = new Promotion();
+        promotion.setStartDate(startDate);
+        promotion.setEndDate(endDate);
+        promotion.setCode(promotionDTO.getCode());
+        promotion.setDiscount(promotionDTO.getDiscount());
+
+        // Save the promotion to the database
         Promotion createdPromotion = adminService.createPromotion(promotion);
         adminService.sendPromotionEmails();
         return new ResponseEntity<>(createdPromotion, HttpStatus.CREATED);

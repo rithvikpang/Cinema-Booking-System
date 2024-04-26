@@ -10,6 +10,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.cinemabookingsystem.cinemadb.model.Promotion;
 import com.cinemabookingsystem.cinemadb.model.User;
 import com.cinemabookingsystem.cinemadb.repository.UserRepository;
 import com.cinemabookingsystem.cinemadb.util.UserIdGenerator;
@@ -56,13 +57,20 @@ public class MailServiceImpl implements MailService {
         mailSender.send(verificationEmail);
     }
 
-    @Override
-    public void sendPromotionEmails(User user) {
-        SimpleMailMessage promotionEmail = new SimpleMailMessage();
-        promotionEmail.setFrom("teamb8cinema@gmail.com");
-        promotionEmail.setTo(user.getEmail());
-        promotionEmail.setSubject("New Promotion Alert");
-        promotionEmail.setText("Check out our latest promotions! Visit our website for more details.");
-        mailSender.send(promotionEmail);
-    }
+@Override
+public void sendPromotionEmails(User user, Promotion promotion) {
+    SimpleMailMessage promotionEmail = new SimpleMailMessage();
+    promotionEmail.setFrom("teamb8cinema@gmail.com");
+    promotionEmail.setTo(user.getEmail());
+    promotionEmail.setSubject("New Promotion Alert");
+    promotionEmail.setText("Dear " + user.getFirstname() + ",\n\n"
+        + "Check out our latest promotion:\n\n"
+        + "Promo Code: " + promotion.getCode() + "\n"
+        + "Discount: " + promotion.getDiscount() + "%\n"
+        + "Start Date: " + promotion.getStartDate() + "\n"
+        + "End Date: " + promotion.getEndDate() + "\n\n"
+        + "Visit our website for more details.");
+    mailSender.send(promotionEmail);
+}
+
 }

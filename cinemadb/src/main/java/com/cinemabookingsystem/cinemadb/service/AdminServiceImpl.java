@@ -156,8 +156,9 @@ public class AdminServiceImpl implements AdminService {
         @Override
         public void sendPromotionEmails() {
             List<User> usersWithPromotions = userRepository.findByPromotions(true); // Assuming "promotions" is the field in the User entity indicating if the user wants to be emailed about promotions
+            Promotion promotion = promotionRepository.findLatestPromotion();
             for (User user : usersWithPromotions) {
-                mailService.sendPromotionEmails(user);
+                mailService.sendPromotionEmails(user, promotion);
             }
         }
 
