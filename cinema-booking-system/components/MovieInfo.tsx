@@ -20,10 +20,7 @@ interface Show {
 }
 
 const TrailerPopup: React.FC<Movie> = ({ isOpen, onClose, trailer, title, rating, genre, cast, director, descr, imageUrl, producer, reviews, shows}) => {
-    const embedUrl = trailer.includes("watch?v=") 
-        ? trailer.replace(/watch\?v=/, "embed/") 
-        : trailer;
-
+    
     // Creates url string with movie info
     const handleBookClick = () => {
         const queryString = `?title=${encodeURIComponent(title)}&imageUrl=${encodeURIComponent(imageUrl)}&show1=${encodeURIComponent(shows[0].date)}&show2=${encodeURIComponent(shows[1].date)}&show3=${encodeURIComponent(shows[2].date)}&show1Time=${encodeURIComponent(shows[0].time)}&show2Time=${encodeURIComponent(shows[0].time)}&show3Time=${encodeURIComponent(shows[0].time)}`;
@@ -83,7 +80,7 @@ const TrailerPopup: React.FC<Movie> = ({ isOpen, onClose, trailer, title, rating
             >
 
                 <iframe
-                src={embedUrl}
+                src={trailer}
                 frameBorder="0"
                 title="Movie Trailer"
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
@@ -98,6 +95,7 @@ const TrailerPopup: React.FC<Movie> = ({ isOpen, onClose, trailer, title, rating
                 <div >
                     <h2 className="descr">{title}</h2>
                     <h4 className="descr">Rated {rating}</h4>
+                    <h4 className="descr">Genre: {movie_genre}</h4>
                     <h4 className="descr">Director: {director}</h4>
                     <h4 className="descr">Producer: {producer}</h4>
                     <h4 className="descr">Cast: {cast}</h4>
