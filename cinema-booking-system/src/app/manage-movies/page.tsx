@@ -11,36 +11,28 @@ interface UserProfile {
 const Body = () => {
   const [profile, setProfile] = useState<UserProfile>({
     admin: true,
-    // Initialize other fields as needed
   });
-
-  //const test1 = profile.admin;
-  //console.log("admin test 1: " + test1);
-
   const [token, setToken] = useState<string | null>();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
-  const router = useRouter();
-
   const [movies, setMovies] = useState<Movie[]>([]);
   const [searchResults, setSearchResults] = useState<Movie[]>([]);
-  const [isSearched, setIsSearched] = useState<boolean>(false); // Tracks if a search has been performed
+  const [isSearched, setIsSearched] = useState<boolean>(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
 
-  // If token exists, assign value to token
-  if (storedToken) {
-    setToken(storedToken);
-  }
-  
-}, []);
+    // If token exists, assign value to token
+    if (storedToken) {
+      setToken(storedToken);
+    }
 
-  useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem('token');
       if (!token) {
-        router.push('/unauth-page')  // Does not allow non-logged in users to access this page
+        router.push('/unauth-page'); // Does not allow non-logged in users to access this page
         setError('No token found in localStorage');
         setLoading(false);
         return;
@@ -75,37 +67,33 @@ const Body = () => {
     fetchProfile();
   }, []);
 
-  //const test2 = profile.admin;
-  //console.log("admin test 2: " + test2);
-
-  // Does not allow users and non-logged in users to access this page
-  if (profile.admin == false) {
-      router.push('/unauth-page')
-      return null;
-  } else {
-    useEffect(() => {
-      const fetchMovies = async () => {
-        const response = await fetch('http://localhost:8080/api/movies/getAll');
-        const data = await response.json();
-        setMovies(data);
-      };
-  
+  useEffect(() => {
+    if (profile.admin) {
       fetchMovies();
-    }, []);
+    } else {
+      router.push('/unauth-page')
+    }
+  }, [profile.admin]);
 
-  }
+  const fetchMovies = async () => {
+    const response = await fetch('http://localhost:8080/api/movies/getAll');
+    const data = await response.json();
+    setMovies(data);
+  };
 
-  // Decide which movies to display based on search or default categories
   const displayedMovies = isSearched && searchResults.length > 0 ? searchResults : (isSearched ? [] : movies);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
   
   return (
     <div className="container">
-        <h1>Manage Movies</h1>
-        <div className="three-col">
-            {displayedMovies.map((movie, index) => (
-                <EditMoviePostCard key={`${movie.title}-${index}`} movie={movie} />
-            ))}
-        </div>
+      <h1>Manage Movies</h1>
+      <div className="three-col">
+        {displayedMovies.map((movie, index) => (
+          <EditMoviePostCard key={`${movie.title}-${index}`} movie={movie} />
+        ))}
+      </div>
     </div>
   );
 }
