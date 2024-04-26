@@ -60,7 +60,10 @@ public class Movie {
     @Column(name = "movie_trailer", length = 255)
     private String trailer_url;
 
+    @Column(name = "producer", length = 255)
     private String producer;
+
+    @Column(name = "reviews", length = 255)
     private String reviews;
 
     @JsonManagedReference

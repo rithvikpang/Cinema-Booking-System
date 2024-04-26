@@ -32,7 +32,7 @@ public class AdminController {
     @Autowired
     private AdminServiceImpl adminService;
 
-    @PostMapping("/add-movie") 
+    @PostMapping("/add-movie")
     public ResponseEntity<?> addMovie(@Validated @RequestBody Movie movie, Errors errors) {
         if (errors.hasErrors()) {
             return ResponseEntity.badRequest().body(errors.getAllErrors());
