@@ -11,6 +11,20 @@ interface UserProfile {
 
 interface Movies {
   movie: Movie;
+  isOpen: boolean;
+  onClose: () => void;
+  trailer: string;
+  title: string;
+  rating: string;
+  genre: number;
+  cast: string;
+  director: string;
+  descr: string;
+  imageUrl: string;
+  producer: string;
+  reviews: string;
+  shows: Show[];
+  page: string;
 }
 
 interface Show {
@@ -19,7 +33,7 @@ interface Show {
 }
 
 
-const ManageMovies: React.FC<Movies> = ({movie}) => {
+const ManageMovies: React.FC<Movies> = ({title, page, onClose, movie}) => {
 
   const [profile, setProfile] = useState<UserProfile>({
     admin: true,

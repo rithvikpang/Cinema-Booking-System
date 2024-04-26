@@ -7,6 +7,20 @@ import Link from 'next/link'
 
 interface Props {
   movie: Movie;
+  isOpen: boolean;
+  onClose: () => void;
+  trailer: string;
+  title: string;
+  rating: string;
+  genre: number;
+  cast: string;
+  director: string;
+  descr: string;
+  imageUrl: string;
+  producer: string;
+  reviews: string;
+  shows: Show[];
+  page: string;
 }
 
 interface Show {
@@ -14,7 +28,7 @@ interface Show {
   time: string;
 }
 
-const PostCard = ({ movie}: Props) => {
+const PostCard = ({ movie, title, page, onClose }: Props) => {
 
   const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false); // State to control the modal visibility
 
@@ -23,6 +37,12 @@ const PostCard = ({ movie}: Props) => {
 
   // Function to close the trailer modal
   const closeTrailerModal = () => setIsTrailerModalOpen(false);
+
+  const handleBookClick = () => {
+    const queryString = `?title=${encodeURIComponent(title)}`;
+    window.location.href = `${page}${queryString}`;
+    onClose(); // Close the modal after navigating to the booking page
+  };
 
   /*
     // Creates url string with movie info
@@ -49,9 +69,9 @@ const PostCard = ({ movie}: Props) => {
             </dl>
             <div className="home-buttons">
                 <div className="home-btn block">
-                    <Link className="home-btn block" href="/edit-movie">
-                            <button type="button">Edit Details</button> 
-                    </Link>
+                    <div className="home-btn block block">
+                        <button className="left-button block" onClick={handleBookClick}>Edit Details</button>
+                    </div>
                     <Link className="home-btn block" href="/edit-movie">
                             <button type="button">Delete</button> 
                     </Link>
