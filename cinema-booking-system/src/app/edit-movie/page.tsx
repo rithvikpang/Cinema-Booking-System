@@ -83,10 +83,7 @@ interface UserProfile {
     
     return (
         <form className="container">
-            <h1>Edit Movie Details</h1> 
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <img src="/wonka.jpg" alt="movie poster" style={{width: '200px', height: '250px'}}/>
-            </div>
+            <h1>Edit Movie Details</h1>
             <div className="movie-name block">
                 <label htmlFor="frm-movie">Movie Name</label>
                 <input
