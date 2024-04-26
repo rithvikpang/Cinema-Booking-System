@@ -34,10 +34,6 @@ const PostCard = ({ movie }: Props) => {
             />
 
             <h4 className="description">{movie.title}</h4>
-            <dl>
-                <dt className="description">{movie.duration} MIN | {movie.rating}</dt>
-                <dt className="description">Released {movie.release_date}</dt>
-            </dl>
             <div className="home-buttons">
                 <div className="home-btn block">
                     <Link className="home-btn block" href="/edit-movie">
