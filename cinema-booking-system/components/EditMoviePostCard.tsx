@@ -18,11 +18,6 @@ const PostCard = ({ movie }: Props) => {
   // Function to close the trailer modal
   const closeTrailerModal = () => setIsTrailerModalOpen(false);
 
-  const handleClick = () => {
-    // Handle click event to show more information about the movie
-    alert(`Title: ${movie.title}`);
-  }
-
   /*
     // Creates url string with movie info
     const handleBookClick = () => {
@@ -72,6 +67,7 @@ const PostCard = ({ movie }: Props) => {
           producer={movie.producer}
           reviews={movie.reviews}
           shows={movie.shows}
+          page={"edit-movie"}
         />
     </div>
   );

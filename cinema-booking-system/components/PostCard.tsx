@@ -60,6 +60,7 @@ const PostCard = ({ movie }: Props) => {
           producer={movie.producer}
           reviews={movie.reviews}
           shows={movie.shows}
+          page={"/select-show-time"}
         />
     </div>
   );

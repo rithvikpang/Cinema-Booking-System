@@ -4,17 +4,20 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from "react";
 import EditMoviePostCard from '../../../components/EditMoviePostCard'
 
+interface UserProfile {
+  admin: boolean;
+}
+
 interface Movie {
     movie: Movie;
 }
    
   const ManageMovies: React.FC = () => {
 
-    /*
     const [profile, setProfile] = useState<UserProfile>({
-    admin: true,
+      admin: true,
+      // Initialize other fields as needed
     });
-    */
 
     const [token, setToken] = useState<string | null>();
     const [loading, setLoading] = useState<boolean>(true);
