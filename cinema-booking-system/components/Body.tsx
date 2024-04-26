@@ -74,7 +74,9 @@ const Body = () => {
 
   // Decide which movies to display based on search or default categories
   //const displayedMovies = isSearched && searchResults.length > 0 ? searchResults : (isSearched ? [] : movies);
-  const displayedMovies = selectedCategory ? movies.filter(movie => movie.category === selectedCategory) : movies;
+  //const displayedMovies = selectedCategory ? movies.filter(movie => movie.category === selectedCategory) : movies;
+  const displayedMovies = isSearched && searchResults.length > 0 ? searchResults : 
+  (selectedCategory ? movies.filter(movie => movie.category === selectedCategory) : movies);
 
   return (
     <div className="container">

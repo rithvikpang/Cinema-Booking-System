@@ -2,6 +2,8 @@
 
 import React, {useState, useEffect} from 'react';
 import { useRouter } from 'next/navigation';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Ensure CSS is imported
 
 export default function Home() {
     
@@ -65,10 +67,11 @@ export default function Home() {
             }
 
             const result = await response.json();
-            alert(result.message || 'Movie added successfully');
+            toast.success(result.message || 'Movie added successfully');
             setFormData(initialFormData);
         } catch (error) {
             console.error("An error occurred:", error);
+            toast.error('Error adding movie. Please try again.');
         } finally {
             setIsLoading(false);
         }
@@ -239,7 +242,8 @@ export default function Home() {
             <button type="submit" className="seats" onClick={handleBack}>
                 Back
             </button>
-            
+            <ToastContainer position="top-center" autoClose={5000} hideProgressBar={true}
+            newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         </form>
     )
 }
