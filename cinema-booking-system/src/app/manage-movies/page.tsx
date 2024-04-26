@@ -2,11 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import EditMoviePostCard from '../../../components/EditMoviePostCard';
 import { Movie } from '../../../utils/types'; // Import the type
+import { useRouter } from 'next/navigation';
 
 const Body = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [searchResults, setSearchResults] = useState<Movie[]>([]);
   const [isSearched, setIsSearched] = useState<boolean>(false); // Tracks if a search has been performed
+  const router = useRouter();
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -17,6 +19,10 @@ const Body = () => {
 
     fetchMovies();
   }, []);
+
+  const addRoute = () => {
+    router.push('/add-movie');  // Use `router.back()` to go back in history
+  };
 
   const handleSearch = async (query: string) => {
     setIsSearched(true); // Indicate that a search was attempted
@@ -47,6 +53,9 @@ const Body = () => {
   return (
     <div className="container">
         <h1>Manage Movies</h1>
+        <button type="submit" className="seats" onClick={addRoute}>
+                Add Movie
+          </button>
         <div className="three-col">
             {displayedMovies.map((movie, index) => (
                 <EditMoviePostCard key={`${movie.title}-${index}`} movie={movie} />
