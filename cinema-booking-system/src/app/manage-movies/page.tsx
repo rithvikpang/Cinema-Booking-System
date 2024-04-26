@@ -93,9 +93,9 @@ const Body = () => {
       fetchMovies();
     }, []);
 
-  const addRoute = () => {
-    router.push('/add-movie');  // Use `router.back()` to go back in history
-  };
+    const addRoute = () => {
+      router.push('/add-movie');  // Use `router.back()` to go back in history
+    };
 
   }
 
@@ -105,7 +105,7 @@ const Body = () => {
   return (
     <div className="container">
         <h1>Manage Movies</h1>
-        <button type="submit" className="seats" onClick={addRoute}>
+        <button type="submit" className="seats" onClick={() => router.push('add-movie')}>
                 Add Movie
           </button>
         <div className="three-col">
