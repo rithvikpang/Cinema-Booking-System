@@ -14,6 +14,9 @@ interface Movie {
    
   const ManageMovies: React.FC = () => {
 
+    const queryParams = new URLSearchParams(window.location.search);
+    const title = queryParams.get('title');
+
     const [profile, setProfile] = useState<UserProfile>({
       admin: true,
       // Initialize other fields as needed
@@ -82,6 +85,7 @@ interface Movie {
     return (
         <form className="container">
             <h1>Edit Movies</h1> 
+            <h1>{title}</h1>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <img src="/wonka.jpg" alt="movie poster" style={{width: '200px', height: '250px'}}/>
             </div>

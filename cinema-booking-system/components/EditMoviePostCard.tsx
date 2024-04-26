@@ -7,9 +7,29 @@ import Link from 'next/link'
 
 interface Props {
   movie: Movie;
+  isOpen: boolean;
+  onClose: () => void;
+  trailer: string;
+  title: string;
+  rating: string;
+  genre: number;
+  cast: string;
+  director: string;
+  descr: string;
+  imageUrl: string;
+  producer: string;
+  reviews: string;
+  shows: Show[];
+  page: string;
 }
 
-const PostCard = ({ movie }: Props) => {
+interface Show {
+  date: string;
+  time: string;
+}
+
+const PostCard = ({ movie, title, page, onClose, trailer, rating, genre, cast, director, descr, imageUrl, producer, reviews, shows }: Props) => {
+
   const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false); // State to control the modal visibility
 
   // Function to open the trailer modal
@@ -17,6 +37,12 @@ const PostCard = ({ movie }: Props) => {
 
   // Function to close the trailer modal
   const closeTrailerModal = () => setIsTrailerModalOpen(false);
+
+  const handleBookClick = () => {
+    const queryString = `?title=${encodeURIComponent(title)}`;
+    window.location.href = `${page}${queryString}`;
+    onClose(); // Close the modal after navigating to the booking page
+  };
 
   /*
     // Creates url string with movie info
@@ -43,9 +69,9 @@ const PostCard = ({ movie }: Props) => {
             </dl>
             <div className="home-buttons">
                 <div className="home-btn block">
-                    <Link className="home-btn block" href="/edit-movie">
-                            <button type="button">Edit Details</button> 
-                    </Link>
+                    <div className="home-btn block block">
+                        <button className="left-button block" onClick={handleBookClick}>Click to Book Movie</button>
+                    </div>
                     <Link className="home-btn block" href="/edit-movie">
                             <button type="button">Delete</button> 
                     </Link>
@@ -54,21 +80,21 @@ const PostCard = ({ movie }: Props) => {
         </div>
 
         <MovieInfo
-          isOpen={isTrailerModalOpen}
-          onClose={closeTrailerModal}
-          trailer={movie.trailer_url}
-          title={movie.title}
-          rating={movie.rating}
-          genre={movie.genre_id}
-          cast={movie.cast}
-          director={movie.director}
-          descr={movie.description}
-          imageUrl={movie.image_url}
-          producer={movie.producer}
-          reviews={movie.reviews}
-          shows={movie.shows}
-          page={"edit-movie"}
-        />
+              isOpen={isTrailerModalOpen}
+              onClose={closeTrailerModal}
+              trailer={movie.trailer_url}
+              title={movie.title}
+              rating={movie.rating}
+              genre={movie.genre_id}
+              cast={movie.cast}
+              director={movie.director}
+              descr={movie.description}
+              imageUrl={movie.image_url}
+              producer={movie.producer}
+              reviews={movie.reviews}
+              shows={movie.shows}
+              page={"/edit-movies"}
+            />
     </div>
   );
 }
