@@ -9,8 +9,8 @@ export interface Movie {
     category: string;
     cast: string;
     director: string;
-    image_url: string;
-    trailer_url: string;
+    imageUrl: string;
+    trailerUrl: string;
     producer: string;
     reviews: string;
     movie_id: number;

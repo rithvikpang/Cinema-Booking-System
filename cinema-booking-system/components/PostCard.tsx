@@ -1,107 +1,63 @@
-
+// PostCard.tsx
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { Movie } from '../utils/types'; // Import the type
-import MovieInfo from './MovieInfo'
+import MovieInfo from './MovieInfo';
 
 interface Props {
   movie: Movie;
 }
 
 const PostCard = ({ movie }: Props) => {
-  const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false); // State to control the modal visibility
+  const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false);
 
-  // Function to open the trailer modal
   const openTrailerModal = () => setIsTrailerModalOpen(true);
-
-  // Function to close the trailer modal
   const closeTrailerModal = () => setIsTrailerModalOpen(false);
 
-  const handleClick = () => {
-    // Handle click event to show more information about the movie
-    alert(`Title: ${movie.title}`);
-  }
+  console.log(movie);
+  console.log(movie.imageUrl);
 
   return (
     <div className="three-col">
-        <div className="card">
-            <Image
-              src={movie.image_url}
-              width={240}
-              height={300}
-              alt={`${movie.title} poster`}
-            />
-
-            <h4 className="description">{movie.title}</h4>
-            <dl>
-                <dt className="description">{movie.duration} MIN | {movie.rating}</dt>
-                <dt className="description">Released {movie.release_date}</dt>
-            </dl>
-            <div className="home-buttons">
-                <div className="home-btn block">
-                <button onClick={openTrailerModal}>
-                    More Info
-                </button>
-                </div>
-            </div>
-        </div>
-
-        <MovieInfo
-          isOpen={isTrailerModalOpen}
-          onClose={closeTrailerModal}
-          trailer={movie.trailer_url}
-          title={movie.title}
-          rating={movie.rating}
-          genre={movie.genre_id}
-          cast={movie.cast}
-          director={movie.director}
-          descr={movie.description}
-          imageUrl={movie.image_url}
-          producer={movie.producer}
-          reviews={movie.reviews}
-          shows={movie.shows}
+      <div className="card">
+        <Image
+          src={movie.imageUrl} // Update to use the correct property name
+          width={240}
+          height={300}
+          alt={`${movie.title} poster`}
         />
-    </div>
-  );
-}
 
-/*
-import Image from 'next/image';
-import React from 'react';
-import { Movie } from '../utils/types'; // Import the type
-
-
-interface Props {
-  movie: Movie;
-}
-
-const PostCard = ({ movie }: Props) => {
-  return (
-    <div className="three-col">
-        <div className="card">
-            <Image
-            src={movie.image_url}
-            width={240}
-            height={300}
-            alt={`${movie.title} poster`}/>
-
-            <h3 className="description">{movie.title}</h3>
-            <dl>
-                <dt className="description">{movie.duration} | PG</dt>
-                <dt className="description">Released {movie.release_date}</dt>
-            </dl>
-            <div className="home-buttons block">
-                <div className="h-button block">
-                    <button type="submit">Watch Trailer</button>
-                </div>
-                <div className="h-button block">
-                    <button type="submit">Book Movie</button>
-                </div>
-            </div>
+        <h4 className="description">{movie.title}</h4>
+        <dl>
+          <dt className="description">{movie.duration} MIN | {movie.rating}</dt>
+          <dt className="description">Released {movie.release_date}</dt>
+        </dl>
+        <div className="home-buttons">
+          <div className="home-btn block">
+            <button onClick={openTrailerModal}>
+              More Info
+            </button>
+          </div>
         </div>
+      </div>
+
+      <MovieInfo
+        isOpen={isTrailerModalOpen}
+        onClose={closeTrailerModal}
+        trailerUrl={movie.trailerUrl}
+        title={movie.title}
+        rating={movie.rating}
+        genre={movie.genre_id}
+        cast={movie.cast}
+        director={movie.director}
+        descr={movie.description}
+        imageUrl={movie.imageUrl} // Update to use the correct property name
+        producer={movie.producer}
+        reviews={movie.reviews}
+        shows={movie.shows}
+      />
     </div>
   );
 }
-*/
 
 export default PostCard;

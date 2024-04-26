@@ -55,10 +55,10 @@ public class Movie {
     private String director;
 
     @Column(name = "movie_image", length = 255)
-    private String image_url;
+    private String movie_image;
 
     @Column(name = "movie_trailer", length = 255)
-    private String trailer_url;
+    private String movie_trailer;
 
     @Column(name = "producer", length = 255)
     private String producer;
@@ -76,19 +76,19 @@ public class Movie {
     }
 
     public String getImageUrl() {
-        return image_url;
+        return movie_image;
     }
 
-    public void setImageUrl(String image_url) {
-        this.image_url = image_url;
+    public void setImageUrl(String movie_image) {
+        this.movie_image = movie_image;
     }
 
     public String getTrailerUrl() {
-        return trailer_url;
+        return movie_trailer;
     }
 
-    public void setTrailerUrl(String trailer_url) {
-        this.trailer_url = trailer_url;
+    public void setTrailerUrl(String movie_trailer) {
+        this.movie_trailer = movie_trailer;
     }
 
     public String getRating() {
