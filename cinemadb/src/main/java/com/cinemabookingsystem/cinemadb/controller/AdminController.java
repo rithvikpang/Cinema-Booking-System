@@ -1,6 +1,7 @@
 package com.cinemabookingsystem.cinemadb.controller;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,14 +67,14 @@ public class AdminController {
         if (errors.hasErrors()) {
             return ResponseEntity.badRequest().body(errors.getAllErrors());
         }
-        // catch error from service layer
+        System.out.println(showRequest);
         try {
             adminService.scheduleShow(showRequest);
+            return ResponseEntity.ok().body("Successfully scheduled show");
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return ResponseEntity.ok().body("Successfully scheduled show");
     }
 
     @PostMapping("/add-promotion")
