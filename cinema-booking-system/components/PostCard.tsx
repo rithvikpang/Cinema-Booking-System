@@ -20,6 +20,7 @@ const PostCard = ({ movie }: Props) => {
   return (
     <div className="three-col">
       <div className="card">
+
         <Image
           src={movie.imageUrl} // Update to use the correct property name
           width={240}
@@ -30,7 +31,7 @@ const PostCard = ({ movie }: Props) => {
         <h4 className="description">{movie.title}</h4>
         <dl>
           <dt className="description">{movie.duration} MIN | {movie.rating}</dt>
-          <dt className="description">Released {movie.releaseDate}</dt>
+          <dt className="description">Released {movie.releaseDate[0] + "-" + movie.releaseDate[1] + "-" + movie.releaseDate[2]}</dt>
         </dl>
         <div className="home-buttons">
           <div className="home-btn block">
