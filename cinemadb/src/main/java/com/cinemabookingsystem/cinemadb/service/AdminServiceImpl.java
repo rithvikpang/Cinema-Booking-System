@@ -55,7 +55,7 @@ public class AdminServiceImpl implements AdminService {
         existingMovie.setDescription(movie.getDescription());
         existingMovie.setDuration(movie.getDuration());
         existingMovie.setReleaseDate(movie.getReleaseDate());
-        existingMovie.setGenreId(movie.getGenreId());
+        existingMovie.setGenre(movie.getGenre());
         existingMovie.setRating(movie.getRating());
         existingMovie.setCategory(movie.getCategory());
         existingMovie.setCast(movie.getCast());

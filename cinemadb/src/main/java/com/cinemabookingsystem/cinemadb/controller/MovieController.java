@@ -6,6 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.cinemabookingsystem.cinemadb.model.Genre;
 import com.cinemabookingsystem.cinemadb.model.Movie;
 import com.cinemabookingsystem.cinemadb.service.MovieService;
 
@@ -42,10 +43,10 @@ public class MovieController {
     }
 
     @GetMapping("/search/by-genre")
-    public ResponseEntity<?> searchMovieByGenre(@RequestParam String genreName) {
+    public ResponseEntity<?> searchMovieByGenre(@RequestParam Genre genre) {
         List<Movie> searchResults;
         try {
-            searchResults = movieService.searchMoviesByGenre(genreName);
+            searchResults = movieService.searchMoviesByGenre(genre);
         } catch (InvalidParameterException e) {
             System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
