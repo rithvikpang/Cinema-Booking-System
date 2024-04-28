@@ -1,25 +1,26 @@
-interface Movie {
-  isOpen: boolean;
-  onClose: () => void;
-  trailer: string;
-  title: string;
-  rating: string;
-  genre: number;
-  cast: string;
-  director: string;
-  descr: string;
-  imageUrl: string;
-  producer: string;
-  reviews: string;
-  shows: Show[];
-}
+export interface Movie {
+    isOpen: boolean;
+    onClose: () => void;
+    trailerUrl: string;
+    title: string;
+    rating: string;
+    genre: number;
+    cast: string;
+    director: string;
+    descr: string;
+    imageUrl: string; // Change property name to imageUrl
+    producer: string;
+    reviews: string;
+    shows: Show[];
+  }
+  
 
 interface Show {
     date: string;
     time: string;
 }
 
-const TrailerPopup: React.FC<Movie> = ({ isOpen, onClose, trailer, title, rating, genre, cast, director, descr, imageUrl, producer, reviews, shows}) => {
+const MovieInfo: React.FC<Movie> = ({ isOpen, onClose, trailerUrl, title, rating, genre, cast, director, descr, imageUrl, producer, reviews, shows}) => {
     
     // Creates url string with movie info
     const handleBookClick = () => {
@@ -80,7 +81,7 @@ const TrailerPopup: React.FC<Movie> = ({ isOpen, onClose, trailer, title, rating
             >
 
                 <iframe
-                src={trailer}
+                src={trailerUrl}
                 frameBorder="0"
                 title="Movie Trailer"
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
@@ -111,4 +112,4 @@ const TrailerPopup: React.FC<Movie> = ({ isOpen, onClose, trailer, title, rating
   );
 };
 
-export default TrailerPopup;
+export default MovieInfo;

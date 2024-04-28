@@ -14,6 +14,7 @@ import com.cinemabookingsystem.cinemadb.repository.PromotionRepository;
 import com.cinemabookingsystem.cinemadb.repository.ShowRepository;
 import com.cinemabookingsystem.cinemadb.repository.ShowroomRepository;
 import com.cinemabookingsystem.cinemadb.repository.UserRepository;
+import com.cinemabookingsystem.cinemadb.util.DateParser;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -54,7 +55,7 @@ public class AdminServiceImpl implements AdminService {
         existingMovie.setDescription(movie.getDescription());
         existingMovie.setDuration(movie.getDuration());
         existingMovie.setReleaseDate(movie.getReleaseDate());
-        existingMovie.setGenreId(movie.getGenreId());
+        existingMovie.setGenre(movie.getGenre());
         existingMovie.setRating(movie.getRating());
         existingMovie.setCategory(movie.getCategory());
         existingMovie.setCast(movie.getCast());
@@ -76,23 +77,35 @@ public class AdminServiceImpl implements AdminService {
         Showroom showroom = showroomRepository.findById(showRequest.getShowroomId())
             .orElseThrow(() -> new IllegalArgumentException("Showroom not found with id: " 
             + showRequest.getShowroomId()));
+
+        Show show = showRepository.findById(showRequest.getShowId()).orElseThrow(() 
+        -> new IllegalArgumentException("Show not found with id: " 
+        + showRequest.getShowId()));
+
+        
+        // Parse date and time strings into LocalDate and LocalTime
+        LocalDate date = DateParser.parseDate(showRequest.getDate());
+        LocalTime time = DateParser.parseTime(showRequest.getTime());
+        
         // duration of movie to check times
         int duration = movie.getDuration();
+        
         // return error if showroom is booked
-        if(isShowroomBooked(showroom, showRequest.getDate(),
-            showRequest.getTime(), duration)) {
-                throw new IllegalArgumentException("This showroom is booked at: " + showRequest.getTime());
-            }
+        if(isShowroomBooked(showroom, date, time, duration)) {
+            throw new IllegalArgumentException("This showroom is booked at: " + showRequest.getTime());
+        }
+        
         // Construct show and set fields
-        Show show = new Show();
-        show.setDate(showRequest.getDate());
-        show.setTime(showRequest.getTime());
+        show.setDate(date);
+        show.setTime(time);
         show.setDuration(duration);
         show.setMovie(movie);
         show.setShowroom(showroom);
+        
         // add this show to the showroom's set of shows
         movie.setShow(show);
-        return show; 
+        
+        return showRepository.save(show); 
     }
 
     @Override
@@ -156,8 +169,9 @@ public class AdminServiceImpl implements AdminService {
         @Override
         public void sendPromotionEmails() {
             List<User> usersWithPromotions = userRepository.findByPromotions(true); // Assuming "promotions" is the field in the User entity indicating if the user wants to be emailed about promotions
+            Promotion promotion = promotionRepository.findLatestPromotion();
             for (User user : usersWithPromotions) {
-                mailService.sendPromotionEmails(user);
+                mailService.sendPromotionEmails(user, promotion);
             }
         }
 

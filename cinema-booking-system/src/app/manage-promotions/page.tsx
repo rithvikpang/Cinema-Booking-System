@@ -1,90 +1,71 @@
 "use client"
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from "react";
+import { useForm } from 'react-hook-form';
 
-interface UserProfile {
-    admin: boolean;
-    // Add other fields as they are defined in your database
-  }
-   
-  const ManagePromos: React.FC = () => {
-    const [profile, setProfile] = useState<UserProfile>({
-      admin: true,
-      // Initialize other fields as needed
-    });
-    
+interface Promotion {
+  promotion_id?: number;
+  start_date: string; // Change type to string
+  end_date: string; // Change type to string
+  code: string;
+  discount: number;
+}
 
-    //const test1 = profile.admin;
-    //console.log("admin test 1: " + test1);
+const ManagePromos: React.FC = () => {
+  const [profile, setProfile] = useState<{ admin: boolean }>({ admin: true });
+  const { register, handleSubmit, reset } = useForm<Promotion>();
+  const [routerReady, setRouterReady] = useState(false); // Flag to indicate router readiness
+  const router = useRouter();
 
-    const [token, setToken] = useState<string | null>();
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>('');
-    const router = useRouter();
-  
-    useEffect(() => {
-        const storedToken = localStorage.getItem("token");
-  
-      // If token exists, assign value to token
-      if (storedToken) {
-        setToken(storedToken);
-      }
-      
-    }, []);
-  
-    useEffect(() => {
-      const fetchProfile = async () => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          router.push('/unauth-page')  // Does not allow non-logged in users to access this page
-          setError('No token found in localStorage');
-          setLoading(false);
-          return;
-        }
-   
-        try {
-          const response = await fetch('http://localhost:8080/api/user/profile', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-          });
-   
-          if (!response.ok) {
-            throw new Error(`Failed to fetch profile: ${response.status} ${response.statusText}`);
-          }
-   
-          const data: UserProfile = await response.json();
-          setProfile(data);
-        } catch (err: unknown) {
-          if (err instanceof Error) {
-            setError(err.message);
-          } else {
-            setError('An unknown error occurred');
-          }
-        } finally {
-          setLoading(false);
-        }
+  useEffect(() => {
+    // Set routerReady to true when the component mounts on the client-side
+    setRouterReady(true);
+  }, []);
+
+  const onSubmit = async (data: Promotion) => {
+    try {
+      // Convert dates to ISO string format
+      const formattedData = {
+        ...data,
+        start_date: new Date(data.start_date).toISOString(),
+        end_date: new Date(data.end_date).toISOString(),
       };
-   
-      fetchProfile();
-    }, []);
 
-    //const test2 = profile.admin;
-    //console.log("admin test 2: " + test2);
-
-    // Does not allow users and non-logged in users to access this page
-    if (profile.admin == false) {
-        router.push('/unauth-page')
-        return null;
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://localhost:8080/api/admin/add-promotion', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formattedData), // Send formatted data
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to add promotion: ${response.status} ${response.statusText}`);
+      }
+  
+      reset(); // Reset form fields after successful submission
+      router.push('/'); // Redirect to manage promos page after adding promotion
+    } catch (error: any) { // Specify 'any' type annotation for the error variable
+      console.error('Error:', error.message);
+      // Handle error, show error message to the user, etc.
     }
-    
-    return (
-        <form className="container">
-            <h1>Manage Promotions</h1>
-            <div className="form-section">
+  };
+
+
+  // Check if router is ready before using it
+  if (!routerReady) {
+    return null; // Render nothing if router is not ready
+  }
+
+  // Render form
+  return (
+    <form className="container" onSubmit={handleSubmit(onSubmit)}>
+    <div className="form-section">
+      <h1>Manage Promotions</h1>
+      {/* Your promotion management UI */}
+      <div className="form-section">
                 <div className="order-sum-item">
                     <label className="tickets-label" htmlFor="message">Promotion</label>
                     <label className="tickets-label" htmlFor="message">Edit Details</label>
@@ -121,54 +102,30 @@ interface UserProfile {
                     </div>
                 </div>
             </div>
-            
-            <h1 style={{marginTop: '50px' }}>Add Promotion</h1>
-            <div className="first-name block">
-                <label htmlFor="frm-first">Promotion Name</label>
-                <input
-                    id="inp"
-                    type="text"
-                    name="first"
-                    autoComplete="given-name"
-                    required
-                />
-            </div>
-            <div className="first-name block">
-                <label htmlFor="frm-first">Promo Code</label>
-                <input
-                    id="inp"
-                    type="text"
-                    name="first"
-                    autoComplete="given-name"
-                    required
-                />
-            </div>
-            <div className="first-name block">
-                <label htmlFor="frm-first">Expiration Date</label>
-                <input
-                    id="inp"
-                    type="text"
-                    name="first"
-                    autoComplete="given-name"
-                    required
-                />
-            </div>
-            <div className="first-name block">
-                <label htmlFor="frm-first">Discount</label>
-                <input
-                    id="inp"
-                    type="text"
-                    name="first"
-                    autoComplete="given-name"
-                    required
-                />
-            </div>
-            <div className="save-button block">
-                <button type="submit">Add</button>
-            </div>
-        </form>
+    </div>
 
-    )
-}
+    <h1>Add Promotion</h1>
+    <div className="first-name block">
+      <label htmlFor="start_date">Start Date</label>
+      <input id="start_date" type="date" {...register('start_date', { required: true })} />
+    </div>
+    <div className="first-name block">
+      <label htmlFor="end_date">End Date</label>
+      <input id="end_date" type="date" {...register('end_date', { required: true })} />
+    </div>
+    <div className="first-name block">
+      <label htmlFor="code">Promo Code</label>
+      <input id="code" type="text" {...register('code', { required: true })} />
+    </div>
+    <div className="first-name block">
+      <label htmlFor="discount">Discount</label>
+      <input id="discount" type="number" step="0.01" {...register('discount', { required: true })} />
+    </div>
+    <div className="save-button block">
+      <button type="submit">Add</button>
+    </div>
+  </form>
+  );
+};
 
 export default ManagePromos;

@@ -3,6 +3,8 @@ package com.cinemabookingsystem.cinemadb.model;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -39,8 +41,9 @@ public class Movie {
     @Column(name = "release_date")
     private LocalDate release_date;
 
-    @Column(name = "genre_id")
-    private int genreId;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "ENUM('COMEDY', 'DRAMA', 'ACTION', 'ROMANCE', 'ADVENTURE', 'HORROR')")
+    private Genre genre;
 
     @Column(name = "rating", length = 5)
     private String rating;
@@ -55,10 +58,10 @@ public class Movie {
     private String director;
 
     @Column(name = "movie_image", length = 255)
-    private String image_url;
+    private String movie_image;
 
     @Column(name = "movie_trailer", length = 255)
-    private String trailer_url;
+    private String movie_trailer;
 
     @Column(name = "producer", length = 255)
     private String producer;
@@ -76,19 +79,19 @@ public class Movie {
     }
 
     public String getImageUrl() {
-        return image_url;
+        return movie_image;
     }
 
-    public void setImageUrl(String image_url) {
-        this.image_url = image_url;
+    public void setImageUrl(String movie_image) {
+        this.movie_image = movie_image;
     }
 
     public String getTrailerUrl() {
-        return trailer_url;
+        return movie_trailer;
     }
 
-    public void setTrailerUrl(String trailer_url) {
-        this.trailer_url = trailer_url;
+    public void setTrailerUrl(String movie_trailer) {
+        this.movie_trailer = movie_trailer;
     }
 
     public String getRating() {
@@ -147,12 +150,12 @@ public class Movie {
         this.release_date = release_date;
     }
 
-    public int getGenreId() {
-        return genreId;
+    public Genre getGenre() {
+        return genre;
     }
 
-    public void setGenreId(int genreId) {
-        this.genreId = genreId;
+    public void setGenre(Genre genre) {
+        this.genre = genre;
     }
 
     public String getCategory() {

@@ -9,7 +9,7 @@ interface Props {
   movie: Movie;
 }
 
-const PostCard = ({ movie }: Props) => {
+const EditMoviePostCard = ({ movie }: Props) => {
   const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false); // State to control the modal visibility
 
   // Function to open the trailer modal
@@ -27,7 +27,7 @@ const PostCard = ({ movie }: Props) => {
     <div className="three-col">
         <div className="card">
             <Image
-              src={movie.image_url}
+              src={movie.imageUrl}
               width={240}
               height={300}
               alt={`${movie.title} poster`}
@@ -47,19 +47,18 @@ const PostCard = ({ movie }: Props) => {
         </div>
 
         <MovieInfo
-          isOpen={isTrailerModalOpen}
-          onClose={closeTrailerModal}
-          trailer={movie.trailer_url}
-          title={movie.title}
-          rating={movie.rating}
-          genre={movie.genre_id}
-          cast={movie.cast}
-          director={movie.director}
-          descr={movie.description}
-          imageUrl={movie.image_url}
-          producer={movie.producer}
-          reviews={movie.reviews}
-        />
+        isOpen={isTrailerModalOpen}
+        onClose={closeTrailerModal}
+        trailerUrl={movie.trailerUrl}
+        title={movie.title}
+        rating={movie.rating}
+        genre={movie.genre_id}
+        cast={movie.cast}
+        director={movie.director}
+        descr={movie.description}
+        imageUrl={movie.imageUrl}
+        producer={movie.producer}
+        reviews={movie.reviews} shows={[]}        />
     </div>
   );
 }
@@ -103,4 +102,4 @@ const PostCard = ({ movie }: Props) => {
 }
 */
 
-export default PostCard;
+export default EditMoviePostCard;

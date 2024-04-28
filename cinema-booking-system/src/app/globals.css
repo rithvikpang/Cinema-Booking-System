@@ -638,3 +638,20 @@ input[type="password"] {
   background-color: #848afa;
   color: #fff;
 }
+
+.purple-btn {
+  padding: 10px;
+  font-size: 20px;
+  border-radius: 15px;
+  background-color: #ACC3FF;
+  color: #060606;
+
+  background-color: #a88bf8;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Add a smooth transition effect */
+  
+    /* Optional: Add hover effect */
+    &:hover {
+      background-color: #628efd; /* Darker tan on hover */
+    }
+}
