@@ -2,26 +2,30 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { Movie } from '../utils/types'; // Import the type
-import MovieInfo from './MovieInfo'
+import EditMovieInfo from './EditMovieInfo'
 import Link from 'next/link'
 
 interface Props {
   movie: Movie;
 }
 
-const EditMoviePostCard = ({ movie }: Props) => {
-  const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false); // State to control the modal visibility
+interface Show {
+  date: string;
+  time: string;
+}
 
-  // Function to open the trailer modal
+const EditMoviePostCard: React.FC<Props> = ({ movie }) => {
+  
+  const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false);
+
   const openTrailerModal = () => setIsTrailerModalOpen(true);
-
-  // Function to close the trailer modal
   const closeTrailerModal = () => setIsTrailerModalOpen(false);
-
-  const handleClick = () => {
-    // Handle click event to show more information about the movie
-    alert(`Title: ${movie.title}`);
-  }
+    
+  // Creates url string with movie info
+  const handleBookClick = () => {
+      const queryString = `?&movie_id=${encodeURIComponent(movie.movie_id)}title=${encodeURIComponent(movie.title)}&rating=${encodeURIComponent(movie.rating)}&duration=${encodeURIComponent(movie.duration)}&imageUrl=${encodeURIComponent(movie.imageUrl)}&trailerUrl=${encodeURIComponent(movie.trailerUrl)}&category=${encodeURIComponent(movie.category)}&genre=${encodeURIComponent(movie.genre_id)}&cast=${encodeURIComponent(movie.cast)}&director=${encodeURIComponent(movie.director)}&description=${encodeURIComponent(movie.description)}`;
+      window.location.href = `/edit-movie${queryString}`;
+  };
 
   return (
     <div className="three-col">
@@ -36,9 +40,9 @@ const EditMoviePostCard = ({ movie }: Props) => {
             <h4 className="description">{movie.title}</h4>
             <div className="home-buttons">
                 <div className="home-btn block">
-                    <Link className="home-btn block" href="/edit-movie">
-                        <button type="button">Edit Details</button> 
-                    </Link>
+                    <div className="select-time block">
+                        <button className="left-button block" onClick={handleBookClick}>Edit Movie</button>
+                    </div>
                     <Link className="home-btn block" href="/edit-movie">
                         <button type="button">Delete</button> 
                     </Link>
@@ -46,7 +50,7 @@ const EditMoviePostCard = ({ movie }: Props) => {
             </div>
         </div>
 
-        <MovieInfo
+        <EditMovieInfo
         isOpen={isTrailerModalOpen}
         onClose={closeTrailerModal}
         trailerUrl={movie.trailerUrl}
@@ -58,7 +62,9 @@ const EditMoviePostCard = ({ movie }: Props) => {
         descr={movie.description}
         imageUrl={movie.imageUrl}
         producer={movie.producer}
-        reviews={movie.reviews} shows={[]}        />
+        reviews={movie.reviews}
+        shows={movie.shows}
+        />
     </div>
   );
 }
