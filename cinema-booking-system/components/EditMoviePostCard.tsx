@@ -23,9 +23,12 @@ const EditMoviePostCard: React.FC<Props> = ({ movie }) => {
     
   // Creates url string with movie info
   const handleBookClick = () => {
-      const queryString = `?&movie_id=${encodeURIComponent(movie.movie_id)}title=${encodeURIComponent(movie.title)}&rating=${encodeURIComponent(movie.rating)}&duration=${encodeURIComponent(movie.duration)}&imageUrl=${encodeURIComponent(movie.imageUrl)}&trailerUrl=${encodeURIComponent(movie.trailerUrl)}&category=${encodeURIComponent(movie.category)}&genre=${encodeURIComponent(movie.genre_id)}&cast=${encodeURIComponent(movie.cast)}&director=${encodeURIComponent(movie.director)}&description=${encodeURIComponent(movie.description)}`;
+      const queryString = `?movie_id=${encodeURIComponent(movie.movie_id)}&title=${encodeURIComponent(movie.title)}&rating=${encodeURIComponent(movie.rating)}&duration=${encodeURIComponent(movie.duration)}&imageUrl=${encodeURIComponent(movie.imageUrl)}&trailerUrl=${encodeURIComponent(movie.trailerUrl)}&category=${encodeURIComponent(movie.category)}&genre=${encodeURIComponent(movie.genre)}&cast=${encodeURIComponent(movie.cast)}&director=${encodeURIComponent(movie.director)}&description=${encodeURIComponent(movie.description)}`;
       window.location.href = `/edit-movie${queryString}`;
+      
   };
+
+  console.log("Movie: " + movie);
 
   return (
     <div className="three-col">
@@ -49,22 +52,6 @@ const EditMoviePostCard: React.FC<Props> = ({ movie }) => {
                 </div>
             </div>
         </div>
-
-        <EditMovieInfo
-        isOpen={isTrailerModalOpen}
-        onClose={closeTrailerModal}
-        trailerUrl={movie.trailerUrl}
-        title={movie.title}
-        rating={movie.rating}
-        genre={movie.genre_id}
-        cast={movie.cast}
-        director={movie.director}
-        descr={movie.description}
-        imageUrl={movie.imageUrl}
-        producer={movie.producer}
-        reviews={movie.reviews}
-        shows={movie.shows}
-        />
     </div>
   );
 }

@@ -10,21 +10,24 @@ interface UserProfile {
 
 const ManageMovies: React.FC = () => {
   const queryParams = new URLSearchParams(window.location.search);
-  const movieId = queryParams.get('movie_id');
 
   // Initialize state variables for movie details
   const [movieDetails, setMovieDetails] = useState({
+    movie_id: queryParams.get('movie_id'),
     title: queryParams.get('title') || '',
     rating: queryParams.get('rating') || '',
     duration: queryParams.get('duration') || '',
     imageUrl: queryParams.get('imageUrl') || '',
     trailerUrl: queryParams.get('trailerUrl') || '',
     category: queryParams.get('category') || '',
-    genre: queryParams.get('genre_id') || '',
+    genre: queryParams.get('genre') || '',
     cast: queryParams.get('cast') || '',
     director: queryParams.get('director') || '',
     description: queryParams.get('description') || '',
   });
+
+
+  console.log("Movie id card: " + movieDetails.movie_id);
 
   const [profile, setProfile] = useState<UserProfile>({
     admin: true,
@@ -67,7 +70,7 @@ const ManageMovies: React.FC = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8080/api/edit-movie/{movieId}`,
+        `http://localhost:8080/api/edit-movie/{movieDetails.movie_id}`,
         movieDetails,
         {
           headers: {
