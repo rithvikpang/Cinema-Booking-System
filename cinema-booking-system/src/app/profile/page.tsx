@@ -26,6 +26,7 @@ const ProfilePage: React.FC = () => {
     zip: '',
     // Initialize other fields as needed
   });
+  
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
  
