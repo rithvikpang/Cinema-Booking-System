@@ -3,6 +3,7 @@ export interface Movie {
     onClose: () => void;
     trailerUrl: string;
     title: string;
+    movie_id: number;
     rating: string;
     genre: number;
     cast: string;
