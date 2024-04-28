@@ -58,7 +58,7 @@ const Body = () => {
       }
     } catch (error) {
       console.error('Error fetching movie data:', error);
-      toast.error('Failed to perform search.');
+      toast.error('Movie not found.');
       setSearchResults([]); // Optionally handle error by clearing search results or other means
     }
   };
