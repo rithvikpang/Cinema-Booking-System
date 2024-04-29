@@ -28,7 +28,7 @@ const EditMoviePostCard: React.FC<Props> = ({ movie }) => {
       
   };
 
-  console.log("Movie: " + movie);
+  console.log(movie);
 
   return (
     <div className="three-col">

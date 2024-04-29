@@ -14,12 +14,14 @@ export interface Movie {
     trailerUrl: string;
     producer: string;
     reviews: string;
-    movie_id: number;
+    movie_id: string;
     shows: Show[];
   }
 
 export interface Show {
-    show_id: number;
+    showId: number;
+    showroom: number[];
+    showroomId: number;
     date: string;
     time: string;
     duration: number;

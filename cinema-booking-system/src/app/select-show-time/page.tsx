@@ -1,17 +1,20 @@
 "use client"
-import React from 'react';
-import Link from 'next/link';
-import ComboBox from '../../../components/ShowTimeSelection';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import ShowTimeSelection from '../../../components/ShowTimeSelection';
 
 interface Movie {
     shows: Show[];
 }
 
 interface Show {
-    date: string;
+    showId: number;
+    showroomId: number;
 }
 
-const BookingPage: React.FC<Movie> = () => {
+const SelectShowTime: React.FC<Movie> = () => {
+    const router = useRouter();
+    const [buttonClicked, setButtonClicked] = useState(false);
 
     const queryParams = new URLSearchParams(window.location.search);
     const title = queryParams.get('title');
@@ -23,44 +26,67 @@ const BookingPage: React.FC<Movie> = () => {
     const show2Time = queryParams.get('show2Time') || '';
     const show3Time = queryParams.get('show3Time') || '';
 
+    
+    const show1ShowId = queryParams.get('show1ShowId') || '';
+    const show1ShowRoom = queryParams.get('show1ShowRoom') || '';
+
     const show1 = show1Date.substring(0, 4) + "-" + show1Date[5] + "-" + show2Date.substring(7, 9) + " " + show1Time.substring(0, 2) + ":" + show1Time[3] + "0";
     const show2 = show2Date.substring(0, 4) + "-" + show2Date[5] + "-" + show2Date.substring(7, 9) + " " + show2Time.substring(0, 2) + ":" + show2Time[3] + "0";
     const show3 = show3Date.substring(0, 4) + "-" + show3Date[5] + "-" + show2Date.substring(7, 9) + " " + show3Time.substring(0, 2) + ":" + show3Time[3] + "0";
 
-
-
     const options = [show1, show2, show3];
+    var showIdd = null;
 
-    const handleSelect = (selectedOption: string) => {
+    console.log('show1ShowRoom: ', show1ShowId);
+    console.log("ss: ", show1ShowRoom);
+
+
+    const handleSelect = (selectedOption: string | null) => {
         console.log('Selected option:', selectedOption);
-        // Handle selected option
+        setButtonClicked(true);
+
+        if (selectedOption == show1) {
+        }
+
     };
-    
+
+    // Function to handle the next button click
+    const handleNextButtonClick = () => {
+        if (buttonClicked) {
+            // Perform actions before navigating
+            // For example, navigate to the select-seats page
+            router.push('/select-seats');
+        } else {
+            // Handle the case when the button is clicked before selecting an option
+            // For example, display a message asking the user to select a showtime
+            console.log('Please select a showtime');
+        }
+    };
+
     return (
-    <div className="container">
-        <form className="select-time block">
-            <h1 className="movie-item">Select Showtime</h1>
-            <h2>{title}</h2>
-            <img
-            className="movie-item"
-            src={imageUrl || ''}
-            width={360}
-            height={450}
-            alt="poster"/>
-            
-            <div className="combobox">
+        <div className="container">
+            <form className="select-time block">
+                <h1 className="movie-item">Select Showtime</h1>
+                <h2>{title}</h2>
+                <img
+                    className="movie-item"
+                    src={imageUrl || ''}
+                    width={360}
+                    height={450}
+                    alt="poster"
+                />
+
                 <div className="combobox">
-                    <ComboBox options={options}/>
-                </div>  
-            </div>
-            <div className="h-button block">
-                <Link href="/select-seats">
-                    <button type="button">Next</button> 
-                </Link>
-            </div>  
-        </form>
-    </div>
-  );
+                    <div className="combobox">
+                        <ShowTimeSelection options={options} onSelect={handleSelect} />
+                    </div>
+                </div>
+                <div className="h-button block">
+                    <button type="button" onClick={handleNextButtonClick}>Next</button>
+                </div>
+            </form>
+        </div>
+    );
 }
 
-export default BookingPage;
+export default SelectShowTime;
