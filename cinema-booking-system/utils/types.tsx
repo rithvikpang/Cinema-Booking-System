@@ -14,7 +14,7 @@ export interface Movie {
     trailerUrl: string;
     producer: string;
     reviews: string;
-    movie_id: number;
+    movieId: number;
     shows: Show[];
   }
 

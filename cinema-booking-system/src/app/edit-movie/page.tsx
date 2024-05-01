@@ -13,7 +13,7 @@ const ManageMovies: React.FC = () => {
 
   // Initialize state variables for movie details
   const [movieDetails, setMovieDetails] = useState({
-    movie_id: queryParams.get('movie_id'),
+    movie_id: queryParams.get('movieId'),
     title: queryParams.get('title') || '',
     rating: queryParams.get('rating') || '',
     duration: queryParams.get('duration') || '',
