@@ -23,7 +23,7 @@ const EditMoviePostCard: React.FC<Props> = ({ movie }) => {
     
   // Creates url string with movie info
   const handleBookClick = () => {
-      const queryString = `?movie_id=${encodeURIComponent(movie.movie_id)}&title=${encodeURIComponent(movie.title)}&rating=${encodeURIComponent(movie.rating)}&duration=${encodeURIComponent(movie.duration)}&imageUrl=${encodeURIComponent(movie.imageUrl)}&trailerUrl=${encodeURIComponent(movie.trailerUrl)}&category=${encodeURIComponent(movie.category)}&genre=${encodeURIComponent(movie.genre)}&cast=${encodeURIComponent(movie.cast)}&director=${encodeURIComponent(movie.director)}&description=${encodeURIComponent(movie.description)}`;
+      const queryString = `?movieId=${encodeURIComponent(movie.movieId)}&title=${encodeURIComponent(movie.title)}&rating=${encodeURIComponent(movie.rating)}&duration=${encodeURIComponent(movie.duration)}&imageUrl=${encodeURIComponent(movie.imageUrl)}&trailerUrl=${encodeURIComponent(movie.trailerUrl)}&category=${encodeURIComponent(movie.category)}&genre=${encodeURIComponent(movie.genre)}&cast=${encodeURIComponent(movie.cast)}&director=${encodeURIComponent(movie.director)}&description=${encodeURIComponent(movie.description)}`;
       window.location.href = `/edit-movie${queryString}`;
       
   };
