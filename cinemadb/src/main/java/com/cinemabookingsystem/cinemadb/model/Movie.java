@@ -26,7 +26,7 @@ public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "movie_id")
-    private int movie_id;
+    private Integer movie_id;
 
     @Column(name = "title", nullable = false, length = 255)
     private String title;
@@ -189,5 +189,15 @@ public class Movie {
     public void setShow(Show show) {
         this.shows.add(show);
     }
+
+    public Integer getMovieId() {
+        return movie_id;
+    }
+
+    public void setMovieId(Integer movie_id) {
+        this.movie_id = movie_id;
+    }
+
+
 
 }
