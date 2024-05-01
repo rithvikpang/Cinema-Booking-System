@@ -17,10 +17,14 @@ export interface Movie {
 
 interface Show {
     showId: number;
-    showroom: number[];
-    showroomId: number;
+    showroom: Showroom;
     date: string;
     time: string;
+}
+
+interface Showroom {
+    capacity: number;
+    showroomId: number;
 }
 
 const MovieInfo: React.FC<Movie> = ({ isOpen, onClose, trailerUrl, title, rating, genre, cast, director, descr, imageUrl, producer, reviews, shows}) => {
@@ -30,7 +34,7 @@ const MovieInfo: React.FC<Movie> = ({ isOpen, onClose, trailerUrl, title, rating
         const queryString = `?title=${encodeURIComponent(title)}&imageUrl=${encodeURIComponent(imageUrl)}&show1Date=${encodeURIComponent(shows[0].date)}&show2Date=${encodeURIComponent(shows[1].date)}
                             &show3Date=${encodeURIComponent(shows[2].date)}&show1Time=${encodeURIComponent(shows[0].time)}&show2Time=${encodeURIComponent(shows[1].time)}&show3Time=${encodeURIComponent(shows[2].time)}
                             &show1ShowId=${encodeURIComponent(shows[0].showId)}&show2ShowId=${encodeURIComponent(shows[1].showId)}&show3ShowId=${encodeURIComponent(shows[2].showId)}
-                            &show1ShowRoom=${encodeURIComponent(shows[0].showroom[0])}&show2ShowRoomId=${encodeURIComponent(shows[1].showroomId)}&show3ShowRoomId=${encodeURIComponent(shows[2].showroomId)}`;
+                            &show1ShowRoom=${encodeURIComponent(shows[0].showroom.showroomId)}&show2ShowRoomId=${encodeURIComponent(shows[1].showroom.showroomId)}&show3ShowRoomId=${encodeURIComponent(shows[2].showroomId)}`;
         window.location.href = `/select-show-time${queryString}`;
         onClose(); // Close the modal after navigating to the booking page
     };

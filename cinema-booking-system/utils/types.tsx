@@ -14,19 +14,23 @@ export interface Movie {
     trailerUrl: string;
     producer: string;
     reviews: string;
-    movie_id: string;
+    movie_id: number;
     shows: Show[];
   }
 
 export interface Show {
     showId: number;
-    showroom: number[];
-    showroomId: number;
+    showroom: Showroom;
     date: string;
     time: string;
     duration: number;
 }
-  
+
+export interface Showroom {
+    capacity: number;
+    showroomId: number;
+}
+
  export interface FormData {
     firstname: string;
     lastname: string;
