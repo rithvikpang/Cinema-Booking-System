@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 
 interface Props {
   options: (string | null)[] | null;
+  onSelect: (selectedOption: string | null) => void;
 }
 
-const ComboBox: React.FC<Props> = ({ options }) => {
-  const [selectedOption, setSelectedOption] = useState<string | null>('');
+const SelectShowTime: React.FC<Props> = ({ options, onSelect }) => {
+  const [selectedOption, setSelectedOption] = useState<string | null>(null); // Initialize with null
 
   const [showOptions, setShowOptions] = useState<boolean>(false);
   const [activeOptionIndex, setActiveOptionIndex] = useState<number | null>(null);
@@ -16,7 +17,8 @@ const ComboBox: React.FC<Props> = ({ options }) => {
 
   const handleOptionClick = (index: number | null, option: string | null) => {
     setSelectedOption(option);
-    setShowOptions(false); // Hide options after selection
+    onSelect(option);
+    setShowOptions(false);
     setActiveOptionIndex(index);
   };
 
@@ -26,7 +28,7 @@ const ComboBox: React.FC<Props> = ({ options }) => {
         className="combo-box-selected"
         onClick={toggleOptions}
         style={{
-          backgroundColor: selectedOption ? '#007bff' : '#fff',
+          backgroundColor: selectedOption ? '#848afa' : '#fff',
           color: selectedOption ? '#fff' : '#000',
         }}
       >
@@ -49,4 +51,4 @@ const ComboBox: React.FC<Props> = ({ options }) => {
   );
 };
 
-export default ComboBox;
+export default SelectShowTime;

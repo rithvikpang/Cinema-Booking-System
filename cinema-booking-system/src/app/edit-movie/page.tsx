@@ -13,7 +13,7 @@ const ManageMovies: React.FC = () => {
 
   // Initialize state variables for movie details
   const [movieDetails, setMovieDetails] = useState({
-    movie_id: queryParams.get('movieId'),
+    movie_id: queryParams.get('movie_id') || '',
     title: queryParams.get('title') || '',
     rating: queryParams.get('rating') || '',
     duration: queryParams.get('duration') || '',
@@ -26,8 +26,8 @@ const ManageMovies: React.FC = () => {
     description: queryParams.get('description') || '',
   });
 
-
   console.log("Movie id card: " + movieDetails.movie_id);
+  console.log("Movie title card: " + movieDetails.title);
 
   const [profile, setProfile] = useState<UserProfile>({
     admin: true,
@@ -70,7 +70,7 @@ const ManageMovies: React.FC = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8080/api/edit-movie/{movieDetails.movie_id}`,
+        `http://localhost:8080/movies/edit-movie/{movieDetails.movie_id}`,
         movieDetails,
         {
           headers: {

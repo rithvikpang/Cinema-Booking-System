@@ -19,12 +19,18 @@ export interface Movie {
   }
 
 export interface Show {
-    show_id: number;
+    showId: number;
+    showroom: Showroom;
     date: string;
     time: string;
     duration: number;
 }
-  
+
+export interface Showroom {
+    capacity: number;
+    showroomId: number;
+}
+
  export interface FormData {
     firstname: string;
     lastname: string;
