@@ -15,7 +15,6 @@ const PostCard = ({ movie }: Props) => {
   const closeTrailerModal = () => setIsTrailerModalOpen(false);
 
   console.log(movie);
-  console.log(movie.imageUrl);
 
   return (
     <div className="three-col">
