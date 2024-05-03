@@ -252,7 +252,7 @@ const Navbar = () => {
               />
             </Link>
             <Link className="site-name" href="/">
-              <h1 className="navbar">Cinema Booking</h1>
+              <h1 className="navbar">CINEMA BOOKING</h1>
             </Link>
           </div>
           <div className="home-buttons">
@@ -285,7 +285,7 @@ const Navbar = () => {
                     />
                   </Link>
                   <Link className="site-name" href="/">
-                    <h1 className="navbar">Cinema Booking</h1>
+                    <h1 className="navbar">CINEMA BOOKING</h1>
                   </Link>
                 </div>
                 <div className="home-buttons">
@@ -324,7 +324,7 @@ const Navbar = () => {
                     />
                   </Link>
                   <Link className="site-name" href="/">
-                    <h1 className="navbar">Cinema Booking</h1>
+                    <h1 className="navbar">CINEMA BOOKING</h1>
                   </Link>
                 </div>
                 <div className="home-buttons">
