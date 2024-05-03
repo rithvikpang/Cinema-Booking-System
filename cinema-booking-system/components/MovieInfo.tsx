@@ -39,29 +39,6 @@ const MovieInfo: React.FC<Movie> = ({ isOpen, onClose, trailerUrl, title, rating
         onClose(); // Close the modal after navigating to the booking page
     };
 
-    var movie_genre = null;
-
-    // Gets genre according to genre id
-    if (genre == 1) {
-        movie_genre = "Comedy"
-    }
-
-    if (genre == 2) {
-        movie_genre = "Drama"
-    }
-
-    if (genre == 3) {
-        movie_genre = "Action"
-    }
-
-    if (genre == 4) {
-        movie_genre = "Romance"
-    }
-
-    if (genre == 5) {
-        movie_genre = "Adventure"
-    }
-
     if (!isOpen) return null;
 
     return (

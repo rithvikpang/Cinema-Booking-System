@@ -3,15 +3,15 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 
-const UnAuth = () => {
+const LogInRedir = () => {
     return (    
       <div className="log-out-container">
-        <h3>You are attempting to access an unauthorized page.</h3>
+        <h3>Please log in to book a movie.</h3>
         <Link className="link" href='/'>
-            <h3>Click here to return to home</h3>
+            <h3>Click here to log in</h3>
         </Link>
       </div>
     )
 }
 
-export default UnAuth; 
+export default LogInRedir; 
