@@ -68,6 +68,14 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public void deleteMovie(Integer movieId) {
+        Movie deletedMovie = movieRepository.findById(movieId)
+            .orElseThrow(() -> new IllegalStateException("Movie not found with id: " + movieId));
+        
+        movieRepository.delete(deletedMovie);
+    }
+
+    @Override
     public Show scheduleShow(ShowRequest showRequest) {
         // Get movie
         Movie movie = movieRepository.findById(showRequest.getMovieId())

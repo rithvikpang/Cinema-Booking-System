@@ -62,12 +62,23 @@ public class AdminController {
         return new ResponseEntity<>(updatedMovie, HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete-movie/{movieId}")
+    public ResponseEntity<?> deleteMovie(@PathVariable Integer movieId) {
+        try {
+            adminService.deleteMovie(movieId);
+        } catch (IllegalStateException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok().body("Deleted movie with id: " + movieId);
+    }
+
     @PostMapping("/schedule-show")
     public ResponseEntity<?> scheduleShow(@Validated @RequestBody ShowRequest showRequest, Errors errors) {
         if (errors.hasErrors()) {
             return ResponseEntity.badRequest().body(errors.getAllErrors());
         }
-        System.out.println(showRequest);
+        // System.out.println(showRequest);
         try {
             adminService.scheduleShow(showRequest);
             return ResponseEntity.ok().body("Successfully scheduled show");
