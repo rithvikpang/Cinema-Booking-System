@@ -13,7 +13,7 @@ const ManageMovies: React.FC = () => {
 
   // Initialize state variables for movie details
   const [movieDetails, setMovieDetails] = useState({
-    movie_id: queryParams.get('movieId'),
+    movieId: queryParams.get('movieId'),
     title: queryParams.get('title') || '',
     rating: queryParams.get('rating') || '',
     duration: queryParams.get('duration') || '',
@@ -25,9 +25,6 @@ const ManageMovies: React.FC = () => {
     director: queryParams.get('director') || '',
     description: queryParams.get('description') || '',
   });
-
-
-  console.log("Movie id card: " + movieDetails.movie_id);
 
   const [profile, setProfile] = useState<UserProfile>({
     admin: true,
@@ -70,7 +67,7 @@ const ManageMovies: React.FC = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8080/api/edit-movie/{movieDetails.movie_id}`,
+        `http://localhost:8080/api/admin/edit-movie/${movieDetails.movieId}`,
         movieDetails,
         {
           headers: {
@@ -80,11 +77,12 @@ const ManageMovies: React.FC = () => {
         }
       );
 
+      alert('Movie updated successfully');
+
       if (!response.data.success) {
         throw new Error(`Failed to update movie: ${response.data.error}`);
       }
 
-      alert('Movie updated successfully');
     } catch (err: any) {
       setError(err.message);
     }
@@ -97,7 +95,7 @@ const ManageMovies: React.FC = () => {
   }
 
   return (
-    <form className="container" onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="container" >
       <h1>Edit Movie Details</h1>
       <div className="movie-name block">
         <label htmlFor="frm-movie">Movie Name</label>
