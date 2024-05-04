@@ -1,10 +1,7 @@
 package com.cinemabookingsystem.cinemadb.service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
-import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
