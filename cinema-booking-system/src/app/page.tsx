@@ -96,6 +96,7 @@ export default function Home() {
 }
 */
 
+import React from "react";
 import { Body } from "../../components";
 
 export default function Home() {

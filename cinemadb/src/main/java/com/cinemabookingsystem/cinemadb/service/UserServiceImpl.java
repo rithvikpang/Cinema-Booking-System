@@ -1,6 +1,9 @@
 package com.cinemabookingsystem.cinemadb.service;
 
+import java.io.UnsupportedEncodingException;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import javax.crypto.SecretKey;
@@ -8,6 +11,9 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +25,19 @@ import com.cinemabookingsystem.cinemadb.repository.UserRepository;
 import ch.qos.logback.core.util.Duration;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private PasswordResetTokenRepository tokenRepository;
-    
+    private String fromEmail = "teamb8cinemabooking@gmail.com";
+    private ResourceBundle resourceBundle = ResourceBundle.getBundle("messages", Locale.US);
+    private BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
+
     @Autowired
     private MailServiceImpl mailService;
 
@@ -45,6 +57,41 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
         return user; // Assume you have a method to convert a User entity to a UserDTO
     }
+
+    private SimpleMailMessage optEmailSend(User user, int otp) {
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setFrom(fromEmail);
+        msg.setTo(user.getEmail());
+
+        msg.setSubject("Log in to your account");
+        msg.setText("Please enter the following verification code to verify this login attempt." + "\n\n" + otp
+                + "\n\n" + "If you did not request this code, please ignore this email." + "\n\n"
+                + "Thanks, Cinema Booking System");
+        return msg;
+    }
+
+    // @Override
+    // public String sendResetEmail(String email, HttpServletRequest request) {
+    // try {
+    // Optional<User> optionalUser = userRepository.findByEmail(email);
+    // if (optionalUser.isPresent()) {
+    // User user = optionalUser.get();
+    // String token = UUID.randomUUID().toString();
+    // user.setEmail(email);
+    // user.setPasswordToken(token);
+    // userRepository.save(user);
+    // javaMailSender.send(constructEmail(getAppUrl(request), request.getLocale(),
+    // token, user));
+    // return "SUCCESS";
+    // } else {
+    // throw new UsernameNotFoundException("USER NOT FOUND");
+    // }
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // return null;
+    // }
+
+    // }
 
     @SuppressWarnings("null")
     @Override
@@ -68,41 +115,74 @@ public class UserServiceImpl implements UserService {
 
     private final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    @Override
-    public void sendVerificationCode(User user) {
-        mailService.sendVerificationCode(user);
-    }
+    // @Override
+    // public void sendVerificationCode(User user) {
+    // mailService.sendVerificationCode(user);
+    // }
 
-    @Override
-    public boolean validateVerificationCode(String verificationCode) {
-        try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(verificationCode);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
+    // @Override
+    // public boolean validateVerificationCode(String verificationCode) {
+    // try {
+    // Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(verificationCode);
+    // return true;
+    // } catch (Exception e) {
+    // return false;
+    // }
+    // }
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public boolean resetPassword(String userEmail, String newPassword) {
-        User user = getUserByEmail(userEmail);
-        if (user == null) {
-            return false;
-        }
+    // public boolean resetPassword(String userEmail, String newPassword) {
+    // User user = getUserByEmail(userEmail);
+    // if (user == null) {
+    // return false;
+    // }
 
-        user.setPassword(passwordEncoder.encode(newPassword));
-        userRepository.save(user);
+    // user.setPassword(passwordEncoder.encode(newPassword));
+    // userRepository.save(user);
 
-        return true;
+    // return true;
+    // }
+
+    private final int minutes = 10;
+
+    public String generateToken() {
+        return UUID.randomUUID().toString();
     }
 
-    @Override
-    public boolean validateResetToken(String token) {
-        Optional<PasswordResetToken> resetToken = tokenRepository.findByToken(token);
-        return resetToken.isPresent() && resetToken.get().getExpiryDate().isAfter(new Date().toInstant());
+    public LocalDateTime expireTimeRange() {
+        return LocalDateTime.now().plusMinutes(minutes);
     }
+
+    JavaMailSender javaMailSender;
+
+    // public void sendEmail(String to, String subject, String emailLink)
+    // throws MessagingException, UnsupportedEncodingException {
+    // MimeMessage message = javaMailSender.createMimeMessage();
+    // MimeMessageHelper helper = new MimeMessageHelper(message);
+
+    // String emailContent = "<p>Click the link below to reset your password:</p>" +
+    // "<p><a href=\"" + emailLink
+    // + "\">Reset Password</a></p>"
+    // + "<br>"
+    // + "<p>If you did not request a password reset, please ignore this
+    // email.</p>";
+
+    // helper.setText(emailContent, true);
+    // helper.setFrom("teamb8cinemabooking@gmail.com", "Cinema Booking System");
+    // helper.setSubject(subject);
+    // helper.setTo(to);
+    // javaMailSender.send(message);
+
+    // }
+
+    // @Override
+    // public boolean validateResetToken(String token) {
+    // Optional<PasswordResetToken> resetToken = tokenRepository.findByToken(token);
+    // return resetToken.isPresent() && resetToken.get().getExpiryTime().isAfter(new
+    // Date().toInstant());
+    // }
 
     public void updatePassword(User user, String email) {
         // Fetch the existing user from the database
@@ -118,5 +198,47 @@ public class UserServiceImpl implements UserService {
         userRepository.save(existingUser);
     }
 
+    PasswordResetTokenRepository passwordResetTokenRepository;
+
     // Implement other methods as needed
+
+    private void sendEmail(String email, String token) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("teamb8cinemabooking@gmail.com");
+        message.setTo(email);
+        message.setSubject("Password Reset Request");
+        message.setText(
+                "To reset your password, click the link below:\n" + "http://localhost:8080/reset?token=" + token);
+        javaMailSender.send(message);
+
+    }
+
+    public void forgotPassword(String email) {
+
+        User user = userRepository.findById(email)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
+        PasswordResetToken token = new PasswordResetToken();
+        token.setToken(UUID.randomUUID().toString());
+        token.setExpiryDate(LocalDateTime.now().plusMinutes(15));
+        token.setUser(user);
+        passwordResetTokenRepository.save(token);
+        sendEmail(user.getEmail(), token.getToken());
+    }
+
+    public boolean resetPassword(String token, String newPassword) {
+
+        PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(token)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid token"));
+        if (resetToken == null || resetToken.getExpiryTime().isBefore(LocalDateTime.now())) {
+            return false;
+        }
+        User user = resetToken.getUser();
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        resetToken.setUsed(true);
+        passwordResetTokenRepository.delete(resetToken);
+        return true;
+    }
+
 }
