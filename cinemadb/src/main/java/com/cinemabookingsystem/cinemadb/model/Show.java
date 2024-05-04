@@ -1,6 +1,7 @@
 package com.cinemabookingsystem.cinemadb.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,13 +25,13 @@ public class Show {
     private LocalDate date;
     private LocalTime time;
     private int duration;
-    
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "showroom_id", referencedColumnName = "showroom_id")
     private Showroom showroom;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "movie_id", referencedColumnName = "movie_id")
     private Movie movie;
 

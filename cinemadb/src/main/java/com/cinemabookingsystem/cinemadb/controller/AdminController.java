@@ -26,6 +26,7 @@ import com.cinemabookingsystem.cinemadb.model.Movie;
 import com.cinemabookingsystem.cinemadb.model.Promotion;
 import com.cinemabookingsystem.cinemadb.model.Show;
 import com.cinemabookingsystem.cinemadb.service.AdminServiceImpl;
+import com.cinemabookingsystem.cinemadb.service.SeatServiceImpl;
 import com.cinemabookingsystem.cinemadb.util.DateParser;
 
 @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
@@ -35,6 +36,9 @@ public class AdminController {
 
     @Autowired
     private AdminServiceImpl adminService;
+
+    @Autowired
+    private SeatServiceImpl seatService;
 
     @PostMapping("/add-movie")
     public ResponseEntity<?> addMovie(@Validated @RequestBody Movie movie, Errors errors) {
@@ -138,4 +142,11 @@ public class AdminController {
         adminService.deletePromotion(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PostMapping("/generate-seats")
+    public ResponseEntity<?> generateSeats() {
+        seatService.generateSeats();
+        return ResponseEntity.ok("Generating Seats");
+    }
+    
 }
