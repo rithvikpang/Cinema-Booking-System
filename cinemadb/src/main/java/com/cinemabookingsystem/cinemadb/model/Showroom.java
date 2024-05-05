@@ -12,10 +12,13 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.Set;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(schema = "cinema_db", name = "showroom")
 public class Showroom {
     
@@ -28,6 +31,7 @@ public class Showroom {
     @JoinColumn(name = "theater_id", referencedColumnName = "theater_id")
     private Theater theater;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "showroom", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Seat> seats;
 
