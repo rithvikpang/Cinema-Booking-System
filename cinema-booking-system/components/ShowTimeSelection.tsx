@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 interface Props {
-  options: (string | null)[] | null;
+  options: string[] | null;
   onSelect: (selectedOption: string | null) => void;
 }
 
