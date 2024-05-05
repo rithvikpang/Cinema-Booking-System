@@ -33,10 +33,11 @@ import jakarta.servlet.http.HttpServletRequest;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private PasswordResetTokenRepository tokenRepository;
+    // private PasswordResetTokenRepository tokenRepository;
     private String fromEmail = "teamb8cinemabooking@gmail.com";
-    private ResourceBundle resourceBundle = ResourceBundle.getBundle("messages", Locale.US);
-    private BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
+    // private ResourceBundle resourceBundle = ResourceBundle.getBundle("messages",
+    // Locale.US);
+    // private BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     private MailServiceImpl mailService;
