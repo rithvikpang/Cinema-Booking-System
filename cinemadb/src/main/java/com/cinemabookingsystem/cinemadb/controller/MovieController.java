@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Set;
 import java.time.LocalDate;
 
-
 @RestController
 @RequestMapping("/api/movies")
 @CrossOrigin
@@ -57,7 +56,7 @@ public class MovieController {
     @GetMapping("search/by-show-date")
     public ResponseEntity<?> searchMoviesByShowDate(@RequestParam LocalDate showDate) {
         Set<Movie> searchResults;
-        try { 
+        try {
             searchResults = movieService.searchMoviesByShowDate(showDate);
         } catch (InvalidParameterException e) {
             System.out.println(e.getMessage());
@@ -65,11 +64,6 @@ public class MovieController {
         }
         return ResponseEntity.ok(searchResults);
     }
-
-
-    
-    
-
 
     // Add methods for GET by ID, PUT, and DELETE as needed
 }

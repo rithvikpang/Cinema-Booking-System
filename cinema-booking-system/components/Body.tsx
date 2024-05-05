@@ -19,7 +19,7 @@ const Body = () => {
   const [searchResults, setSearchResults] = useState<Movie[]>([]);
   const [isSearched, setIsSearched] = useState<boolean>(false); // Tracks if a search has been performed
   const [selectedCategory, setSelectedCategory] = useState<string>('Now Playing');
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date| null>(null);
 
   useEffect(() => {
     async function fetchMovies() {
@@ -77,21 +77,26 @@ const Body = () => {
 
   useEffect(() => {
     async function fetchMoviesByDate(date: Date) {
-      const formattedDate = date.toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
-      try {
-        const response = await fetch(`http://localhost:8080/api/movies/search/by-show-date?showDate=${formattedDate}`);
-        const data = await response.json();
-        setMovies(data);
-      } catch (error) {
-        console.error('Error fetching movies by date:', error);
-        toast.error('Failed to load movies for the selected date.');
+      if (date) {  // Ensure a date is selected before fetching
+        const formattedDate = date.toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
+        try {
+          const response = await fetch(`http://localhost:8080/api/movies/search/by-show-date?showDate=${formattedDate}`);
+          const data = await response.json();
+          setMovies(data);
+        } catch (error) {
+          console.error('Error fetching movies by date:', error);
+          toast.error('Failed to load movies for the selected date.');
+        }
       }
     }
-
-    fetchMoviesByDate(selectedDate);
+    if (selectedDate) { // Only call fetchMoviesByDate if selectedDate is not null
+      fetchMoviesByDate(selectedDate);
+    } else {
+      setMovies([]); // Clear movies if no date is selected
+    }
   }, [selectedDate]);
 
-  const handleDateChange = (date: Date) => {
+  const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
   };
 
@@ -110,6 +115,7 @@ const Body = () => {
             onChange={handleDateChange}
             dateFormat="yyyy/MM/dd"
             className="date-picker"
+            placeholderText="Select a date to see movies"
           />
           <select onChange={handleCategoryChange} value={selectedCategory} className="movie-cat">
             <option value="Now Playing">Now Showing</option>

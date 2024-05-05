@@ -20,7 +20,7 @@ import java.util.Set;
 
 @Service
 public class MovieServiceImpl implements MovieService {
-    
+
     @Autowired
     private MovieRepository movieRepository;
 
@@ -51,12 +51,12 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> searchMoviesByGenre(Genre genre) {
-       List<Movie> moviesByThisGenre = movieRepository.findByGenre(genre);
-       // checks to see if list is empty
-       if (moviesByThisGenre.isEmpty()) {
-        throw new InvalidParameterException("No movies with genre: " + genre);
-       }
-       return moviesByThisGenre;
+        List<Movie> moviesByThisGenre = movieRepository.findByGenre(genre);
+        // checks to see if list is empty
+        if (moviesByThisGenre.isEmpty()) {
+            throw new InvalidParameterException("No movies with genre: " + genre);
+        }
+        return moviesByThisGenre;
     }
 
     @Override
