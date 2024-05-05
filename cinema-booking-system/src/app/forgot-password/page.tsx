@@ -17,21 +17,19 @@ const ForgotPassword: React.FC = () => {
       event.preventDefault();
       const encodedEmail = encodeURIComponent(email);
       try {
-        const response = await fetch('http://localhost:8080/api/user/${encodedEmail}/forgot-password/', {
+        const response = await fetch('http://localhost:8080/api/user/forgot-password/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email }),
         });
-  
         if (response.ok) {
-            localStorage.setItem('resetEmail', email);
-            setMessage('If an account with that email exists, we have sent you a reset email.');
-            router.push('/forgot-code');
+          setMessage('An email has been sent to you with further instructions.');
+          setEmail('');
         } else {
-          setMessage('Email not found.');
+          setMessage('An error occurred. Please try again later1.');
         }
       } catch (error) {
-        setMessage('An error occurred. Please try again later.');
+        setMessage('An error occurred. Please try again later2.');
       }
     };
 

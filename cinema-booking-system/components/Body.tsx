@@ -6,6 +6,8 @@ import React, { useEffect, useState } from 'react';
 import { useSearch, SearchResult } from './SearchContext';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import PostCard from './PostCard';
 import SearchBar from './SearchBar'; // Assuming SearchBar is now a child component used for searching
 import { Movie } from '../utils/types'; // Import the type
@@ -17,6 +19,7 @@ const Body = () => {
   const [searchResults, setSearchResults] = useState<Movie[]>([]);
   const [isSearched, setIsSearched] = useState<boolean>(false); // Tracks if a search has been performed
   const [selectedCategory, setSelectedCategory] = useState<string>('Now Playing');
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   useEffect(() => {
     async function fetchMovies() {
@@ -72,6 +75,26 @@ const Body = () => {
     setIsSearched(false); // Reset search when category changes
   };
 
+  useEffect(() => {
+    async function fetchMoviesByDate(date: Date) {
+      const formattedDate = date.toISOString().split('T')[0]; // Format as 'YYYY-MM-DD'
+      try {
+        const response = await fetch(`http://localhost:8080/api/movies/search/by-show-date?showDate=${formattedDate}`);
+        const data = await response.json();
+        setMovies(data);
+      } catch (error) {
+        console.error('Error fetching movies by date:', error);
+        toast.error('Failed to load movies for the selected date.');
+      }
+    }
+
+    fetchMoviesByDate(selectedDate);
+  }, [selectedDate]);
+
+  const handleDateChange = (date: Date) => {
+    setSelectedDate(date);
+  };
+
   // Decide which movies to display based on search or default categories
   //const displayedMovies = isSearched && searchResults.length > 0 ? searchResults : (isSearched ? [] : movies);
   //const displayedMovies = selectedCategory ? movies.filter(movie => movie.category === selectedCategory) : movies;
@@ -81,11 +104,17 @@ const Body = () => {
   return (
     <div className="container">
         <div className="search-button block">
-          <SearchBar onSearch={handleSearch} />
+          <SearchBar onSearch={handleSearch}/>
+          <DatePicker
+            selected={selectedDate}
+            onChange={handleDateChange}
+            dateFormat="yyyy/MM/dd"
+            className="date-picker"
+          />
           <select onChange={handleCategoryChange} value={selectedCategory} className="movie-cat">
-          <option value="Now Playing">Now Showing</option>
-          <option value="Coming Soon">Coming Soon</option>
-        </select>
+            <option value="Now Playing">Now Showing</option>
+            <option value="Coming Soon">Coming Soon</option>
+          </select>
           <ToastContainer position="top-center" autoClose={5000} hideProgressBar={true}
           newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
         </div>
