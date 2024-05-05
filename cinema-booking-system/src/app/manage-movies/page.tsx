@@ -92,11 +92,11 @@ const ManageMovies: React.FC = () => {
     <div className="container">
       <h1>Manage Movies</h1>
       <button type="submit" className="purple-btn" onClick={() => router.push('add-movie')}>
-                Add Movie
-          </button>
-          <Link href="/schedule-movie">
-                <button type="button" className="purple-btn">Schedule Movie</button> 
-          </Link>        
+          Add Movie
+      </button>
+      <Link href="/schedule-movie">
+          <button type="button" className="purple-btn">Schedule Movie</button> 
+      </Link>        
       <div className="three-col">
         {displayedMovies.map((movie, index) => (
           <EditMoviePostCard key={`${movie.title}-${index}`} movie={movie} />
