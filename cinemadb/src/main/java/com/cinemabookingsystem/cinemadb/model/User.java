@@ -35,11 +35,11 @@ public class User {
     private boolean isverified;
     private Instant created_at;
     
-    @JsonProperty("user_id")
-    private int user_id;
+    // @JsonProperty("user_id")
+    private Integer user_id;
 
-    @JsonProperty("isadmin")
-    private boolean isadmin;
+    // @JsonProperty("isadmin")
+    private Boolean isadmin;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<PaymentCard> PaymentCards;
@@ -55,11 +55,11 @@ public class User {
 
     }
 
-    public boolean isAdmin() {
+    public Boolean isAdmin() {
         return isadmin;
     }
 
-    public void setAdmin(boolean isadmin) {
+    public void setAdmin(Boolean isadmin) {
         this.isadmin = isadmin;
     }
 
@@ -175,11 +175,11 @@ public class User {
         this.isverified = isverified;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return user_id;
     }
 
-    public void setUserId(int user_id) {
+    public void setUserId(Integer user_id) {
         this.user_id = user_id;
     }
 

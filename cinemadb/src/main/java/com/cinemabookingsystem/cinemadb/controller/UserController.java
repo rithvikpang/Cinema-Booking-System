@@ -146,8 +146,8 @@ public class UserController {
 
             User user = userRepository.findById(email).orElse(null);
             if (user != null) {
-                // Consider creating a DTO to return user information
-                return ResponseEntity.ok().body(user);
+                UserDTO userDTO = userService.convertToUserDTO(user); 
+                return ResponseEntity.ok().body(userDTO);
             }
         }
         return ResponseEntity.notFound().build();
