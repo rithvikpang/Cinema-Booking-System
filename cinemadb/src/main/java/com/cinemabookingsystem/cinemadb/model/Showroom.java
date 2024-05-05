@@ -27,12 +27,12 @@ public class Showroom {
     private Integer showroom_id;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "theater_id", referencedColumnName = "theater_id")
     private Theater theater;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "showroom", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "showroom", cascade = CascadeType.ALL)
     private Set<Seat> seats;
 
     private int capacity;
