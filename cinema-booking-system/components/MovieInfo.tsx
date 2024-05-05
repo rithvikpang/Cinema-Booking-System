@@ -31,14 +31,23 @@ const MovieInfo: React.FC<Movie> = ({ isOpen, onClose, trailerUrl, title, rating
     
     // Creates url string with movie info
     const handleBookClick = () => {
-        const queryString = `?title=${encodeURIComponent(title)}&imageUrl=${encodeURIComponent(imageUrl)}&show1Date=${encodeURIComponent(shows[0].date)}&show2Date=${encodeURIComponent(shows[1].date)}
-                            &show3Date=${encodeURIComponent(shows[2].date)}&show1Time=${encodeURIComponent(shows[0].time)}&show2Time=${encodeURIComponent(shows[1].time)}&show3Time=${encodeURIComponent(shows[2].time)}
-                            &show1ShowId=${encodeURIComponent(shows[0].showId)}&show2ShowId=${encodeURIComponent(shows[1].showId)}&show3ShowId=${encodeURIComponent(shows[2].showId)}
-                            &show1ShowRoom=${encodeURIComponent(shows[0].showroom.showroomId)}&show2ShowRoomId=${encodeURIComponent(shows[1].showroom.showroomId)}&show3ShowRoomId=${encodeURIComponent(shows[2].showroomId)}`;
+        // Construct an array of show information strings
+        const showInfoArray = shows.map((show, index) => {
+            return `show${index + 1}Id=${encodeURIComponent(show.showId)}&show${index + 1}Date=${encodeURIComponent(show.date)}&show${index + 1}Time=${encodeURIComponent(show.time)}&show${index + 1}ShowroomId=${encodeURIComponent(show.showroom.showroomId)}`;
+        });
+    
+        // Join the show information strings with '&'
+        const showInfoQueryString = showInfoArray.join('&');
+    
+        // Construct the final query string with movie info and show info
+        const queryString = `?title=${encodeURIComponent(title)}&imageUrl=${encodeURIComponent(imageUrl)}&${showInfoQueryString}`;
+    
+        // Redirect to the booking page with the constructed query string
         window.location.href = `/select-show-time${queryString}`;
+    
         onClose(); // Close the modal after navigating to the booking page
     };
-
+    
     if (!isOpen) return null;
 
     return (
