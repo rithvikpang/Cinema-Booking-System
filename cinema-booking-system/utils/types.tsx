@@ -49,3 +49,16 @@ export interface FormErrors {
     confirmPassword?: string;
     // Corresponding fields for errors
 }
+
+// types.ts
+export interface UserProfile {
+    email: string;
+    firstname: string;
+    lastname: string;
+    address: string;
+    age: string;
+    city: string;
+    state: string;
+    zip: string;
+  }
+  

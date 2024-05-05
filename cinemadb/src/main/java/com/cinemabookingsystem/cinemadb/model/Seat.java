@@ -1,5 +1,7 @@
 package com.cinemabookingsystem.cinemadb.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +21,7 @@ public class Seat {
     private String row_letter;
     private int seat_number;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "showroom_id", referencedColumnName = "showroom_id")
     private Showroom showroom;

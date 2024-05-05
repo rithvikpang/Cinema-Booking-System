@@ -6,6 +6,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 
@@ -32,8 +34,12 @@ public class User {
     private String status;
     private boolean isverified;
     private Instant created_at;
-    private int user_id;
-    private boolean isadmin;
+    
+    // @JsonProperty("user_id")
+    private Integer user_id;
+
+    // @JsonProperty("isadmin")
+    private Boolean isadmin;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<PaymentCard> PaymentCards;
@@ -49,11 +55,11 @@ public class User {
 
     }
 
-    public boolean isAdmin() {
+    public Boolean isAdmin() {
         return isadmin;
     }
 
-    public void setAdmin(boolean isadmin) {
+    public void setAdmin(Boolean isadmin) {
         this.isadmin = isadmin;
     }
 
@@ -169,20 +175,12 @@ public class User {
         this.isverified = isverified;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return user_id;
     }
 
-    public void setUserId(int user_id) {
+    public void setUserId(Integer user_id) {
         this.user_id = user_id;
-    }
-
-    public boolean isIsadmin() {
-        return isadmin;
-    }
-
-    public void setIsadmin(boolean isadmin) {
-        this.isadmin = isadmin;
     }
 
     public Set<PaymentCard> getPaymentCards() {
