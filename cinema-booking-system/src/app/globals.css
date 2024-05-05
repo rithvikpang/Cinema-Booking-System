@@ -655,3 +655,10 @@ input[type="password"] {
       background-color: #628efd; /* Darker tan on hover */
     }
 }
+
+.tickets {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px;
+}

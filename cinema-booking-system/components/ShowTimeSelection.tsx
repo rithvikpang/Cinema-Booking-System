@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 
 interface Props {
   options: string[] | null;
-  onSelect: (selectedOption: string | null) => void;
+  onSelect: (selectedOption: string | null, showroomId: number, showId: number) => void;
+  showroomIds: number[];
+  showIds: number[];
 }
 
-const SelectShowTime: React.FC<Props> = ({ options, onSelect }) => {
+const ShowTimeSelection: React.FC<Props> = ({ options, onSelect, showroomIds, showIds }) => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null); // Initialize with null
-
   const [showOptions, setShowOptions] = useState<boolean>(false);
   const [activeOptionIndex, setActiveOptionIndex] = useState<number | null>(null);
 
@@ -17,7 +18,7 @@ const SelectShowTime: React.FC<Props> = ({ options, onSelect }) => {
 
   const handleOptionClick = (index: number | null, option: string | null) => {
     setSelectedOption(option);
-    onSelect(option);
+    onSelect(option, showroomIds[index || 0], showIds[index || 0]);
     setShowOptions(false);
     setActiveOptionIndex(index);
   };
@@ -51,4 +52,4 @@ const SelectShowTime: React.FC<Props> = ({ options, onSelect }) => {
   );
 };
 
-export default SelectShowTime;
+export default ShowTimeSelection;

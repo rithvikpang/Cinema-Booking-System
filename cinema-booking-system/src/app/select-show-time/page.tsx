@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ShowTimeSelection from '../../../components/ShowTimeSelection';
 
@@ -53,17 +53,18 @@ const SelectShowTime: React.FC<Movie> = () => {
 
   console.log(showsFromQueryParams);
 
-  const handleSelect = (selectedOption: string | null) => {
+  const handleSelect = (selectedOption: string | null, showroomId: number, showId: number) => {
     console.log('Selected option:', selectedOption);
     setButtonClicked(true);
+    // Pass selected showroomId and showId to the next page
+    handleNextButtonClick(selectedOption, showroomId, showId);
   };
 
-  const handleNextButtonClick = () => {
-    if (buttonClicked) {
-      router.push('/select-seats');
-    } else {
-      alert('Please select a showtime');
-    }
+  const handleNextButtonClick = (selectedShowTime: string | null, showroomId: number, showId: number) => {
+      if (selectedShowTime) {
+        // Append showroomId and showId to the URL
+        router.push(`/select-tickets?selectedShowTime=${encodeURIComponent(selectedShowTime)}&showroomId=${showroomId}&showId=${showId}`);
+      }
   };
 
   return (
@@ -75,11 +76,13 @@ const SelectShowTime: React.FC<Movie> = () => {
 
         <div className="combobox">
           <div className="combobox">
-            <ShowTimeSelection options={showsFromQueryParams.map(show => `${show.date} ${show.time}`)} onSelect={handleSelect} />
+            <ShowTimeSelection
+              options={showsFromQueryParams.map(show => `${show.date} ${show.time}`)}
+              onSelect={(selectedOption, showroomId, showId) => handleSelect(selectedOption, showroomId, showId)}
+              showroomIds={showsFromQueryParams.map(show => show.showroomId)} // Pass showroomIds
+              showIds={showsFromQueryParams.map(show => show.showId)} // Pass showIds
+            />
           </div>
-        </div>
-        <div className="h-button block">
-          <button type="button" onClick={handleNextButtonClick}>Next</button>
         </div>
       </form>
     </div>
