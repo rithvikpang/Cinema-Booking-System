@@ -1,34 +1,49 @@
 package com.cinemabookingsystem.cinemadb.model;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.ManyToAny;
+import org.springframework.cglib.core.Local;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
 public class PasswordResetToken {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(nullable = false)
     private String token;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
-    private Instant expiryDate;
+
+    @Column(nullable = false)
+    private LocalDateTime expiryTime;
+
+    @Column(nullable = false)
+    private boolean isUsed;
 
     // Constructors, getters, and setters
     public PasswordResetToken() {
     }
 
-    public PasswordResetToken(String token, User user, Instant expiryDate) {
+    public PasswordResetToken(String token, User user, LocalDateTime expiryTime) {
         this.token = token;
         this.user = user;
-        this.expiryDate = expiryDate;
+        this.expiryTime = expiryTime;
     }
 
     public Long getId() {
@@ -55,12 +70,20 @@ public class PasswordResetToken {
         this.user = user;
     }
 
-    public Instant getExpiryDate() {
-        return expiryDate;
+    public LocalDateTime getExpiryTime() {
+        return expiryTime;
     }
 
-    public void setExpiryDate(Instant expiryDate) {
-        this.expiryDate = expiryDate;
+    public void setExpiryDate(LocalDateTime expiryTime) {
+        this.expiryTime = expiryTime;
+    }
+
+    public boolean isUsed() {
+        return isUsed;
+    }
+
+    public void setUsed(boolean isUsed) {
+        this.isUsed = isUsed;
     }
 
 }

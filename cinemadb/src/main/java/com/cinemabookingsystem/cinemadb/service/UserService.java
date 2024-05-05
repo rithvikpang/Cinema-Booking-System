@@ -7,11 +7,11 @@ public interface UserService {
 
     void updateUser(User user, String email);
 
-    boolean validateResetToken(String token);
+    // boolean validateResetToken(String token);
 
-    public void sendVerificationCode(User user);
+    // public void sendVerificationCode(User user);
 
-    public boolean validateVerificationCode(String verificationCode);
+    // public boolean validateVerificationCode(String verificationCode);
 
     public boolean resetPassword(String userEmail, String newPassword);
 
