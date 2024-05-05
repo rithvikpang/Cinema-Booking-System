@@ -11,11 +11,9 @@ const ResetPasswordPage: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const router = useRouter();
-        const email = localStorage.getItem('resetEmail');
         try {
-            const response = await axios.post('/api/user/reset-password', { email, newPassword});
+            const response = await axios.post('/api/user/reset-password');
             if (response.status === 200) {
-                localStorage.removeItem('resetEmail');
                 alert('Password reset successfully.');
                 router.push('/sign-in');
             } else {

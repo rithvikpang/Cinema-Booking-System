@@ -35,7 +35,6 @@ import java.util.Optional;
 import java.util.Set;
 import org.slf4j.Logger;
 
-
 @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RestController
 @RequestMapping("api/user")
@@ -196,6 +195,7 @@ public class UserController {
         return ResponseEntity.badRequest().body("Invalid or expired token");
     }
 
+
     @DeleteMapping("/profile/{email}")
     public ResponseEntity<?> deleteUserProfile(@PathVariable("email") String email) {
         try {
@@ -206,36 +206,55 @@ public class UserController {
         }
     }
 
-    @PostMapping("{email}/forgot-password")
-    public ResponseEntity<?> forgotPassword(@RequestParam String email) {
-        User user = userService.getUserByEmail(email);
-        if (user != null) {
-            userService.sendVerificationCode(user);
-            return ResponseEntity.ok().body("Verification code sent to email");
-        }
-        return ResponseEntity.badRequest().body("User not found");
-    }
+    // @PostMapping("{email}/forgot-password")
+    // public ResponseEntity<?> forgotPassword(@RequestParam String email) {
+    // User user = userService.getUserByEmail(email);
+    // if (user != null) {
+    // userService.sendVerificationCode(user);
+    // return ResponseEntity.ok().body("Verification code sent to email");
+    // }
+    // return ResponseEntity.badRequest().body("User not found");
+    // }
 
-    @PostMapping("/verify-code")
-    public ResponseEntity<?> verifyCode(@RequestParam String code) {
-        if (userService.validateVerificationCode(code)) {
-            return ResponseEntity.ok().body("Code is valid");
-        }
-        return ResponseEntity.badRequest().body("Invalid code");
+    // @PostMapping("/verify-code")
+    // public ResponseEntity<?> verifyCode(@RequestParam String code) {
+    // if (userService.validateVerificationCode(code)) {
+    // return ResponseEntity.ok().body("Code is valid");
+    // }
+    // return ResponseEntity.badRequest().body("Invalid code");
+    // }
+
+    // @PostMapping("/reset-password")
+    // public ResponseEntity<?> resetPassword(@RequestParam String email,
+    // @RequestParam String newPassword) {
+    // try {
+    // boolean isPasswordReset = userService.resetPassword(email, newPassword);
+    // if (!isPasswordReset) {
+    // return ResponseEntity.badRequest().body("Password reset failed");
+    // }
+    // return ResponseEntity.ok().body("Password reset successfully");
+    // } catch (Exception e) {
+    // return ResponseEntity.badRequest().body("Error resetting password");
+    // }
+    // }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestParam String email) {
+
+        userService.forgotPassword(email);
+        return ResponseEntity.ok().body("Verification code sent to email");
+
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(@RequestParam String email,
-            @RequestParam String newPassword) {
-        try {
-            boolean isPasswordReset = userService.resetPassword(email, newPassword);
-            if (!isPasswordReset) {
-                return ResponseEntity.badRequest().body("Password reset failed");
-            }
+    public ResponseEntity<?> resetPassword(@RequestParam String token, @RequestParam String newPassword) {
+
+        boolean result = userService.resetPassword(token, newPassword);
+        if (result) {
             return ResponseEntity.ok().body("Password reset successfully");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error resetting password");
         }
+        return ResponseEntity.badRequest().body("Error resetting password");
+
     }
 
 }

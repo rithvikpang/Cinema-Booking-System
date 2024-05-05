@@ -1,6 +1,9 @@
 package com.cinemabookingsystem.cinemadb.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,9 +18,10 @@ public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer seat_id;
-    private String row;
+    private String row_letter;
     private int seat_number;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "showroom_id", referencedColumnName = "showroom_id")
     private Showroom showroom;
@@ -30,12 +34,12 @@ public class Seat {
         this.seat_id = seat_id;
     }
 
-    public String getRow() {
-        return row;
+    public String getRowLetter() {
+        return row_letter;
     }
 
-    public void setRow(String row) {
-        this.row = row;
+    public void setRowLetter(String rowLetter) {
+        this.row_letter = rowLetter;
     }
 
     public int getSeatNumber() {

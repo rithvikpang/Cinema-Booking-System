@@ -1,6 +1,8 @@
 package com.cinemabookingsystem.cinemadb.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -10,10 +12,13 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.util.Set;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(schema = "cinema_db", name = "showroom")
 public class Showroom {
     
@@ -22,9 +27,13 @@ public class Showroom {
     private Integer showroom_id;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "theater_id", referencedColumnName = "theater_id")
     private Theater theater;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "showroom", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Seat> seats;
 
     private int capacity;
 
@@ -54,6 +63,14 @@ public class Showroom {
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    public Set<Seat> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(Seat seat) {
+        this.seats.add(seat);
     }
 
 }
