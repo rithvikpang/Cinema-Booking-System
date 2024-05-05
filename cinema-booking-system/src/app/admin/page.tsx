@@ -46,6 +46,20 @@ export default function Admin() {
                     <button className="seats">Manage Users</button>
                 </Link>
             </div>
+            <div className="admin-func">
+                <Link href="/manage-suspensions">
+                    <Image
+                    className="admin-icons"
+                    src="/jail.png"
+                    width={200}
+                    height={200}
+                    alt="jail"
+                    />
+                </Link>
+                <Link className="admin-button" href="/manage-suspensions">
+                    <button className="seats">Manage Suspensions</button>
+                </Link>
+            </div>
         </div>
     );
 }

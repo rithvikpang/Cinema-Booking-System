@@ -6,12 +6,12 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link'
 
 interface UserProfile {
-  admin: boolean;
+  isadmin: boolean;
   // Add other fields as they are defined in your database
 }
 const ManageMovies: React.FC = () => {
   const [profile, setProfile] = useState<UserProfile>({
-    admin: true,
+    isadmin: true,
   });
 
   const [token, setToken] = useState<string | null>();
@@ -69,20 +69,13 @@ const ManageMovies: React.FC = () => {
     fetchProfile();
   }, []);
 
-  /**
   useEffect(() => {
-    if (profile.admin) {
+    if (profile.isadmin) {
       fetchMovies();
     } else {
       router.push('/unauth-page')
     }
-  }, [profile.admin]);
-   */
-  useEffect(() => {
-      fetchMovies();
-
-  }, [profile.admin]);
-
+  }, [profile.isadmin]);
 
   const fetchMovies = async () => {
     const response = await fetch('http://localhost:8080/api/movies/getAll');
