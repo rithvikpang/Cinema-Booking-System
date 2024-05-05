@@ -6,11 +6,14 @@ import java.util.*;
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.cinemabookingsystem.cinemadb.dto.UserDTO;
 import com.cinemabookingsystem.cinemadb.model.PasswordResetToken;
 import com.cinemabookingsystem.cinemadb.model.User;
 import com.cinemabookingsystem.cinemadb.repository.PasswordResetTokenRepository;
@@ -50,10 +53,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(User user, String email) {
         // Fetch the existing user from the database
-        User existingUser = userRepository.findById(email)
+        User existingUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
-
+    
         // Update the user's details
+        existingUser.setUserId(user.getUserId());
+        existingUser.setAdmin(user.isAdmin());
         existingUser.setFirstname(user.getFirstname());
         existingUser.setLastname(user.getLastname());
         existingUser.setAddress(user.getAddress());
@@ -61,10 +66,10 @@ public class UserServiceImpl implements UserService {
         existingUser.setCity(user.getCity());
         existingUser.setState(user.getState());
         existingUser.setZip(user.getZip());
-
+    
         // Save the updated user back to the database
         userRepository.save(existingUser);
-    }
+    }    
 
     private final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
@@ -118,5 +123,51 @@ public class UserServiceImpl implements UserService {
         userRepository.save(existingUser);
     }
 
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        List<UserDTO> userDTOs = new ArrayList<>();
+        for (User user : users) {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setEmail(user.getEmail());
+            userDTO.setFirstname(user.getFirstname());
+            userDTO.setLastname(user.getLastname());
+            userDTO.setIsadmin(user.isAdmin());
+            userDTO.setUser_id(user.getUserId());
+            // Map other fields as needed
+            userDTOs.add(userDTO);
+        }
+    return userDTOs;
+    }
+
+    public UserDTO convertToUserDTO(User user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setEmail(user.getEmail());
+        userDTO.setFirstname(user.getFirstname());
+        userDTO.setLastname(user.getLastname());
+        userDTO.setAddress(user.getAddress());
+        userDTO.setAge(user.getAge());
+        userDTO.setCity(user.getCity());
+        userDTO.setState(user.getState());
+        userDTO.setZip(user.getZip());
+        userDTO.setUser_id(user.getUserId());
+        userDTO.setIsadmin(user.isAdmin());
+        // Map other properties as needed
+        return userDTO;
+    }
+
+    @Transactional
+    public void deleteUserProfile(String email) {
+        // Retrieve the user entity from the database
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            // Delete the user
+            userRepository.delete(user);
+        } else {
+            // Handle the case when the user is not found
+            throw new RuntimeException("User with email " + email + " not found");
+        }
+    }
     // Implement other methods as needed
 }

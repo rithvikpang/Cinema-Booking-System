@@ -1,133 +1,139 @@
-"use client"
-import React from 'react';
+'use client'
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from "react";
 
 interface UserProfile {
-    admin: boolean;
-    // Add other fields as they are defined in your database
-  }
-   
-  const ManageUsers: React.FC = () => {
-    const [profile, setProfile] = useState<UserProfile>({
-      admin: true,
-      // Initialize other fields as needed
-    });
-    
-
-    //const test1 = profile.admin;
-    //console.log("admin test 1: " + test1);
-
-    const [token, setToken] = useState<string | null>();
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>('');
-    const router = useRouter();
-  
-    useEffect(() => {
-        const storedToken = localStorage.getItem("token");
-  
-      // If token exists, assign value to token
-      if (storedToken) {
-        setToken(storedToken);
-      }
-      
-    }, []);
-  
-    useEffect(() => {
-      const fetchProfile = async () => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          router.push('/unauth-page')  // Does not allow non-logged in users to access this page
-          setError('No token found in localStorage');
-          setLoading(false);
-          return;
-        }
-   
-        try {
-          const response = await fetch('http://localhost:8080/api/user/profile', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-          });
-   
-          if (!response.ok) {
-            throw new Error(`Failed to fetch profile: ${response.status} ${response.statusText}`);
-          }
-   
-          const data: UserProfile = await response.json();
-          setProfile(data);
-        } catch (err: unknown) {
-          if (err instanceof Error) {
-            setError(err.message);
-          } else {
-            setError('An unknown error occurred');
-          }
-        } finally {
-          setLoading(false);
-        }
-      };
-   
-      fetchProfile();
-    }, []);
-
-    //const test2 = profile.admin;
-    //console.log("admin test 2: " + test2);
-
-    // Does not allow users to access this page
-    if (profile.admin == false) {
-        router.push('/unauth-page')
-        return null;
-    }
-    
-    return (
-        <form className="container">
-            <h1>Manage Users</h1>
-            <div className="form-section">
-                <div className="order-sum-item">
-                    <label className="tickets-label" htmlFor="message">Name</label>
-                    <label className="tickets-label" htmlFor="message">Email</label>
-                    <label className="tickets-label" htmlFor="message">Edit Details</label>
-                    <label className="tickets-label" htmlFor="message">Delete</label>
-                </div>
-                <hr></hr>
-                <div className="order-sum-item">
-                    <label className="tickets-label" htmlFor="message">Edis Makelja</label>
-                    <label className="tickets-label" htmlFor="message">edismakelja@gmail.com</label>
-                    <div className="tickets-button block">
-                        <button type="submit">Edit</button>
-                    </div>
-                    <div className="tickets-button block">
-                        <button type="submit">Delete</button>
-                    </div>
-                </div>
-                <hr></hr>
-                <div className="order-sum-item">
-                    <label className="tickets-label" htmlFor="message">Dylan DiPrima</label>
-                    <label className="tickets-label" htmlFor="message">dylanwd37@gmail.com</label>
-                    <div className="tickets-button block">
-                        <button type="submit">Edit</button>
-                    </div>
-                    <div className="tickets-button block">
-                        <button type="submit">Delete</button>
-                    </div>
-                </div>
-                <hr></hr>
-                <div className="order-sum-item">
-                    <label className="tickets-label" htmlFor="message">Amélie Ngo</label>
-                    <label className="tickets-label" htmlFor="message">thingo1002@gmail.com</label>
-                    <div className="tickets-button block">
-                        <button type="submit">Edit</button>
-                    </div>
-                    <div className="tickets-button block">
-                        <button type="submit">Delete</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-
-    )
+  user_id: number;
+  firstname: string;
+  lastname: string;
+  email: string;
+  isadmin: boolean;
+  // Add other fields as they are defined in your database
 }
+
+const ManageUsers: React.FC = () => {
+  const [profile, setProfile] = useState<UserProfile>({
+    user_id: 0,
+    firstname: '',
+    lastname: '',
+    email: '',
+    isadmin: false,
+    // Initialize other fields as needed
+  });
+
+  const [users, setUsers] = useState<UserProfile[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>('');
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        router.push('/unauth-page');  // Redirect if not logged in
+        setError('No token found in localStorage');
+        setLoading(false);
+        return;
+      }
+  
+      try {
+        const response = await fetch('http://localhost:8080/api/user/all', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error(`Failed to fetch users: ${response.status} ${response.statusText}`);
+        }
+  
+        const data: UserProfile[] = await response.json();
+        setUsers(data);
+        console.log(data); // Check if data is correct
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchUsers();
+  }, []);
+  
+
+  const handleEditUser = (email: String) => {
+    // Logic to edit user information
+    router.push(`/edit-user?email=${email}`);
+  };
+
+  const handleDeleteUser = async (email: String) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        router.push('/unauth-page');  // Redirect if not logged in
+        setError('No token found in localStorage');
+        return;
+      }
+  
+      const response = await fetch(`http://localhost:8080/api/user/profile/${email}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to delete user: ${response.status} ${response.statusText}`);
+      }
+  
+      // Remove the deleted user from the state
+      setUsers(prevUsers => prevUsers.filter(user => user.email !== email));
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
+    }
+  };
+  
+
+  return (
+    <div className="container">
+      <h1>Manage Users</h1>
+      <div className="form-section">
+        <div className="order-sum-item">
+          <label className="tickets-label" htmlFor="message">Name</label>
+          <label className="tickets-label" htmlFor="message">Email</label>
+          <label className="tickets-label" htmlFor="message">Edit Details</label>
+          <label className="tickets-label" htmlFor="message">Delete</label>
+        </div>
+        <hr></hr>
+        {users.map((user, index) => (
+          <div key={`${user.user_id}-${index}`} className="order-sum-item">
+            <label className="tickets-label" htmlFor="message">{`${user.firstname} ${user.lastname}`}</label>
+            <label className="tickets-label" htmlFor="message">{user.email}</label>
+            <div className="tickets-button block">
+              <button type="button" onClick={() => handleEditUser(user.email)}>Edit</button>
+            </div>
+            <div className="tickets-button block">
+              <button type="button" onClick={() => handleDeleteUser(user.email)}>Delete</button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+  
+};
+
+
 
 export default ManageUsers;

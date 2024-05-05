@@ -1,5 +1,6 @@
 package com.cinemabookingsystem.cinemadb.service;
 
+import com.cinemabookingsystem.cinemadb.dto.UserDTO;
 import com.cinemabookingsystem.cinemadb.model.User;
 
 public interface UserService {
@@ -16,4 +17,8 @@ public interface UserService {
     public boolean resetPassword(String userEmail, String newPassword);
 
     public boolean emailExists(String email);
+
+    public void deleteUserProfile(String email);
+
+    public UserDTO convertToUserDTO(User user);
 }
