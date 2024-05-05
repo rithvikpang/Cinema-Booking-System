@@ -69,6 +69,7 @@ const ManageMovies: React.FC = () => {
     fetchProfile();
   }, []);
 
+  /**
   useEffect(() => {
     if (profile.admin) {
       fetchMovies();
@@ -76,6 +77,12 @@ const ManageMovies: React.FC = () => {
       router.push('/unauth-page')
     }
   }, [profile.admin]);
+   */
+  useEffect(() => {
+      fetchMovies();
+
+  }, [profile.admin]);
+
 
   const fetchMovies = async () => {
     const response = await fetch('http://localhost:8080/api/movies/getAll');
