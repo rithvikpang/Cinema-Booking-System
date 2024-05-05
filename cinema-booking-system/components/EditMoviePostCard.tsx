@@ -53,12 +53,12 @@ const EditMoviePostCard: React.FC<Props> = ({ movie }) => {
 
             <h4 className="description">{movie.title}</h4>
             <div className="home-buttons">
-                <div className="home-btn block">
-                    <div className="select-time block">
-                        <button className="left-button block" onClick={handleEditClick}>Edit</button>
+                <div className="manage-movies-button block">
+                    <div className="manage-movies-button">
+                        <button className="manage-movies-button" onClick={handleEditClick}>Edit</button>
                     </div>
-                    <div className="select-time block">
-                        <button className="left-button block" onClick={handleDeleteClick}>Delete</button>
+                    <div className="manage-movies-button">
+                        <button className="manage-movies-button" onClick={handleDeleteClick}>Delete</button>
                     </div>
                 </div>
             </div>

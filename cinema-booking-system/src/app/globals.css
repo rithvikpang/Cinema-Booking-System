@@ -246,7 +246,6 @@ h1 {
   flex-direction: row;
   padding: 10px;
   text-decoration: none;
-
 }
 
 .cancel-save {
@@ -662,3 +661,13 @@ input[type="password"] {
   justify-content: space-between;
   padding: 20px;
 }
+
+.manage-movies-button {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  padding: 10px;
+  background-color: #ECF4FF;
+  padding: 10px;
+}
+
