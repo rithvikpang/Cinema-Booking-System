@@ -31,6 +31,10 @@ export interface Showroom {
     showroomId: number;
 }
 
+export interface Prices {
+    price: number;
+}
+
  export interface FormData {
     firstname: string;
     lastname: string;
