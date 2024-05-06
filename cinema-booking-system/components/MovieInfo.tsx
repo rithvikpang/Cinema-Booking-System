@@ -33,7 +33,9 @@ const MovieInfo: React.FC<Movie> = ({ isOpen, onClose, trailerUrl, title, rating
     const handleBookClick = () => {
         // Construct an array of show information strings
         const showInfoArray = shows.map((show, index) => {
-            return `show${index + 1}Id=${encodeURIComponent(show.showId)}&show${index + 1}Date=${encodeURIComponent(show.date)}&show${index + 1}Time=${encodeURIComponent(show.time)}&show${index + 1}ShowroomId=${encodeURIComponent(show.showroom.showroomId)}`;
+            // Check if showroom and showroomId are defined before accessing them
+            const showroomId = show.showroom ? show.showroom.showroomId : null;
+            return `show${index + 1}Id=${encodeURIComponent(show.showId)}&show${index + 1}Date=${encodeURIComponent(show.date)}&show${index + 1}Time=${encodeURIComponent(show.time)}&show${index + 1}ShowroomId=${encodeURIComponent(showroomId)}`;
         });
     
         // Join the show information strings with '&'
@@ -47,6 +49,7 @@ const MovieInfo: React.FC<Movie> = ({ isOpen, onClose, trailerUrl, title, rating
     
         onClose(); // Close the modal after navigating to the booking page
     };
+    
     
     if (!isOpen) return null;
 
