@@ -6,6 +6,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import com.cinemabookingsystem.cinemadb.dto.PaymentCardDTO;
 import com.cinemabookingsystem.cinemadb.dto.RegistrationRequest;
 import com.cinemabookingsystem.cinemadb.model.BillingAddress;
 import com.cinemabookingsystem.cinemadb.model.PaymentCard;
@@ -30,11 +31,11 @@ public class RegistrationController {
             return ResponseEntity.badRequest().body(errors.getAllErrors());
         }
         User user = registrationRequest.getUser();
-        PaymentCard paymentCard = registrationRequest.getPaymentCard();
+        PaymentCardDTO paymentCardDTO = registrationRequest.getPaymentCardDTO();
         BillingAddress billingAddress = registrationRequest.getBillingAddress();
 
         user.setStatus("Inactive");
-        registrationService.registerUser(user, paymentCard, billingAddress, siteUrl);
+        registrationService.registerUser(user, paymentCardDTO, billingAddress, siteUrl);
         return ResponseEntity.ok().body("{\"message\":\"User registered successfully\"}");
     }
 

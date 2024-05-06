@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 
 import com.cinemabookingsystem.cinemadb.repository.UserRepository;
+import com.cinemabookingsystem.cinemadb.util.CardEncrypter;
+import com.cinemabookingsystem.cinemadb.dto.PaymentCardDTO;
 import com.cinemabookingsystem.cinemadb.model.BillingAddress;
 import com.cinemabookingsystem.cinemadb.model.PaymentCard;
 import com.cinemabookingsystem.cinemadb.model.User;
@@ -34,7 +36,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Transactional
     @Override
-    public void registerUser(User user, PaymentCard paymentCard, BillingAddress billingAddress, String url) {
+    public void registerUser(User user, PaymentCardDTO newPaymentCardDTO, BillingAddress billingAddress, String url) {
         
         // Hashed password
         String hashedPassword = passwordEncoder.encode(user.getPassword());
@@ -42,10 +44,22 @@ public class RegistrationServiceImpl implements RegistrationService {
         user.setCreatedAt(Instant.now());
 
         // add payment card if given by user
-        if(paymentCard != null) {
+        if(newPaymentCardDTO != null) {
+            PaymentCard newPaymentCard = new PaymentCard();
             Set<PaymentCard> newPaymentCardSet = new HashSet<>();
-            paymentCard.setUser(user);
-            newPaymentCardSet.add(paymentCard);
+            try {
+                newPaymentCard.setCardNumber(CardEncrypter.encrypt(newPaymentCardDTO.getCardNumber()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            newPaymentCard.setCardholderName(newPaymentCardDTO.getCardholderName());
+            newPaymentCard.setExpiryMonth(newPaymentCardDTO.getExpiryMonth());
+            newPaymentCard.setExpiryYear(newPaymentCardDTO.getExpiryYear());
+            newPaymentCard.setUser(user);
+            newPaymentCard.setCvv(newPaymentCardDTO.getCvv());
+            newPaymentCard.setZipCode(newPaymentCardDTO.getZipCode());
+            newPaymentCard.setUser(user);
+            newPaymentCardSet.add(newPaymentCard);
             user.setPaymentCards(newPaymentCardSet);
         }
 
