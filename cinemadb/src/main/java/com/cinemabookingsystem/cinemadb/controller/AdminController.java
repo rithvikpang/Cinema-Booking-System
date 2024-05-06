@@ -1,5 +1,6 @@
 package com.cinemabookingsystem.cinemadb.controller;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -22,11 +23,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.cinemabookingsystem.cinemadb.dto.PromotionDTO;
 import com.cinemabookingsystem.cinemadb.dto.ShowRequest;
+import com.cinemabookingsystem.cinemadb.dto.TicketPriceDTO;
 import com.cinemabookingsystem.cinemadb.model.Movie;
 import com.cinemabookingsystem.cinemadb.model.Promotion;
 import com.cinemabookingsystem.cinemadb.model.Show;
+import com.cinemabookingsystem.cinemadb.model.TicketPrice;
+import com.cinemabookingsystem.cinemadb.model.TicketType;
 import com.cinemabookingsystem.cinemadb.service.AdminServiceImpl;
 import com.cinemabookingsystem.cinemadb.service.SeatServiceImpl;
+import com.cinemabookingsystem.cinemadb.service.TicketPriceServiceImpl;
 import com.cinemabookingsystem.cinemadb.util.DateParser;
 
 @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
@@ -39,6 +44,9 @@ public class AdminController {
 
     @Autowired
     private SeatServiceImpl seatService;
+
+    @Autowired
+    private TicketPriceServiceImpl ticketPriceService;
 
     @PostMapping("/add-movie")
     public ResponseEntity<?> addMovie(@Validated @RequestBody Movie movie, Errors errors) {
@@ -147,6 +155,19 @@ public class AdminController {
     public ResponseEntity<?> generateSeats() {
         seatService.generateSeats();
         return ResponseEntity.ok("Generating Seats");
+    }
+
+    @PutMapping("/update-ticket-price")
+    public ResponseEntity<?> setTicketPrice(@RequestBody TicketPriceDTO ticketPriceDTO) {
+        TicketPrice ticketPrice = ticketPriceService.setTicketPrice(ticketPriceDTO);
+        return ResponseEntity.ok().body(ticketPrice);
+    }
+
+    // service for generating show seats after a new show is added
+    @PostMapping("/generate-show-seats")
+    public ResponseEntity<?> generateShowSeats() {
+        seatService.generateShowSeats();
+        return ResponseEntity.ok().body("generated show seats");
     }
     
 }

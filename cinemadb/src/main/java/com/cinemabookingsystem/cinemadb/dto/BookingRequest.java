@@ -1,16 +1,17 @@
 package com.cinemabookingsystem.cinemadb.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import com.cinemabookingsystem.cinemadb.model.Ticket;
+import java.util.Set;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BookingRequest {
 
     private int showId;
     private String promotionCode;
-   
     private int ticketCount;
     private String userEmail;
     private int paymentCardId;
+    private Set<TicketDTO> ticketDTOs;
     
     public int getShowId() {
         return showId;
@@ -41,5 +42,11 @@ public class BookingRequest {
     }
     public void setPromotionCode(String promotionCode) {
         this.promotionCode = promotionCode;
+    }
+    public Set<TicketDTO> getTicketDTOs() {
+        return ticketDTOs;
+    }
+    public void setTicketDTOs(TicketDTO ticketDTO) {
+        this.ticketDTOs.add(ticketDTO);
     }
 }
