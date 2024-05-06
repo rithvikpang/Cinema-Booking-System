@@ -12,5 +12,5 @@ import java.util.List;
 @Repository
 public interface SeatStatusRepository extends JpaRepository<SeatStatus, Integer> {
     List<SeatStatus> findByShow(Show show);
-    SeatStatus findBySeat(Seat seat);
+    List<SeatStatus> findBySeat(Seat seat);
 }

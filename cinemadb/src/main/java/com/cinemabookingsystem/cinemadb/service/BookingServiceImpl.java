@@ -79,7 +79,7 @@ public class BookingServiceImpl implements BookingService {
             .findById(bookingRequest.getPaymentRequest().getCardId())
             .orElseThrow(() -> new IllegalStateException("No matching card found to save to booking"));
         // generate tickets from dtos
-        List<Ticket> tickets = generateTickets(bookingRequest.getSeatStatusDTOs());
+        List<Ticket> tickets = generateTickets(bookingRequest.getSeatStatusDTOs(), show);
         // set new booking fields
         newBooking.setUser(user);
         newBooking.setShow(show);
@@ -115,7 +115,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     // generates tickets and marks seats as booked
-    private List<Ticket> generateTickets(List<SeatStatusDTO> seatStatusDTOs) {
+    private List<Ticket> generateTickets(List<SeatStatusDTO> seatStatusDTOs, Show show) {
         if (seatStatusDTOs.isEmpty()) {
             throw new IllegalStateException("No tickets to generate");
         }
@@ -125,10 +125,18 @@ public class BookingServiceImpl implements BookingService {
             Optional<Seat> seatOpt = seatRepository.findById(seatStatusDTO.getSeatId());
             if(seatOpt.isPresent()) {
                 Seat seat = seatOpt.get();
-                SeatStatus seatStatus = seatStatusRepository.findBySeat(seat);
+                List<SeatStatus> seatStatuses = seatStatusRepository.findBySeat(seat);
+                // match seat to show
+                SeatStatus matchedSeatStatus = new SeatStatus();
+                for (SeatStatus seatStatus : seatStatuses) {
+                    if (seatStatus.getShow().equals(show)) {
+                        matchedSeatStatus = seatStatus;
+                        break;
+                    }
+                }
                 ticket.setSeat(seat);
-                seatStatus.setBooked(true);
-                seatStatusRepository.save(seatStatus);
+                matchedSeatStatus.setBooked(true);
+                seatStatusRepository.save(matchedSeatStatus);
             } else {
                 throw new IllegalStateException("No seat matching seat id: " + seatStatusDTO.getSeatId());
             }          

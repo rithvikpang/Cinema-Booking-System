@@ -79,6 +79,14 @@ public class BookingController {
         return ResponseEntity.ok().body(price);
     }
 
+    @PostMapping("/create-booking-test")
+    public ResponseEntity<?> createBooking(@RequestBody String rawJson) {
+        System.out.println("Booking Request: ");
+        System.out.println(rawJson);
+        // Deserialize manually for debugging
+        return ResponseEntity.ok("Check logs for raw JSON");
+    }  
+
     
     
 }

@@ -14,6 +14,10 @@ public class BookingRequest {
     private List<SeatStatusDTO> seatStatusDTOs;
     private PaymentRequest paymentRequest;
     private BigDecimal totalPrice;
+
+    public BookingRequest() {
+
+    }
     
     public Integer getShowId() {
         return showId;
@@ -42,8 +46,8 @@ public class BookingRequest {
     public List<SeatStatusDTO> getSeatStatusDTOs() {
         return seatStatusDTOs;
     }
-    public void setSeatStatusDTOs(SeatStatusDTO seatStatusDTO) {
-        this.seatStatusDTOs.add(seatStatusDTO);
+    public void setSeatStatusDTOs(List<SeatStatusDTO> seatStatusDTOs) {
+        this.seatStatusDTOs = seatStatusDTOs;
     }
     public PaymentRequest getPaymentRequest() {
         return paymentRequest;
