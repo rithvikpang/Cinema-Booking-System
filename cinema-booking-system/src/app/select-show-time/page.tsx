@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ShowTimeSelection from '../../../components/ShowTimeSelection';
 
@@ -27,6 +27,9 @@ interface Show {
 }
 
 const SelectShowTime: React.FC<Movie> = () => {
+  const [token, setToken] = useState<string | null>();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>('');
   const [buttonClicked, setButtonClicked] = useState(false);
   const router = useRouter();
 
@@ -67,6 +70,28 @@ const SelectShowTime: React.FC<Movie> = () => {
       }
   };
 
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+
+    // If token exists, assign value to token
+    if (storedToken) {
+      setToken(storedToken);
+    }
+
+    const fetchProfile = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            router.push('/log-in-redir'); // Does not allow non-logged in users to access this page
+            setError('No token found in localStorage');
+            setLoading(false);
+            return;
+        }
+
+    };
+
+    fetchProfile();
+  }, []);
+  
   return (
     <div className="container">
       <form className="select-time block">
