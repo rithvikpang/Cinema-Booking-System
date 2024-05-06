@@ -9,7 +9,7 @@ public class RegistrationRequest {
     
     private User user;
     private BillingAddress billingAddress;
-    private PaymentCard paymentCard;
+    private PaymentCardDTO paymentCardDTO;
     
     public User getUser() {
         return user;
@@ -23,10 +23,10 @@ public class RegistrationRequest {
     public void setBillingAddress(BillingAddress billingAddress) {
         this.billingAddress = billingAddress;
     }
-    public PaymentCard getPaymentCard() {
-        return paymentCard;
+    public PaymentCardDTO getPaymentCardDTO() {
+        return paymentCardDTO;
     }
-    public void setPaymentCard(PaymentCard paymentCard) {
-        this.paymentCard = paymentCard;
+    public void setPaymentCardDTO(PaymentCardDTO paymentCardDTO) {
+        this.paymentCardDTO = paymentCardDTO;
     }
 }

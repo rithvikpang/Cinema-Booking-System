@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -32,8 +32,8 @@ public class Showroom {
     private Theater theater;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "showroom", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Seat> seats;
+    @OneToMany(mappedBy = "showroom", cascade = CascadeType.ALL)
+    private List<Seat> seats;
 
     private int capacity;
 
@@ -65,7 +65,7 @@ public class Showroom {
         this.capacity = capacity;
     }
 
-    public Set<Seat> getSeats() {
+    public List<Seat> getSeats() {
         return seats;
     }
 

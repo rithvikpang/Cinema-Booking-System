@@ -61,10 +61,14 @@ const SelectShowTime: React.FC<Movie> = () => {
   };
 
   const handleNextButtonClick = (selectedShowTime: string | null, showroomId: number, showId: number) => {
-      if (selectedShowTime) {
-        // Append showroomId and showId to the URL
-        router.push(`/select-tickets?selectedShowTime=${encodeURIComponent(selectedShowTime)}&showroomId=${showroomId}&showId=${showId}`);
+    if (selectedShowTime) {
+      const selectedShow = showsFromQueryParams.find(show => `${show.date} ${show.time}` === selectedShowTime);
+      if (selectedShow) {
+        const { date, time } = selectedShow;
+        // Append showroomId, showId, title, date, and time to the URL
+        router.push(`/select-tickets?selectedShowTime=${encodeURIComponent(selectedShowTime)}&showroomId=${showroomId}&showId=${showId}&title=${encodeURIComponent(title || '')}&date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`);
       }
+    }
   };
 
   return (

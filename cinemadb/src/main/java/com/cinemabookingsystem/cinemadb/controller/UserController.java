@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cinemabookingsystem.cinemadb.dto.PaymentCardDTO;
 import com.cinemabookingsystem.cinemadb.dto.UserDTO;
 import com.cinemabookingsystem.cinemadb.model.BillingAddress;
 import com.cinemabookingsystem.cinemadb.model.PaymentCard;
@@ -48,8 +49,15 @@ public class UserController {
     private UserServiceImpl userService;
 
     @GetMapping("{email}/get-payment-cards")
-    public Set<PaymentCard> getPaymentCards(@PathVariable String email, Errors errors) {
-        return paymentInfoService.getUserPaymentCards(email);
+    public ResponseEntity<?> getPaymentCards(@PathVariable String email) {
+        Set<PaymentCardDTO> cards;
+        try {
+            cards = paymentInfoService.getUserPaymentCards(email);
+        } catch(IllegalStateException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok().body(cards);
     }
 
     @GetMapping("{email}/get-billing-address")
@@ -59,13 +67,13 @@ public class UserController {
 
     @PostMapping("{email}/add-payment-card")
     public ResponseEntity<?> addPaymentCard(@PathVariable String email,
-            @Validated @RequestBody PaymentCard newPaymentCard,
+            @Validated @RequestBody PaymentCardDTO newPaymentCardDTO,
             Errors errors) {
         if (errors.hasErrors()) {
             // Return a bad request with the validation errors
             return ResponseEntity.badRequest().body(errors.getAllErrors());
         }
-        paymentInfoService.addPaymentCard(newPaymentCard, email);
+        paymentInfoService.addPaymentCard(newPaymentCardDTO, email);
         return ResponseEntity.ok().body("Payment card added successfully");
     }
 
@@ -84,14 +92,20 @@ public class UserController {
 
     @PutMapping("edit-payment-card/{cardId}")
     public ResponseEntity<?> editPaymentCard(@PathVariable Integer cardId,
-            @Validated @RequestBody PaymentCard paymentCard,
+            @Validated @RequestBody PaymentCardDTO paymentCardDTO,
             Errors errors) {
+        PaymentCardDTO editedCard;
         if (errors.hasErrors()) {
             // Return a bad request with the validation errors
             return ResponseEntity.badRequest().body(errors.getAllErrors());
         }
-        paymentInfoService.editPaymentCard(paymentCard, cardId);
-        return ResponseEntity.ok().body("Payment Card modified successfully");
+        try {
+            editedCard = paymentInfoService.editPaymentCard(paymentCardDTO, cardId);
+        } catch(IllegalStateException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok().body(editedCard);
     }
 
     @DeleteMapping("delete-payment-card/{cardId}")

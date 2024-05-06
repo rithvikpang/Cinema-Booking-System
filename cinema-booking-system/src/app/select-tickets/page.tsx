@@ -45,13 +45,24 @@ const SelectTickets: React.FC = () => {
   };
 
   const handleNextButtonClick = () => {
-    const queryParams = new URLSearchParams();
+    const queryParams = new URLSearchParams(window.location.search);
     queryParams.append('ticketCount', ticketCount.toString());
     queryParams.append('adultCount', adultCount.toString());
     queryParams.append('childCount', childCount.toString());
     queryParams.append('seniorCount', seniorCount.toString());
-    queryParams.append('showroomId', showroomId.toString());
-    queryParams.append('showId', showId.toString());
+    queryParams.append('showroomId', showroomId);
+    queryParams.append('showId', showId);
+  
+    // Get the movie title, date, and time from the query parameters
+    const title = queryParams.get('title') || '';
+    const date = queryParams.get('date') || '';
+    const time = queryParams.get('time') || '';
+  
+    // Append the movie title, date, and time to the query parameters
+    queryParams.append('title', title);
+    queryParams.append('date', date);
+    queryParams.append('time', time);
+  
     router.push(`/select-seats?${queryParams.toString()}`);
   };
 

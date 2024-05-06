@@ -17,9 +17,11 @@ import jakarta.persistence.TemporalType;
 import java.time.LocalDate;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(schema = "cinema_db", name = "movies")
 public class Movie {
 
@@ -70,7 +72,7 @@ public class Movie {
     private String reviews;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.REFRESH)
     private Set<Show> shows;
 
     // Constructors, Getters, and Setters
