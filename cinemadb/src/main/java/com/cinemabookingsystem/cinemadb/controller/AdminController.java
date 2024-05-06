@@ -93,6 +93,7 @@ public class AdminController {
         // System.out.println(showRequest);
         try {
             adminService.scheduleShow(showRequest);
+            seatService.generateShowSeats();
             return ResponseEntity.ok().body("Successfully scheduled show");
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
