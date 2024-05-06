@@ -96,7 +96,10 @@ const ManageMovies: React.FC = () => {
       </button>
       <Link href="/schedule-movie">
           <button type="button" className="purple-btn">Schedule Movie</button> 
-      </Link>        
+      </Link>
+      <Link href="/prices-fees">
+          <button type="button" className="purple-btn">Prices & Fees</button> 
+      </Link>      
       <div className="three-col">
         {displayedMovies.map((movie, index) => (
           <EditMoviePostCard key={`${movie.title}-${index}`} movie={movie} />

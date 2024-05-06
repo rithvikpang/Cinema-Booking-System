@@ -8,7 +8,7 @@ interface UserProfile {
   // Add other fields as they are defined in your database
 }
 
-const ManageMovies: React.FC = () => {
+const EditMovies: React.FC = () => {
   const queryParams = new URLSearchParams(window.location.search);
 
   // Initialize state variables for movie details
@@ -224,4 +224,4 @@ const ManageMovies: React.FC = () => {
   );
 }
 
-export default ManageMovies;
+export default EditMovies;
