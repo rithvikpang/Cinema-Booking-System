@@ -15,6 +15,10 @@ const PostCard = ({ movie }: Props) => {
   const closeTrailerModal = () => setIsTrailerModalOpen(false);
 
   console.log(movie);
+  console.log(movie.releaseDate);
+
+  const dateOfRelease = movie.releaseDate?.[0] + "-" + movie.releaseDate?.[1] + "-" + movie.releaseDate?.[2]
+
 
   return (
     <div className="three-col">
@@ -30,7 +34,7 @@ const PostCard = ({ movie }: Props) => {
         <h4 className="description">{movie.title}</h4>
         <dl>
           <dt className="description">{movie.duration} MIN | {movie.rating}</dt>
-          <dt className="description">Released {movie.releaseDate}</dt>
+          <dt className="description">Released {dateOfRelease}</dt>
         </dl>
         <div className="home-buttons">
           <div className="home-btn block">
