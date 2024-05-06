@@ -1,6 +1,7 @@
 package com.cinemabookingsystem.cinemadb.service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import javax.crypto.SecretKey;
@@ -12,9 +13,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cinemabookingsystem.cinemadb.dto.OrderDTO;
+import com.cinemabookingsystem.cinemadb.dto.TicketDTO;
 import com.cinemabookingsystem.cinemadb.dto.UserDTO;
+import com.cinemabookingsystem.cinemadb.model.Booking;
 import com.cinemabookingsystem.cinemadb.model.PasswordResetToken;
+import com.cinemabookingsystem.cinemadb.model.Ticket;
 import com.cinemabookingsystem.cinemadb.model.User;
+import com.cinemabookingsystem.cinemadb.repository.BookingRepository;
 import com.cinemabookingsystem.cinemadb.repository.PasswordResetTokenRepository;
 import com.cinemabookingsystem.cinemadb.repository.UserRepository;
 
@@ -26,6 +32,7 @@ import org.slf4j.LoggerFactory;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final BookingRepository bookingRepository;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     // private PasswordResetTokenRepository tokenRepository;
     private String fromEmail = "teamb8cinemabooking@gmail.com";
@@ -35,9 +42,11 @@ public class UserServiceImpl implements UserService {
 
     private JavaMailSender javaMailSender;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordResetTokenRepository passwordResetTokenRepository,
-            JavaMailSender javaMailSender) {
+    public UserServiceImpl(UserRepository userRepository, BookingRepository bookingRepository,
+        PasswordResetTokenRepository passwordResetTokenRepository,
+        JavaMailSender javaMailSender) {
         this.userRepository = userRepository;
+        this.bookingRepository = bookingRepository;
         this.passwordResetTokenRepository = passwordResetTokenRepository;
         this.javaMailSender = javaMailSender;
     }
@@ -53,6 +62,37 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
         return user; // Assume you have a method to convert a User entity to a UserDTO
+    }
+
+    @Override
+    public List<OrderDTO> getUserOrderHistory(String email) {
+        List<Booking> bookings = bookingRepository.findByUserEmail(email);
+        List<OrderDTO> orderDTOs = new ArrayList<>();
+        for (Booking booking : bookings) {
+            orderDTOs.add(converToOrderDTO(booking));
+        }
+        return orderDTOs;
+    }
+
+    private OrderDTO converToOrderDTO(Booking booking) {
+        OrderDTO orderDTO = new OrderDTO();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("h:mm a");
+        orderDTO.setMovieTitle(booking.getShow().getMovie().getTitle());
+        orderDTO.setTicketCount(booking.getTicketCount());
+        // convert each ticket in booking
+        List<TicketDTO> ticketDTOs = new ArrayList<>();
+        for (Ticket ticket : booking.getTickets()) {
+            TicketDTO ticketDTO = new TicketDTO();
+            ticketDTO.setRowLetter(ticket.getSeat().getRowLetter());
+            ticketDTO.setSeatNumber(ticket.getSeat().getSeatNumber());
+            ticketDTO.setTicketType(ticket.getTicketType().toString());
+            ticketDTOs.add(ticketDTO);
+        }
+        orderDTO.setTickets(ticketDTOs);
+        orderDTO.setShowDate(booking.getShow().getDate().format(dateFormatter));
+        orderDTO.setShowTime(booking.getShow().getTime().format(timeFormatter));
+        return orderDTO;
     }
 
     // private SimpleMailMessage optEmailSend(User user, int otp) {
@@ -90,6 +130,7 @@ public class UserServiceImpl implements UserService {
 
     // }
 
+    @Transactional
     @SuppressWarnings("null")
     @Override
     public void updateUser(User user, String email) {

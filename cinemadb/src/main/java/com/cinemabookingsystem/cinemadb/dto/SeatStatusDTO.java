@@ -1,5 +1,6 @@
 package com.cinemabookingsystem.cinemadb.dto;
 
+import com.cinemabookingsystem.cinemadb.model.TicketType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -9,6 +10,7 @@ public class SeatStatusDTO {
     private String rowLetter;
     private Integer seatNumber;
     private Boolean isBooked;
+    private TicketType ticketType;
 
     public SeatStatusDTO() {}
 
@@ -50,6 +52,14 @@ public class SeatStatusDTO {
 
     public void setIsBooked(Boolean isBooked) {
         this.isBooked = isBooked;
+    }
+
+    public TicketType getTicketType() {
+        return ticketType;
+    }
+
+    public void setTicketType(TicketType ticketType) {
+        this.ticketType = ticketType;
     }
     
 }

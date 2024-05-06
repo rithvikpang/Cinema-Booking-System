@@ -5,9 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.cinemabookingsystem.cinemadb.model.Booking;
 
-import java.util.LinkedHashSet;
+import java.util.List;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
-    LinkedHashSet<Booking> findByUserEmail(String email);
+    List<Booking> findByUserEmail(String email);
 }

@@ -1,25 +1,38 @@
 package com.cinemabookingsystem.cinemadb.dto;
 
+import com.cinemabookingsystem.cinemadb.model.TicketType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TicketDTO {
-    private Integer seatId;
-    private Float price;
+    private String rowLetter;
+    private Integer seatNumber;
+    private String ticketType;
 
     public TicketDTO() {}
     
-    public Integer getSeatId() {
-        return seatId;
+    public String getRowLetter() {
+        return rowLetter;
     }
-    public void setSeatId(Integer seatId) {
-        this.seatId= seatId;
+
+    public void setRowLetter(String rowLetter) {
+        this.rowLetter = rowLetter;
     }
-    public Float getPrice() {
-        return price;
+
+    public Integer getSeatNumber() {
+        return seatNumber;
     }
-    public void setPrice(Float price) {
-        this.price = price;
+
+    public void setSeatNumber(Integer seatNumber) {
+        this.seatNumber = seatNumber;
+    }
+
+    public String getTicketType() {
+        return ticketType;
+    }
+
+    public void setTicketType(String ticketType) {
+        this.ticketType = ticketType;
     }
     
 }
