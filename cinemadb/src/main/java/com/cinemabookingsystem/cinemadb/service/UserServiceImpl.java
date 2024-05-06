@@ -32,7 +32,6 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.transaction.Transactional;
 import org.slf4j.LoggerFactory;
 
 @Service
@@ -257,9 +256,6 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("User with email " + email + " not found");
         }
     }
-
-    PasswordResetTokenRepository passwordResetTokenRepository;
-
     // Implement other methods as needed
 
     private void sendEmail(String email, String token) {
