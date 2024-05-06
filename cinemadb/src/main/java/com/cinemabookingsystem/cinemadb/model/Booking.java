@@ -1,6 +1,10 @@
 package com.cinemabookingsystem.cinemadb.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -9,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(schema = "cinema_db", name = "booking")
 public class Booking {
     
@@ -26,12 +31,13 @@ public class Booking {
 
     private int ticket_count;
     
+    @JsonBackReference("user-bookings")
     @ManyToOne
     @JoinColumn(name = "user_email", referencedColumnName = "email")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "card_id", referencedColumnName = "card_id")
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "card_id", nullable = true)
     private PaymentCard paymentCard;
 
     public Booking() {
