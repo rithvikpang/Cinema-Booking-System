@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -17,6 +17,10 @@ interface ActiveSuspension {
   endDate: string;
 }
 
+interface UserProfile {
+  isadmin: boolean;
+}
+
 const ManageSuspensions: React.FC = () => {
   const [formData, setFormData] = useState<SuspensionData>({
     email: '',
@@ -27,17 +31,62 @@ const ManageSuspensions: React.FC = () => {
   const [activeSuspensions, setActiveSuspensions] = useState<ActiveSuspension[]>([]);
   const [showForm, setShowForm] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  const [profile, setProfile] = useState<UserProfile>({ isadmin: true });
+  const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
 
   useEffect(() => {
-    fetchActiveSuspensions();
+    const fetchProfile = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        router.push('/unauth-page');
+        setError('No token found in localStorage');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:8080/api/user/profile', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch profile: ${response.status} ${response.statusText}`);
+        }
+
+        const data: UserProfile = await response.json();
+        setProfile(data);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
   }, []);
+
+  useEffect(() => {
+    if (profile.isadmin) {
+      fetchActiveSuspensions();
+    } else {
+      router.push('/unauth-page');
+    }
+  }, [profile.isadmin]);
 
   const fetchActiveSuspensions = async () => {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
-        router.push('/unauth-page'); // Redirect if not logged in
+        router.push('/unauth-page');
         setError('No token found in localStorage');
         return;
       }
@@ -77,7 +126,7 @@ const ManageSuspensions: React.FC = () => {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
-        router.push('/unauth-page'); // Redirect if not logged in
+        router.push('/unauth-page');
         setError('No token found in localStorage');
         return;
       }
@@ -95,11 +144,9 @@ const ManageSuspensions: React.FC = () => {
         throw new Error(`Failed to suspend user: ${response.status} ${response.statusText}`);
       }
 
-      // Clear the form data and hide the form
       setFormData({ email: '', reason: '', startDate: '', endDate: '' });
       setShowForm(false);
 
-      // Fetch the updated active suspensions
       await fetchActiveSuspensions();
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -114,11 +161,11 @@ const ManageSuspensions: React.FC = () => {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
-        router.push('/unauth-page'); // Redirect if not logged in
+        router.push('/unauth-page');
         setError('No token found in localStorage');
         return;
       }
-  
+
       const response = await fetch(`http://localhost:8080/api/suspend/${suspensionId}`, {
         method: 'DELETE',
         headers: {
@@ -126,17 +173,15 @@ const ManageSuspensions: React.FC = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       if (!response.ok) {
         throw new Error(`Failed to remove suspension: ${response.status} ${response.statusText}`);
       }
-  
-      // Remove the suspended user from the state
+
       setActiveSuspensions((prevSuspensions) =>
         prevSuspensions.filter((suspension) => suspension.suspensionId !== suspensionId)
       );
-  
-      // Fetch the updated active suspensions
+
       await fetchActiveSuspensions();
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -146,6 +191,9 @@ const ManageSuspensions: React.FC = () => {
       }
     }
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="container">

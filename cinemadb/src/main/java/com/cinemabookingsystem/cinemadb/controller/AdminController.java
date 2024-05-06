@@ -104,13 +104,13 @@ public class AdminController {
     @PostMapping("/add-promotion")
     public ResponseEntity<Promotion> createPromotion(@RequestBody PromotionDTO promotionDTO) {
         // Parse the start_date and end_date strings to LocalDate
-        LocalDate startDate = DateParser.parseDate(promotionDTO.getStart_date());
-        LocalDate endDate = DateParser.parseDate(promotionDTO.getEnd_date());
+        // LocalDate startDate = DateParser.parseDate(promotionDTO.getStart_date());
+        // LocalDate endDate = DateParser.parseDate(promotionDTO.getEnd_date());
 
         // Create a new Promotion object with parsed dates
         Promotion promotion = new Promotion();
-        promotion.setStartDate(startDate);
-        promotion.setEndDate(endDate);
+        promotion.setStartDate(promotionDTO.getStart_date());
+        promotion.setEndDate(promotionDTO.getEnd_date());
         promotion.setCode(promotionDTO.getCode());
         promotion.setDiscount(promotionDTO.getDiscount());
 

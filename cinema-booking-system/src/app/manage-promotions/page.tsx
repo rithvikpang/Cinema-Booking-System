@@ -1,63 +1,103 @@
-"use client"
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+"use client";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 
 interface Promotion {
   promotion_id?: number;
-  start_date: string; // Change type to string
-  end_date: string; // Change type to string
+  start_date: string;
+  end_date: string;
   code: string;
   discount: number;
 }
 
+interface UserProfile {
+  isadmin: boolean;
+}
+
 const ManagePromos: React.FC = () => {
-  const [profile, setProfile] = useState<{ admin: boolean }>({ admin: true });
+  const [profile, setProfile] = useState<UserProfile>({ isadmin: true });
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
   const { register, handleSubmit, reset } = useForm<Promotion>();
-  const [routerReady, setRouterReady] = useState(false); // Flag to indicate router readiness
   const router = useRouter();
 
   useEffect(() => {
-    // Set routerReady to true when the component mounts on the client-side
-    setRouterReady(true);
+    const fetchProfile = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        router.push("/unauth-page");
+        setError("No token found in localStorage");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:8080/api/user/profile", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch profile: ${response.status} ${response.statusText}`);
+        }
+
+        const data: UserProfile = await response.json();
+        setProfile(data);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("An unknown error occurred");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
   }, []);
+
+  useEffect(() => {
+    if (!profile.isadmin) {
+      router.push("/unauth-page");
+    }
+  }, [profile.isadmin]);
 
   const onSubmit = async (data: Promotion) => {
     try {
-      // Convert dates to ISO string format
       const formattedData = {
         ...data,
         start_date: new Date(data.start_date).toISOString(),
         end_date: new Date(data.end_date).toISOString(),
       };
 
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:8080/api/admin/add-promotion', {
-        method: 'POST',
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:8080/api/admin/add-promotion", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formattedData), // Send formatted data
+        body: JSON.stringify(formattedData),
       });
-  
+
       if (!response.ok) {
         throw new Error(`Failed to add promotion: ${response.status} ${response.statusText}`);
       }
-  
-      reset(); // Reset form fields after successful submission
-      router.push('/'); // Redirect to manage promos page after adding promotion
-    } catch (error: any) { // Specify 'any' type annotation for the error variable
-      console.error('Error:', error.message);
-      // Handle error, show error message to the user, etc.
+
+      reset();
+      router.push("/"); // Redirect to manage promos page after adding promotion
+    } catch (error: any) {
+      console.error("Error:", error.message);
     }
   };
 
-
-  // Check if router is ready before using it
-  if (!routerReady) {
-    return null; // Render nothing if router is not ready
-  }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   // Render form
   return (
