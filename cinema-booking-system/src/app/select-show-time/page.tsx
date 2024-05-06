@@ -1,6 +1,6 @@
-"use client"
+"use client";
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import ShowTimeSelection from '../../../components/ShowTimeSelection';
 
 export interface Movie {
@@ -26,28 +26,35 @@ interface Show {
   time: string;
 }
 
+const formatDateTime = (dateString: string, timeString: string) => {
+  const [year, month, day] = dateString.split(',');
+  const [hour, minute] = timeString.split(',');
+
+  const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), parseInt(hour), parseInt(minute));
+
+  const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'numeric', day: 'numeric' });
+  const formattedTime = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+
+  return `${formattedDate} at ${formattedTime}`;
+};
+
 const SelectShowTime: React.FC<Movie> = () => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const queryParams = new URLSearchParams(window.location.search);
-  const title = queryParams.get('title');
-  const imageUrl = queryParams.get('imageUrl');
+  const title = searchParams?.get('title') ?? '';
+  const imageUrl = searchParams?.get('imageUrl') ?? '';
 
   const showsFromQueryParams: Show[] = [];
-  queryParams.forEach((value, key) => {
+  searchParams?.forEach((value, key) => {
     const match = key.match(/show(\d+)Date/);
     if (match && match[1]) {
       const showId = parseInt(match[1]);
-      const date = queryParams.get(`show${showId}Date`) || '';
-      const time = queryParams.get(`show${showId}Time`) || '';
-      const showroomId = parseInt(queryParams.get(`show${showId}ShowroomId`) || '');
-      showsFromQueryParams.push({
-        showId,
-        date,
-        time,
-        showroomId,
-      });
+      const date = searchParams.get(`show${showId}Date`) || '';
+      const time = searchParams.get(`show${showId}Time`) || '';
+      const showroomId = parseInt(searchParams.get(`show${showId}ShowroomId`) || '');
+      showsFromQueryParams.push({ showId, date, time, showroomId });
     }
   });
 
@@ -62,7 +69,7 @@ const SelectShowTime: React.FC<Movie> = () => {
 
   const handleNextButtonClick = (selectedShowTime: string | null, showroomId: number, showId: number) => {
     if (selectedShowTime) {
-      const selectedShow = showsFromQueryParams.find(show => `${show.date} ${show.time}` === selectedShowTime);
+      const selectedShow = showsFromQueryParams.find(show => formatDateTime(show.date, show.time) === selectedShowTime);
       if (selectedShow) {
         const { date, time } = selectedShow;
         // Append showroomId, showId, title, date, and time to the URL
@@ -77,11 +84,10 @@ const SelectShowTime: React.FC<Movie> = () => {
         <h1 className="movie-item">Select Showtime</h1>
         <h2>{title}</h2>
         <img className="movie-item" src={imageUrl || ''} width={360} height={450} alt="poster" />
-
         <div className="combobox">
           <div className="combobox">
             <ShowTimeSelection
-              options={showsFromQueryParams.map(show => `${show.date} ${show.time}`)}
+              options={showsFromQueryParams.map(show => formatDateTime(show.date, show.time))}
               onSelect={(selectedOption, showroomId, showId) => handleSelect(selectedOption, showroomId, showId)}
               showroomIds={showsFromQueryParams.map(show => show.showroomId)} // Pass showroomIds
               showIds={showsFromQueryParams.map(show => show.showId)} // Pass showIds

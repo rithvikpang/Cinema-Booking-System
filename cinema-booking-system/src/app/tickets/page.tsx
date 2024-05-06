@@ -43,6 +43,42 @@ export default function Home() {
     return `${rowLabel}${colLabel}`;
   };
 
+  const handleCancelTicket = (index: number) => {
+    const updatedSelectedSeats = [...selectedSeats];
+    const canceledSeatIndex = updatedSelectedSeats[index];
+    updatedSelectedSeats.splice(index, 1);
+  
+    let updatedAdultCount = adultCount;
+    let updatedChildCount = childCount;
+    let updatedSeniorCount = seniorCount;
+  
+    let ageGroup = "";
+  
+    if (updatedAdultCount > 0) {
+      ageGroup = "Adult";
+      updatedAdultCount--;
+    } else if (updatedChildCount > 0) {
+      ageGroup = "Child";
+      updatedChildCount--;
+    } else if (updatedSeniorCount > 0) {
+      ageGroup = "Senior";
+      updatedSeniorCount--;
+    }
+  
+    const queryParams = new URLSearchParams();
+    queryParams.append("selectedSeats", updatedSelectedSeats.join(","));
+    queryParams.append("adultCount", updatedAdultCount.toString());
+    queryParams.append("childCount", updatedChildCount.toString());
+    queryParams.append("seniorCount", updatedSeniorCount.toString());
+    queryParams.append("showroomId", showroomId);
+    queryParams.append("showId", showId);
+    queryParams.append("title", title);
+    queryParams.append("date", date);
+    queryParams.append("time", time);
+  
+    router.push(`/tickets?${queryParams.toString()}`);
+  };
+
   const renderSeatItems = () => {
     const seatItems: SeatItem[] = [];
     let adultSeats = adultCount;
@@ -83,18 +119,35 @@ export default function Home() {
           ${price.toFixed(2)}
         </label>
         <div className="tickets-button block">
-          <button type="submit">Cancel</button>
+          <button type="button" onClick={() => handleCancelTicket(index)}>
+            Cancel
+          </button>
         </div>
       </div>
     ));
   };
 
-  const handleBackButtonClick = () => {
-    // Handle back button click logic here
-    router.back();
+  const handleBackButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    
+    const queryParams = new URLSearchParams();
+    queryParams.append("selectedShowTime", `${date} ${time}`);
+    queryParams.append("showroomId", showroomId);
+    queryParams.append("showId", showId);
+    queryParams.append("title", title);
+    queryParams.append("date", date);
+    queryParams.append("time", time);
+    queryParams.append("ticketCount", (adultCount + childCount + seniorCount).toString());
+    queryParams.append("adultCount", adultCount.toString());
+    queryParams.append("childCount", childCount.toString());
+    queryParams.append("seniorCount", seniorCount.toString());
+  
+    router.push(`/select-seats?${queryParams.toString()}`);
   };
-
-  const handleNextButtonClick = () => {
+  
+  const handleNextButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    
     const queryParams = new URLSearchParams();
     queryParams.append("selectedSeats", selectedSeats.join(","));
     queryParams.append("adultCount", adultCount.toString());
@@ -105,13 +158,12 @@ export default function Home() {
     queryParams.append("title", title);
     queryParams.append("date", date);
     queryParams.append("time", time);
-
-    // Navigate to the checkout page with the query parameters
-    router.push(`/checkout-tickets?${queryParams.toString()}`);
+  
+    router.push(`/checkout-pg2?${queryParams.toString()}`);
   };
 
   return (
-    <form className="container">
+    <div className="container">
       <h1>Tickets</h1>
       <div className="order-label">
         <label className="movie-tickets-label" htmlFor="message">
@@ -162,6 +214,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </form>
+    </div>
   );
 }
