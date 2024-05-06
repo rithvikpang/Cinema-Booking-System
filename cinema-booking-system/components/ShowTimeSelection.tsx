@@ -23,6 +23,9 @@ const ShowTimeSelection: React.FC<Props> = ({ options, onSelect, showroomIds, sh
     setActiveOptionIndex(index);
   };
 
+  const modifiedString = options ? options[0].replace(/,/g, "-") : "";
+  console.log(modifiedString)
+
   return (
     <div className="combo-box-container">
       <div
