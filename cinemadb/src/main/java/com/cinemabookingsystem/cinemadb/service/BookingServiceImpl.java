@@ -53,7 +53,9 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private SeatRepository seatRepository;
     @Autowired 
-    PaymentServiceImpl paymentService;
+    private PaymentServiceImpl paymentService;
+    @Autowired
+    private MailServiceImpl mailService;
 
     @Override
     public Booking createBooking(BookingRequest bookingRequest) {
@@ -93,6 +95,7 @@ public class BookingServiceImpl implements BookingService {
             ticketRepository.save(ticket);
         }
         user.getBookings().add(newBooking);
+        mailService.sendBookingConfirmationEmail(user, newBooking);
         return bookingRepository.save(newBooking);
     }
 

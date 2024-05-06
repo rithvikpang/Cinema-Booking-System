@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,8 +26,8 @@ public class Ticket {
     private Integer ticket_id;
 
     @JsonBackReference("booking-tickets")
-    @ManyToOne
-    @JoinColumn(name = "booking_id", referencedColumnName = "booking_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "booking_id")
     private Booking booking;
 
     @ManyToOne

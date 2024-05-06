@@ -47,7 +47,7 @@ public class Booking {
     private PaymentCard paymentCard;
 
     @JsonManagedReference("booking-tickets")
-    @OneToMany(mappedBy = "booking")
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ticket> tickets;
 
     private BigDecimal totalPrice;
