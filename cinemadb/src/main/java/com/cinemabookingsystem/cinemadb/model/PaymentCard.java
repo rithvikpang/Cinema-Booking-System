@@ -3,6 +3,7 @@ package com.cinemabookingsystem.cinemadb.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +21,9 @@ public class PaymentCard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer card_id;
     private String cardholder_name;
-    private String card_number;
+    
+    @Column(name = "card_number")
+    private String cardNumber;
     private int expiry_month;
     private int expiry_year;
     private String zip_code;
@@ -52,11 +55,11 @@ public class PaymentCard {
     }
 
     public String getCardNumber() {
-        return card_number;
+        return cardNumber;
     }
 
-    public void setCardNumber(String card_number) {
-        this.card_number = card_number;
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
     }
 
     public int getExpiryMonth() {

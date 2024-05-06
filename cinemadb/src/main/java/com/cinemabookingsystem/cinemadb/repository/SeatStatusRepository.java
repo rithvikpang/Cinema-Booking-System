@@ -3,12 +3,14 @@ package com.cinemabookingsystem.cinemadb.repository;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.cinemabookingsystem.cinemadb.model.Seat;
 import com.cinemabookingsystem.cinemadb.model.SeatStatus;
 import com.cinemabookingsystem.cinemadb.model.Show;
 
-import java.util.Set;
+import java.util.List;
 
 @Repository
 public interface SeatStatusRepository extends JpaRepository<SeatStatus, Integer> {
-    Set<SeatStatus> findByShow(Show show);
+    List<SeatStatus> findByShow(Show show);
+    SeatStatus findBySeat(Seat seat);
 }

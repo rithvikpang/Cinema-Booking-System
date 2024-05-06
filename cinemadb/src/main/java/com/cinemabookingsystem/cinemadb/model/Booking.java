@@ -1,6 +1,7 @@
 package com.cinemabookingsystem.cinemadb.model;
 
-import java.util.Set;
+import java.math.BigDecimal;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -46,7 +47,9 @@ public class Booking {
 
     @JsonManagedReference("booking-tickets")
     @OneToMany(mappedBy = "booking")
-    private Set<Ticket> tickets;
+    private List<Ticket> tickets;
+
+    private BigDecimal totalPrice;
 
     public Booking() {
 
@@ -100,4 +103,19 @@ public class Booking {
         this.paymentCard = paymentCard;
     }
     
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 }

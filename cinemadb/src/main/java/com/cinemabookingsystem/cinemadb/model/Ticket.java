@@ -30,11 +30,8 @@ public class Ticket {
     private Booking booking;
 
     @OneToOne
-    @JoinColumn(name = "seat_id", referencedColumnName = "id")
-    private SeatStatus seatStatus;
-
-    @ManyToOne
-    private TicketPrice ticketPrice;
+    @JoinColumn(name = "seat_id")
+    private Seat seat;
 
     @Column(nullable = false)
     private BigDecimal price;
@@ -59,12 +56,12 @@ public class Ticket {
         this.booking = booking;
     }
 
-    public SeatStatus getSeatStatus() {
-        return seatStatus;
+    public Seat getSeat() {
+        return seat;
     }
 
-    public void setSeatStatus(SeatStatus seatStatus) {
-        this.seatStatus = seatStatus;
+    public void setSeat(Seat seat) {
+        this.seat = seat;
     }
 
     public BigDecimal getPrice() {
@@ -73,14 +70,6 @@ public class Ticket {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public TicketPrice getTicketPrice() {
-        return ticketPrice;
-    }
-
-    public void setTicketPrice(TicketPrice ticketPrice) {
-        this.ticketPrice = ticketPrice;
     }
     
 }

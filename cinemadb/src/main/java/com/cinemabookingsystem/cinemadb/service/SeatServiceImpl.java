@@ -1,5 +1,6 @@
 package com.cinemabookingsystem.cinemadb.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -73,8 +74,8 @@ public class SeatServiceImpl implements SeatService {
     }
 
     private void generateSeatStatusesForShow(Show show) {
-        Set<Seat> seats = show.getShowroom().getSeats();
-        Set<SeatStatus> seatStatuses = new HashSet<>();
+        List<Seat> seats = show.getShowroom().getSeats();
+        List<SeatStatus> seatStatuses = new ArrayList<>();
         for (Seat seat : seats) {
             SeatStatus seatStatus = new SeatStatus();
             seatStatus.setSeat(seat);
@@ -86,7 +87,7 @@ public class SeatServiceImpl implements SeatService {
     }
 
     private boolean shouldGenerateShowSeats(Show show) {
-        Set<SeatStatus> currentShowSeats = seatStatusRepository.findByShow(show);
+        List<SeatStatus> currentShowSeats = seatStatusRepository.findByShow(show);
         return currentShowSeats.isEmpty();
     }
 

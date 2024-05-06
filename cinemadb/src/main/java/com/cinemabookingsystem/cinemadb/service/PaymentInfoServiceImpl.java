@@ -83,6 +83,8 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
         newPaymentCard.setUser(user);
         newPaymentCard.setCvv(newPaymentCardDTO.getCvv());
         newPaymentCard.setZipCode(newPaymentCardDTO.getZipCode());
+        existingCards.add(newPaymentCard);
+        user.setPaymentCards(existingCards);
         paymentCardRepository.save(newPaymentCard);
         return newPaymentCardDTO;
     }

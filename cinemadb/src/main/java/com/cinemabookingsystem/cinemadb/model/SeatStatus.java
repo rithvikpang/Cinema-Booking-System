@@ -17,15 +17,15 @@ public class SeatStatus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "show_id")
     private Show show;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seat_id")
     private Seat seat;
 
-    private boolean isBooked;
+    private Boolean isBooked;
 
     public SeatStatus() {
 
@@ -55,11 +55,11 @@ public class SeatStatus {
         this.seat = seat;
     }
 
-    public boolean isBooked() {
+    public Boolean isBooked() {
         return isBooked;
     }
 
-    public void setBooked(boolean isBooked) {
+    public void setBooked(Boolean isBooked) {
         this.isBooked = isBooked;
     }
 

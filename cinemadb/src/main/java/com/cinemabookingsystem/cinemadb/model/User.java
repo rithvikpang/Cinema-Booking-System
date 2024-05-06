@@ -46,7 +46,7 @@ public class User {
 
     @JsonManagedReference("user-paymentcard")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<PaymentCard> PaymentCards;
+    private Set<PaymentCard> paymentCards;
 
     @JsonManagedReference("user-billingaddress")
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
@@ -190,11 +190,15 @@ public class User {
     }
 
     public Set<PaymentCard> getPaymentCards() {
-        return PaymentCards;
+        return paymentCards;
+    }
+
+    public void addPaymentCard(PaymentCard paymentCard) {
+        this.paymentCards.add(paymentCard);
     }
 
     public void setPaymentCards(Set<PaymentCard> paymentCards) {
-        PaymentCards = paymentCards;
+        this.paymentCards = paymentCards;
     }
 
     public BillingAddress getBillingAddress() {

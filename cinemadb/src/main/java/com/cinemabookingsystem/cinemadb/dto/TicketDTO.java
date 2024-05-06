@@ -1,25 +1,28 @@
 package com.cinemabookingsystem.cinemadb.dto;
 
+import java.math.BigDecimal;
+
 import com.cinemabookingsystem.cinemadb.model.TicketType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TicketDTO {
-    private Integer seat_id;
-    private TicketType ticketType;
-    
+    private Integer seatId;
+    private BigDecimal price;
+
     public TicketDTO() {}
     
     public Integer getSeatId() {
-        return seat_id;
+        return seatId;
     }
-    public void setSeatId(Integer seat_id) {
-        this.seat_id = seat_id;
+    public void setSeatId(Integer seatId) {
+        this.seatId= seatId;
     }
-    public TicketType getTicketType() {
-        return ticketType;
+    public BigDecimal getPrice() {
+        return price;
     }
-    public void setTicketType(TicketType ticketType) {
-        this.ticketType = ticketType;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
+    
 }

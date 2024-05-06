@@ -1,22 +1,24 @@
 package com.cinemabookingsystem.cinemadb.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.cinemabookingsystem.cinemadb.model.Ticket;
-import java.util.Set;
+
+import java.math.BigDecimal;
+import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BookingRequest {
 
-    private int showId;
+    private Integer showId;
     private String promotionCode;
     private int ticketCount;
     private String userEmail;
-    private int paymentCardId;
-    private Set<TicketDTO> ticketDTOs;
+    private List<SeatStatusDTO> seatStatusDTOs;
+    private PaymentRequest paymentRequest;
+    private BigDecimal totalPrice;
     
-    public int getShowId() {
+    public Integer getShowId() {
         return showId;
     }
-    public void setShowId(int showId) {
+    public void setShowId(Integer showId) {
         this.showId = showId;
     }
     public int getTicketCount() {
@@ -31,22 +33,28 @@ public class BookingRequest {
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
     }
-    public int getPaymentCardId() {
-        return paymentCardId;
-    }
-    public void setPaymentCardId(int paymentCardId) {
-        this.paymentCardId = paymentCardId;
-    }
     public String getPromotionCode() {
         return promotionCode;
     }
     public void setPromotionCode(String promotionCode) {
         this.promotionCode = promotionCode;
     }
-    public Set<TicketDTO> getTicketDTOs() {
-        return ticketDTOs;
+    public List<SeatStatusDTO> getSeatStatusDTOs() {
+        return seatStatusDTOs;
     }
-    public void setTicketDTOs(TicketDTO ticketDTO) {
-        this.ticketDTOs.add(ticketDTO);
+    public void setSeatStatusDTOs(SeatStatusDTO seatStatusDTO) {
+        this.seatStatusDTOs.add(seatStatusDTO);
+    }
+    public PaymentRequest getPaymentRequest() {
+        return paymentRequest;
+    }
+    public void setPaymentRequest(PaymentRequest paymentRequest) {
+        this.paymentRequest = paymentRequest;
+    }
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }
