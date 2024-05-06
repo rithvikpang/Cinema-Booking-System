@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
         // Fetch the existing user from the database
         User existingUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
-    
+
         // Update the user's details
         existingUser.setUserId(user.getUserId());
         existingUser.setAdmin(user.isAdmin());
@@ -114,10 +114,10 @@ public class UserServiceImpl implements UserService {
         existingUser.setCity(user.getCity());
         existingUser.setState(user.getState());
         existingUser.setZip(user.getZip());
-    
+
         // Save the updated user back to the database
         userRepository.save(existingUser);
-    }    
+    }
 
     private final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
@@ -217,7 +217,7 @@ public class UserServiceImpl implements UserService {
             // Map other fields as needed
             userDTOs.add(userDTO);
         }
-    return userDTOs;
+        return userDTOs;
     }
 
     public UserDTO convertToUserDTO(User user) {
@@ -240,7 +240,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUserProfile(String email) {
         // Retrieve the user entity from the database
         Optional<User> userOptional = userRepository.findByEmail(email);
-        
+
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             // Delete the user
@@ -250,7 +250,7 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("User with email " + email + " not found");
         }
     }
-  
+
     PasswordResetTokenRepository passwordResetTokenRepository;
 
     // Implement other methods as needed
@@ -262,7 +262,7 @@ public class UserServiceImpl implements UserService {
         message.setTo(email);
         message.setSubject("Password Reset Request");
         message.setText(
-                "To reset your password, click the link below:\n" + "http://localhost:8080/reset?token=" + token);
+                "To reset your password, click the link below:\n" + "http://localhost:3030/reset-password");
         javaMailSender.send(message);
 
     }
