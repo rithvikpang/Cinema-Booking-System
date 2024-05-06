@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import javax.crypto.SecretKey;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
@@ -31,11 +32,14 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
     // private PasswordResetTokenRepository tokenRepository;
     private String fromEmail = "teamb8cinemabooking@gmail.com";
     // private ResourceBundle resourceBundle = ResourceBundle.getBundle("messages",
@@ -45,8 +49,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private MailServiceImpl mailService;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    private JavaMailSender javaMailSender;
+
+    public UserServiceImpl(UserRepository userRepository, PasswordResetTokenRepository passwordResetTokenRepository,
+            JavaMailSender javaMailSender) {
         this.userRepository = userRepository;
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
+        this.javaMailSender = javaMailSender;
     }
 
     @Override
@@ -161,8 +170,6 @@ public class UserServiceImpl implements UserService {
         return LocalDateTime.now().plusMinutes(minutes);
     }
 
-    JavaMailSender javaMailSender;
-
     // public void sendEmail(String to, String subject, String emailLink)
     // throws MessagingException, UnsupportedEncodingException {
     // MimeMessage message = javaMailSender.createMimeMessage();
@@ -262,16 +269,20 @@ public class UserServiceImpl implements UserService {
         message.setTo(email);
         message.setSubject("Password Reset Request");
         message.setText(
-                "To reset your password, click the link below:\n" + "http://localhost:3030/reset-password?token="
+                "To reset your password, click the link below:\n" + "http://localhost:3000/reset-password?token="
                         + token);
         javaMailSender.send(message);
 
     }
 
-    public void forgotPassword(String email) {
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
+    @Transactional
+    public void forgotPassword(String email) {
+        logger.info("Starting password reset process for: {}", email);
         User user = userRepository.findById(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + email));
+        logger.info("User found, checking for existing token...");
         PasswordResetToken token = new PasswordResetToken();
         token.setToken(UUID.randomUUID().toString());
         token.setExpiryDate(LocalDateTime.now().plusMinutes(15));

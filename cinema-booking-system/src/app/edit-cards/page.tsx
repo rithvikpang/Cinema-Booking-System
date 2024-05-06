@@ -29,13 +29,17 @@ export default function Home() {
             return;
           }
           const decodedToken = jwtDecode(token);
+          console.log('Decoded token:', decodedToken);
           const email = decodedToken.sub;
-          const encodedEmail = email ? encodeURIComponent(email) : '';
-          const response = await fetch('/api/user/${encodedEmail}/get-payment-cards', {
-            headers: new Headers({
-              'Authorization': `Bearer ${token}`,
-            }),
-          });
+          
+          if (!email) {
+            console.error('Email not found in token');
+            return;
+          } else {
+            console.log('Email:', email);
+          }
+          const encodedEmail = encodeURIComponent(email);
+          const response = await fetch('http://localhost:8080/api/user/${encodedEmail}/get-payment-cards');
           if (response.ok) {
             const data: Card[] = await response.json();
             setCards(data);
@@ -47,7 +51,7 @@ export default function Home() {
 
       const handleDelete = async (id: number) => {
         const token = localStorage.getItem('token');
-        const response = await fetch(`/api/user/delete-payment-card/${id}`, { // Adjust endpoint as needed
+        const response = await fetch(`http://localhost:8080/api/user/delete-payment-card/${id}`, { // Adjust endpoint as needed
           method: 'DELETE',
           headers: new Headers({
             'Authorization': `Bearer ${token}`,

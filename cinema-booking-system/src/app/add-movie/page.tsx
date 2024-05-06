@@ -12,7 +12,7 @@ export default function Home() {
         description: '',
         duration: '',
         release_date: '',
-        genreId: '',
+        genre: '',
         rating: '',
         category: '',
         cast: '',
@@ -57,7 +57,7 @@ export default function Home() {
                 },
                 body: JSON.stringify({
                     ...formData,
-                    genreId: parseInt(formData.genreId),
+                    genre: parseInt(formData.genre),
                     duration: parseInt(formData.duration),
                 })
             });
@@ -105,12 +105,12 @@ export default function Home() {
                 />
             </div>
             <div className="genre block">
-                <label htmlFor="frm-genre">Genre ID</label>
+                <label htmlFor="frm-genre">Genre</label>
                 <input
                     id="frm-movie"
                     type="text"
-                    name="genreId"
-                    value={formData.genreId}
+                    name="genre"
+                    value={formData.genre}
                     onChange={handleChange}
                     autoComplete="movie-name"
                     required
