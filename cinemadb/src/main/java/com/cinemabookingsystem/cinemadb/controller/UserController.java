@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cinemabookingsystem.cinemadb.dto.OrderDTO;
 import com.cinemabookingsystem.cinemadb.dto.PaymentCardDTO;
 import com.cinemabookingsystem.cinemadb.dto.UserDTO;
 import com.cinemabookingsystem.cinemadb.model.BillingAddress;
@@ -28,6 +29,7 @@ import com.cinemabookingsystem.cinemadb.service.UserServiceImpl;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.slf4j.Logger;
@@ -162,6 +164,20 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
+    // get user order history
+    @GetMapping("/order-history")
+    public ResponseEntity<?> getUserOrderHistory() {
+        String token = getTokenFromRequest(request);
+        if (token != null && !jwtUtil.isTokenExpired(token)) {
+            String email = jwtUtil.getUsernameFromToken(token);
+            logger.info("Email extracted from token: " + email);
+            List<OrderDTO> orders = userService.getUserOrderHistory(email);
+            return ResponseEntity.ok().body(orders);
+        }
+        return ResponseEntity.notFound().build();
+    }
+    
+
     @PutMapping("/profile/{email}")
     public ResponseEntity<?> updateUserProfileByEmail(@PathVariable String email,
                                                     @RequestBody User updatedUser,
@@ -204,7 +220,6 @@ public class UserController {
         }
         return ResponseEntity.badRequest().body("Invalid or expired token");
     }
-
 
     @DeleteMapping("/profile/{email}")
     public ResponseEntity<?> deleteUserProfile(@PathVariable("email") String email) {
