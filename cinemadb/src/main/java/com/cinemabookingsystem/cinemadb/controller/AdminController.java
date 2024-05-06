@@ -1,8 +1,5 @@
 package com.cinemabookingsystem.cinemadb.controller;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,13 +23,11 @@ import com.cinemabookingsystem.cinemadb.dto.ShowRequest;
 import com.cinemabookingsystem.cinemadb.dto.TicketPriceDTO;
 import com.cinemabookingsystem.cinemadb.model.Movie;
 import com.cinemabookingsystem.cinemadb.model.Promotion;
-import com.cinemabookingsystem.cinemadb.model.Show;
 import com.cinemabookingsystem.cinemadb.model.TicketPrice;
-import com.cinemabookingsystem.cinemadb.model.TicketType;
 import com.cinemabookingsystem.cinemadb.service.AdminServiceImpl;
 import com.cinemabookingsystem.cinemadb.service.SeatServiceImpl;
 import com.cinemabookingsystem.cinemadb.service.TicketPriceServiceImpl;
-import com.cinemabookingsystem.cinemadb.util.DateParser;
+
 
 @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RestController

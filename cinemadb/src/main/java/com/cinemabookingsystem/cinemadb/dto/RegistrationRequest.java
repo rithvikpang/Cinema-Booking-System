@@ -2,7 +2,6 @@ package com.cinemabookingsystem.cinemadb.dto;
 
 import com.cinemabookingsystem.cinemadb.model.User;
 import com.cinemabookingsystem.cinemadb.model.BillingAddress;
-import com.cinemabookingsystem.cinemadb.model.PaymentCard;
 
 // DTO for Registration Requests
 public class RegistrationRequest {

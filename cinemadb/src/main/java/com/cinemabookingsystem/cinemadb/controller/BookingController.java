@@ -5,8 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cinemabookingsystem.cinemadb.dto.BookingRequest;
 import com.cinemabookingsystem.cinemadb.dto.SeatStatusDTO;
 import com.cinemabookingsystem.cinemadb.model.Booking;
-import com.cinemabookingsystem.cinemadb.model.SeatStatus;
-import com.cinemabookingsystem.cinemadb.model.TicketPrice;
 import com.cinemabookingsystem.cinemadb.model.TicketType;
 import com.cinemabookingsystem.cinemadb.service.BookingServiceImpl;
 import com.cinemabookingsystem.cinemadb.service.PaymentServiceImpl;
@@ -14,7 +12,6 @@ import com.cinemabookingsystem.cinemadb.service.TicketPriceServiceImpl;
 
 import jakarta.transaction.Transactional;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +66,7 @@ public class BookingController {
 
     @GetMapping("/get-ticket-price/{ticketType}")
     public ResponseEntity<?> getTicketPrice(@PathVariable TicketType ticketType) {
-        BigDecimal price = new BigDecimal(0.00);
+        Float price;
         try {
             price = ticketPriceService.getPriceByTicketType(ticketType);
         } catch (IllegalArgumentException e) {

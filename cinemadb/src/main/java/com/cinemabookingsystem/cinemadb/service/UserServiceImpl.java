@@ -1,21 +1,13 @@
 package com.cinemabookingsystem.cinemadb.service;
 
-import java.io.UnsupportedEncodingException;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
 import javax.crypto.SecretKey;
-import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,12 +18,8 @@ import com.cinemabookingsystem.cinemadb.model.User;
 import com.cinemabookingsystem.cinemadb.repository.PasswordResetTokenRepository;
 import com.cinemabookingsystem.cinemadb.repository.UserRepository;
 
-import ch.qos.logback.core.util.Duration;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.LoggerFactory;
 
 @Service
@@ -44,9 +32,6 @@ public class UserServiceImpl implements UserService {
     // private ResourceBundle resourceBundle = ResourceBundle.getBundle("messages",
     // Locale.US);
     // private BCryptPasswordEncoder pwEncoder = new BCryptPasswordEncoder();
-
-    @Autowired
-    private MailServiceImpl mailService;
 
     private JavaMailSender javaMailSender;
 
@@ -70,17 +55,17 @@ public class UserServiceImpl implements UserService {
         return user; // Assume you have a method to convert a User entity to a UserDTO
     }
 
-    private SimpleMailMessage optEmailSend(User user, int otp) {
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setFrom(fromEmail);
-        msg.setTo(user.getEmail());
+    // private SimpleMailMessage optEmailSend(User user, int otp) {
+    //     SimpleMailMessage msg = new SimpleMailMessage();
+    //     msg.setFrom(fromEmail);
+    //     msg.setTo(user.getEmail());
 
-        msg.setSubject("Log in to your account");
-        msg.setText("Please enter the following verification code to verify this login attempt." + "\n\n" + otp
-                + "\n\n" + "If you did not request this code, please ignore this email." + "\n\n"
-                + "Thanks, Cinema Booking System");
-        return msg;
-    }
+    //     msg.setSubject("Log in to your account");
+    //     msg.setText("Please enter the following verification code to verify this login attempt." + "\n\n" + otp
+    //             + "\n\n" + "If you did not request this code, please ignore this email." + "\n\n"
+    //             + "Thanks, Cinema Booking System");
+    //     return msg;
+    // }
 
     // @Override
     // public String sendResetEmail(String email, HttpServletRequest request) {
@@ -127,7 +112,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(existingUser);
     }
 
-    private final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    // private final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     // @Override
     // public void sendVerificationCode(User user) {

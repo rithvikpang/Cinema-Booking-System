@@ -1,6 +1,5 @@
 package com.cinemabookingsystem.cinemadb.service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import com.cinemabookingsystem.cinemadb.model.Suspension;

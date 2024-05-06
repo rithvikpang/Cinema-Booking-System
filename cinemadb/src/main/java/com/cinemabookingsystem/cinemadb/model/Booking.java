@@ -1,6 +1,5 @@
 package com.cinemabookingsystem.cinemadb.model;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -50,7 +49,7 @@ public class Booking {
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ticket> tickets;
 
-    private BigDecimal totalPrice;
+    private Float totalPrice;
 
     public Booking() {
 
@@ -112,11 +111,11 @@ public class Booking {
         this.tickets = tickets;
     }
 
-    public BigDecimal getTotalPrice() {
+    public Float getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(BigDecimal totalPrice) {
+    public void setTotalPrice(Float totalPrice) {
         this.totalPrice = totalPrice;
     }
 }

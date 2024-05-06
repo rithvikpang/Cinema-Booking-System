@@ -1,7 +1,5 @@
 package com.cinemabookingsystem.cinemadb.model;
 
-import java.math.BigDecimal;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -19,7 +17,7 @@ public class TicketPrice {
 
     @Enumerated(EnumType.STRING)
     private TicketType ticketType;
-    private BigDecimal price;
+    private Float price;
 
     public TicketPrice() {}
 
@@ -39,11 +37,11 @@ public class TicketPrice {
         this.ticketType = ticketType;
     }
 
-    public BigDecimal getPrice() {
+    public Float getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 

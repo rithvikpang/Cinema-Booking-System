@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import com.cinemabookingsystem.cinemadb.dto.PaymentCardDTO;
 import com.cinemabookingsystem.cinemadb.dto.RegistrationRequest;
 import com.cinemabookingsystem.cinemadb.model.BillingAddress;
-import com.cinemabookingsystem.cinemadb.model.PaymentCard;
 import com.cinemabookingsystem.cinemadb.model.User;
 import com.cinemabookingsystem.cinemadb.service.RegistrationServiceImpl;
 

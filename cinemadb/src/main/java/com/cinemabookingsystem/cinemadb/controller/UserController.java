@@ -20,19 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cinemabookingsystem.cinemadb.dto.PaymentCardDTO;
 import com.cinemabookingsystem.cinemadb.dto.UserDTO;
 import com.cinemabookingsystem.cinemadb.model.BillingAddress;
-import com.cinemabookingsystem.cinemadb.model.PaymentCard;
 import com.cinemabookingsystem.cinemadb.model.User;
 import com.cinemabookingsystem.cinemadb.repository.UserRepository;
 import com.cinemabookingsystem.cinemadb.security.JwtUtil;
-import com.cinemabookingsystem.cinemadb.service.CustomUserDetailsService;
 import com.cinemabookingsystem.cinemadb.service.PaymentInfoServiceImpl;
-import com.cinemabookingsystem.cinemadb.service.UserService;
 import com.cinemabookingsystem.cinemadb.service.UserServiceImpl;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import org.slf4j.Logger;
 
@@ -120,8 +116,8 @@ public class UserController {
         return ResponseEntity.ok().body("Billing Address deleted successfully");
     }
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    //@Autowired
+   // private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
     private UserRepository userRepository;

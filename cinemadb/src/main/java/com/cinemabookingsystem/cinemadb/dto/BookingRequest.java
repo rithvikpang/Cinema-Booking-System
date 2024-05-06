@@ -2,7 +2,6 @@ package com.cinemabookingsystem.cinemadb.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.math.BigDecimal;
 import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BookingRequest {
@@ -13,7 +12,7 @@ public class BookingRequest {
     private String userEmail;
     private List<SeatStatusDTO> seatStatusDTOs;
     private PaymentRequest paymentRequest;
-    private BigDecimal totalPrice;
+    private Float totalPrice;
 
     public BookingRequest() {
 
@@ -55,10 +54,10 @@ public class BookingRequest {
     public void setPaymentRequest(PaymentRequest paymentRequest) {
         this.paymentRequest = paymentRequest;
     }
-    public BigDecimal getTotalPrice() {
+    public Float getTotalPrice() {
         return totalPrice;
     }
-    public void setTotalPrice(BigDecimal totalPrice) {
+    public void setTotalPrice(Float totalPrice) {
         this.totalPrice = totalPrice;
     }
 }
