@@ -6,6 +6,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
@@ -17,6 +19,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(schema = "cinema_db", name = "users")
 public class User {
     
@@ -41,12 +44,15 @@ public class User {
     // @JsonProperty("isadmin")
     private Boolean isadmin;
 
+    @JsonManagedReference("user-paymentcard")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<PaymentCard> PaymentCards;
+    private Set<PaymentCard> paymentCards;
 
+    @JsonManagedReference("user-billingaddress")
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private BillingAddress billingAddress;
 
+    @JsonManagedReference("user-bookings")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Booking> bookings;
 
@@ -184,11 +190,15 @@ public class User {
     }
 
     public Set<PaymentCard> getPaymentCards() {
-        return PaymentCards;
+        return paymentCards;
+    }
+
+    public void addPaymentCard(PaymentCard paymentCard) {
+        this.paymentCards.add(paymentCard);
     }
 
     public void setPaymentCards(Set<PaymentCard> paymentCards) {
-        PaymentCards = paymentCards;
+        this.paymentCards = paymentCards;
     }
 
     public BillingAddress getBillingAddress() {

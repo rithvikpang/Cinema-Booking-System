@@ -13,8 +13,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(schema = "cinema_db", name = "shows")
 public class Show {
     
@@ -26,12 +28,13 @@ public class Show {
     private LocalTime time;
     private int duration;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "showroom_id", referencedColumnName = "showroom_id")
     private Showroom showroom;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "movie_id", referencedColumnName = "movie_id")
     private Movie movie;
 

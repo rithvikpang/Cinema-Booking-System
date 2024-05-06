@@ -1,14 +1,25 @@
 package com.cinemabookingsystem.cinemadb.model;
 
+import java.math.BigDecimal;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(schema = "cinema_db", name = "booking")
 public class Booking {
     
@@ -20,19 +31,26 @@ public class Booking {
     @JoinColumn(name = "show_id", referencedColumnName = "show_id")
     private Show show;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "promotion_id", referencedColumnName = "promotion_id")
     private Promotion promotion;
 
     private int ticket_count;
     
+    @JsonBackReference("user-bookings")
     @ManyToOne
     @JoinColumn(name = "user_email", referencedColumnName = "email")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "card_id", referencedColumnName = "card_id")
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "card_id", nullable = true)
     private PaymentCard paymentCard;
+
+    @JsonManagedReference("booking-tickets")
+    @OneToMany(mappedBy = "booking")
+    private List<Ticket> tickets;
+
+    private BigDecimal totalPrice;
 
     public Booking() {
 
@@ -86,4 +104,19 @@ public class Booking {
         this.paymentCard = paymentCard;
     }
     
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 }

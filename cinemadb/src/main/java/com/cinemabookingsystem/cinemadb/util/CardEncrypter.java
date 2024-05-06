@@ -1,42 +1,43 @@
 package com.cinemabookingsystem.cinemadb.util;
 
-import org.springframework.stereotype.Service;
-
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-
+import javax.crypto.spec.SecretKeySpec;
+import javax.crypto.spec.IvParameterSpec;
 import java.util.Base64;
 
-@Service
 public class CardEncrypter {
-    private static SecretKey secretKey;
-    private static Cipher cipher;
+    private static final String KEY = "16ByteLongSecret"; // Ensure 128, 192 or 256 bit length for AES
+    private static final String INIT_VECTOR = "RandomInitVector"; // Must be 16 bytes long
 
-    static {
+    public static String encrypt(String value) {
         try {
-            // Generate a key for AES encryption
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-            keyGenerator.init(128); // 128-bit AES
-            secretKey = keyGenerator.generateKey();
+            IvParameterSpec iv = new IvParameterSpec(INIT_VECTOR.getBytes("UTF-8"));
+            SecretKeySpec skeySpec = new SecretKeySpec(KEY.getBytes("UTF-8"), "AES");
 
-            // Create a Cipher instance using AES
-            cipher = Cipher.getInstance("AES");
-        } catch (Exception e) {
-            e.printStackTrace();
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+            cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
+
+            byte[] encrypted = cipher.doFinal(value.getBytes());
+            return Base64.getEncoder().encodeToString(encrypted);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
+        return null;
     }
 
-    public static String encrypt(String data) throws Exception {
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-        byte[] encryptedBytes = cipher.doFinal(data.getBytes());
-        return Base64.getEncoder().encodeToString(encryptedBytes);
-    }
+    public static String decrypt(String encrypted) {
+        try {
+            IvParameterSpec iv = new IvParameterSpec(INIT_VECTOR.getBytes("UTF-8"));
+            SecretKeySpec skeySpec = new SecretKeySpec(KEY.getBytes("UTF-8"), "AES");
 
-    public static String decrypt(String encryptedData) throws Exception {
-        cipher.init(Cipher.DECRYPT_MODE, secretKey);
-        byte[] decodedBytes = Base64.getDecoder().decode(encryptedData);
-        byte[] decryptedBytes = cipher.doFinal(decodedBytes);
-        return new String(decryptedBytes);
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+            cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
+            
+            byte[] original = cipher.doFinal(Base64.getDecoder().decode(encrypted));
+            return new String(original);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }
