@@ -14,7 +14,6 @@ const ScheduleMovie: React.FC = () => {
     });
 
     const [formData, setFormData] = useState({
-        showId: '',
         date: '',
         time: '',
         duration: '',
@@ -154,7 +153,7 @@ const ScheduleMovie: React.FC = () => {
                     required
                 />
             </div>
-            <div className="summary block">
+            {/* <div className="summary block">
                 <label htmlFor="frm-description">Show Time ID</label>
                 <input
                     id="showId"
@@ -163,9 +162,9 @@ const ScheduleMovie: React.FC = () => {
                     autoComplete="showId"
                     value={formData.showId}
                     onChange={handleChange}
-                    required
+                    // required
                 />
-            </div>
+            </div> */}
             <div className="category block">
                 <label htmlFor="frm-category">Date</label>
                 <input
