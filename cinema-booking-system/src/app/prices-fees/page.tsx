@@ -1,57 +1,74 @@
-"use client"
+"use client";
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 
-interface Prices {
-  price: number;
-}
-
 const PriceFees: React.FC = () => {
-  const [adultPrice, setAdultPrice] = useState<Prices>({
-    price: 0
-  });
-
-  const [childPrice, setChildPrice] = useState<Prices>({
-    price: 0
-  });
-
-  const [seniorPrice, setSeniorPrice] = useState<Prices>({
-    price: 0
-  });
-
+  const [adultPrice, setAdultPrice] = useState<number>(0);
+  const [childPrice, setChildPrice] = useState<number>(0);
+  const [seniorPrice, setSeniorPrice] = useState<number>(0);
+  const [fee, setFee] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
 
   useEffect(() => {
-    const fetchPrice = async () => {
+    const fetchPrices = async () => {
       const token = localStorage.getItem('token');
       if (!token) {
         setError('No token found in localStorage');
         setLoading(false);
         return;
       }
-
       try {
-        const response = await fetch('http://localhost:8080/api/booking/get-ticket-price/ADULT', {
+        const adultResponse = await fetch('http://localhost:8080/api/booking/get-ticket-price/ADULT', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         });
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch price: ${response.status} ${response.statusText}`);
+        if (!adultResponse.ok) {
+          throw new Error(`Failed to fetch adult price: ${adultResponse.status} ${adultResponse.statusText}`);
         }
+        const adultData = await adultResponse.json();
+        setAdultPrice(adultData);
 
-        const data: Prices = await response.json();
-        setAdultPrice({ price: data.price }); // Initialize state with fetched value
-        console.log('Data received:', data);
-          // Check the structure of the data object
-  console.log('Data structure:', Object.keys(data));
+        const childResponse = await fetch('http://localhost:8080/api/booking/get-ticket-price/CHILD', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!childResponse.ok) {
+          throw new Error(`Failed to fetch child price: ${childResponse.status} ${childResponse.statusText}`);
+        }
+        const childData = await childResponse.json();
+        setChildPrice(childData);
 
-  // Check the specific properties you expect
-  console.log('Price property:', data.price);
+        const seniorResponse = await fetch('http://localhost:8080/api/booking/get-ticket-price/SENIOR', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!seniorResponse.ok) {
+          throw new Error(`Failed to fetch senior price: ${seniorResponse.status} ${seniorResponse.statusText}`);
+        }
+        const seniorData = await seniorResponse.json();
+        setSeniorPrice(seniorData);
 
+        const feeResponse = await fetch('http://localhost:8080/api/booking/get-ticket-price/FEE', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!feeResponse.ok) {
+          throw new Error(`Failed to fetch fee: ${feeResponse.status} ${feeResponse.statusText}`);
+        }
+        const feeData = await feeResponse.json();
+        setFee(feeData);
 
       } catch (err: unknown) {
         if (err instanceof Error) {
@@ -64,22 +81,31 @@ const PriceFees: React.FC = () => {
       }
     };
 
-    fetchPrice();
+    fetchPrices();
   }, []);
 
-  // Function to handle changes in input fields
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setAdultPrice(prevState => ({
-      ...prevState,
-      [name]: value,
-    }));
+  const handleAdultChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setAdultPrice(Number(value));
   };
-  
-  
+
+  const handleChildChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setChildPrice(Number(value));
+  };
+
+  const handleSeniorChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setSeniorPrice(Number(value));
+  };
+
+  const handleFeeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setFee(Number(value));
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     const token = localStorage.getItem('token');
     if (!token) {
       setError('No token found in localStorage');
@@ -87,23 +113,18 @@ const PriceFees: React.FC = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:8080/api/booking/get-ticket-price/ADULT', {
+      const response = await fetch('http://localhost:8080/api/admin/update-ticket-price', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          price: adultPrice.price,
-        }),
+        body: JSON.stringify({ ticketType: "ADULT", newPrice: adultPrice }),
       });
-
-
       if (!response.ok) {
         throw new Error(`Failed to update price: ${response.status} ${response.statusText}`);
       }
 
-      alert('Price updated successfully');
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
@@ -111,22 +132,121 @@ const PriceFees: React.FC = () => {
         setError('An unknown error occurred');
       }
     }
-  };
 
+    try {
+      const response = await fetch('http://localhost:8080/api/admin/update-ticket-price', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ ticketType: "CHILD", newPrice: childPrice }),
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to update price: ${response.status} ${response.statusText}`);
+      }
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
+    }
+
+    try {
+      const response = await fetch('http://localhost:8080/api/admin/update-ticket-price', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ ticketType: "SENIOR", newPrice: seniorPrice }),
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to update price: ${response.status} ${response.statusText}`);
+      }
+
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
+    }
+
+    try {
+      const response = await fetch('http://localhost:8080/api/admin/update-ticket-price', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ ticketType: "FEE", newPrice: fee }),
+      });
+      if (!response.ok) {
+        throw new Error(`Failed to update price: ${response.status} ${response.statusText}`);
+      }
+
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
+    }
+
+    alert('Price updated successfully');
+
+
+  };
+  
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
-
+ 
   return (
     <form onSubmit={handleSubmit} className="container">
       <h1>Prices & Fees</h1>
-      <div className="first-name block">
+      <div className="adult-price block">
         <label htmlFor="adultPrice">Adult Ticket Price</label>
         <input
           id="adultPrice"
           type="text"
-          name="adultPrice" // Corrected the name attribute
-          value={adultPrice.price}
-          onChange={handleChange}
+          name="adultPrice"
+          value={adultPrice}
+          onChange={handleAdultChange}
+          required
+        />
+      </div>
+      <div className="child-price block">
+        <label htmlFor="adultPrice">Child Ticket Price</label>
+        <input
+          id="childPrice"
+          type="text"
+          name="childPrice"
+          value={childPrice}
+          onChange={handleChildChange}
+          required
+        />
+      </div>
+      <div className="senior-price block">
+        <label htmlFor="adultPrice">Senior Ticket Price</label>
+        <input
+          id="seniorPrice"
+          type="text"
+          name="seniorPrice"
+          value={seniorPrice}
+          onChange={handleSeniorChange}
+          required
+        />
+      </div>
+      <div className="fee block">
+        <label htmlFor="adultPrice">Senior Ticket Price</label>
+        <input
+          id="fee"
+          type="text"
+          name="fee"
+          value={fee}
+          onChange={handleFeeChange}
           required
         />
       </div>
@@ -136,5 +256,5 @@ const PriceFees: React.FC = () => {
     </form>
   );
 };
-
+ 
 export default PriceFees;
