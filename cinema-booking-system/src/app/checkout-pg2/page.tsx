@@ -1,19 +1,9 @@
 'use client';
-import React, { FormEvent } from 'react';
-import { useSearchParams } from 'next/navigation';
+import React, { FormEvent, use } from 'react';
+import { useSearchParams , useRouter } from 'next/navigation';
 import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
-
-
-interface bookingRequest {
-  showId: number;
-  promotionCode: string;
-  ticketCount: number;
-  userEmail: string;
-  seatStatusDTOs: SeatStatusDTO[];
-  paymentRequest: PaymentRequest;
-  totalPrice: number;
-}
+import router from 'next/router';
 
 interface SeatStatusDTO {
   showId: number;
@@ -21,16 +11,23 @@ interface SeatStatusDTO {
   rowLetter: string;
   seatNumber: number;
   isBooked: boolean;
+  ticketType: string;
 }
 
-const token = localStorage.getItem('token'); // Retrieve the stored JWT token
-          if (!token) {
-            console.error('No token found in localStorage');
-            throw new Error('No token found in localStorage');
-          }
-          const decodedToken = jwtDecode(token);
-          console.log('Decoded token:', decodedToken);
-          const email = decodedToken.sub;
+interface PaymentRequest {
+  cardId: number;
+  cardNumber: string;
+  cvv: string;
+}
+
+interface BookingRequest {
+  showId: number;
+  ticketCount: number;
+  userEmail: string;
+  seatStatusDTOs: SeatStatusDTO[];
+  paymentRequest: PaymentRequest;
+  totalPrice: number;
+}
 
 const formatDateTime = (dateString: string, timeString: string) => {
   const [year, month, day] = dateString.split(',');
@@ -49,7 +46,7 @@ interface seat {
   column: string;
 }
 
-export default function Home() {
+const Checkout: React.FC = () => {
   const searchParams = useSearchParams();
   const selectedSeats = searchParams?.get('selectedSeats')?.split(',') || [];
   console.log("htrfv " + selectedSeats);
@@ -63,6 +60,26 @@ export default function Home() {
   const showId = searchParams?.get('showId') || '';
   const [seats, setSeats] = useState<string[]>([]);
   const [seatsDetails, setSeatsDetails] = useState([]);
+  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [selectedCard, setSelectedCard] = useState('');
+
+  const creditCards = [
+    { id: 1, number: 'xxxx-xxxx-xxxx-4444' },
+    { id: 2, number: 'xxxx-xxxx-xxxx-1234' }
+  ];
+
+  const bookingRequest: BookingRequest = {
+    showId: 16,
+    ticketCount: 2,
+    userEmail: "dylanwd37@gmail.com",
+    seatStatusDTOs: [
+      { showId: 16, seatId: 651, rowLetter: 'F', seatNumber: 5, isBooked: false, ticketType: 'ADULT' },
+      { showId: 16, seatId: 652, rowLetter: 'F', seatNumber: 6, isBooked: false, ticketType: 'ADULT' }
+    ],
+    paymentRequest: { cardId: 19, cardNumber: '1111222233334444', cvv: '123' },
+    totalPrice: 100.00
+  };
 
 
   function parseSeat(seat: string) {
@@ -81,6 +98,18 @@ export default function Home() {
     return { row, column };
 }
 
+  useEffect(() => {
+    const token = localStorage.getItem('token'); // Retrieve the stored JWT token
+      if (!token) {
+        router.push("/unauth-page");
+        console.error('No token found in localStorage');
+        setLoading(false);
+        return;
+      }
+      const decodedToken = jwtDecode(token);
+      console.log('Decoded token:', decodedToken);
+      const email = decodedToken.sub;
+  }, []);
 
   const formattedDateTime = formatDateTime(date, time);
 
@@ -108,7 +137,7 @@ export default function Home() {
           // Optionally manage error states or notify the user
       }
     });
-}, [location.search]);
+}, [seats]);
 
   const calculateTotalCost = () => {
     const adultPrice = 11.99;
@@ -133,24 +162,36 @@ export default function Home() {
   };
 
   const handleCancelOrder = () => {
-    // Handle cancel order logic here
+    alert('Order cancelled');
+    router.push('/');
   };
 
-  // const handleSubmitOrder = () => {
-  //   bookingRequest = {
-  //     showId: parseInt(showId),
-  //     promotionCode: '',
-  //     ticketCount: adultCount + childCount + seniorCount,
-  //     userEmail: email!,
-  //     seatStatusDTOs: selectedSeats.map(seat => ({
-  //       showId: parseInt(showId),
-  //       seatId: selectedSeats.indexOf(seat),
-  //       rowLetter: parseSeat(seat).row,
-  //       seatNumber: parseSeat(seat).column,
-  //       isBooked: true,
-  //     })),
-  //   }
-  // };
+  const handleCardChange = (event: any) => {
+    setSelectedCard(event.target.value);
+ };
+
+  const handleSubmitOrder = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/booking/create-booking', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bookingRequest)
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      alert('Booking confirmed!');
+      router.push('/order-confirmation');
+      console.log(data);
+    } catch (error) {
+      alert('Error confirming booking');
+    }
+  };
 
   return (
     <form className="container">
@@ -201,6 +242,70 @@ export default function Home() {
         <label htmlFor="frm-total">Total</label>
         <label htmlFor="frm-total">${totalAmount.toFixed(2)}</label>
       </div>
+      <h1>Payment Information</h1>
+        <div className= "credit-card-select">
+            <label htmlFor="credit-card-select">Choose a credit card:</label>
+            <select id="credit-card-select" value={selectedCard} onChange={handleCardChange} className='card-cat'>
+                <option value="">Select a card...</option>
+                {creditCards.map(card => (
+                    <option key={card.id} value={card.number}>{card.number}</option>
+                ))}
+            </select>
+        </div>
+        <div>
+                <h2>Add Card</h2>
+            </div>
+            <form>
+              <div className="name block">
+                  <label htmlFor="frm-name">Name on Payment Card</label>
+                  <input 
+                  id="inp"
+                  type="text"
+                  name="name"
+                  autoComplete="name"
+                  />
+              </div>
+              <div className="card-num block">
+                  <label htmlFor="frm-card-num">Card Number</label>
+                  <input
+                  id="inp"
+                  type="card-num"
+                  name="text"
+                  autoComplete="card-num"
+                  />
+              </div>
+              <div className="card-info block">
+                  <div>
+                  <label htmlFor="frm-exp">Expiration Month</label>
+                  <input
+                      id="inp"
+                      type="text"
+                      name="exp"
+                      autoComplete="exp"
+                  />
+                  </div>
+                  <div className="card-info block">
+                  <div>
+                  <label htmlFor="frm-exp">Expiration Year</label>
+                  <input
+                      id="inp"
+                      type="text"
+                      name="exp"
+                      autoComplete="exp"
+                  />
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="frm-cvv">CVV</label>
+                  <input
+                      id="inp"
+                      type="text"
+                      name="cvv"
+                      autoComplete="cvv"
+                  />
+                  </div>
+              </div>
+            </form>
       <div className="cancel-submit block">
         <div className="button block">
           <button type="button" onClick={handleCancelOrder}>
@@ -208,7 +313,7 @@ export default function Home() {
           </button>
         </div>
         <div className="button block">
-          <button type="button" /*onClick={handleSubmitOrder}*/>
+          <button type="button" onClick={handleSubmitOrder}>
             Submit Order
           </button>
         </div>
@@ -216,3 +321,5 @@ export default function Home() {
     </form>
   );
 }
+
+export default Checkout;
