@@ -1,6 +1,53 @@
 'use client';
 import React, { FormEvent } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { jwtDecode } from 'jwt-decode';
+
+/**
+   * 
+    private Integer showId;
+    private String promotionCode;
+    private int ticketCount;
+    private String userEmail;
+    private List<SeatStatusDTO> seatStatusDTOs;
+    private PaymentRequest paymentRequest;
+    private BigDecimal totalPrice;
+   */
+
+    /** DTO
+    public class SeatStatusDTO {
+    private Integer showId;
+    private Integer seatId;
+    private String rowLetter;
+    private Integer seatNumber;
+    private Boolean isBooked;
+     */
+interface bookingRequest {
+  showId: number;
+  promotionCode: string;
+  ticketCount: number;
+  userEmail: string;
+  seatStatusDTOs: SeatStatusDTO[];
+  paymentRequest: PaymentRequest;
+  totalPrice: number;
+}
+
+interface SeatStatusDTO {
+  showId: number;
+  seatId: number;
+  rowLetter: string;
+  seatNumber: number;
+  isBooked: boolean;
+}
+
+const token = localStorage.getItem('token'); // Retrieve the stored JWT token
+          if (!token) {
+            console.error('No token found in localStorage');
+            throw new Error('No token found in localStorage');
+          }
+          const decodedToken = jwtDecode(token);
+          console.log('Decoded token:', decodedToken);
+          const email = decodedToken.sub;
 
 const formatDateTime = (dateString: string, timeString: string) => {
   const [year, month, day] = dateString.split(',');
@@ -27,6 +74,8 @@ export default function Home() {
   const showId = searchParams?.get('showId') || '';
 
   const formattedDateTime = formatDateTime(date, time);
+
+  
 
   const calculateTotalCost = () => {
     const adultPrice = 11.99;
@@ -56,6 +105,19 @@ export default function Home() {
 
   const handleSubmitOrder = () => {
     // Handle submit order logic here
+    // const bookingRequest: bookingRequest = {
+    //   showId: parseInt(showId),
+    //   promotionCode: '',
+    //   ticketCount: adultCount + childCount + seniorCount,
+    //   userEmail: email!,
+    //   seatStatusDTOs: selectedSeats.map(seat => ({
+    //     showId: parseInt(showId),
+    //     seatId: seat,
+    //     rowLetter: '',
+    //     seatNumber: 0,
+    //     isBooked: true,
+    //   })),
+    // }
   };
 
   return (

@@ -1,52 +1,22 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
 const ResetPasswordPage: React.FC = () => {
-    // const [newPassword, setNewPassword] = useState<string>('');
-    // const queryParams = new URLSearchParams(location.search);
-    // const router = useRouter();
-
-    // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    //     e.preventDefault();
-    //     const router = useRouter();
-    //     try {
-    //         const response = await axios.post('/api/user/reset-password');
-    //         if (response.status === 200) {
-    //             alert('Password reset successfully.');
-    //             router.push('/sign-in');
-    //         } else {
-    //             alert('Failed to reset password.');
-    //         }
-    //     } catch (error) {
-    //         alert('Failed to reset password.');
-    //     }
-    // };
-
-    // return (
-    //     <form className="container" onSubmit={handleSubmit}>
-    //         <h1>Reset Password</h1>
-    //         <div>
-    //             <label htmlFor="frm-email">New Password</label>
-    //             <input
-    //                 id = "frm-email"
-    //                 type="password"
-    //                 value={newPassword}
-    //                 onChange={(e) => setNewPassword(e.target.value)}
-    //                 required
-    //             />
-    //         </div>
-    //         <div className="cancel-save block">
-    //             <button type="submit">Submit</button>
-    //         </div>
-    //     </form>
-    // );
 
     const [newPassword, setNewPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const router = useRouter();
-    const token = router.query.token;  // Assuming you pass the token via query parameters
+    const [token, setToken] = useState<string | string[] | undefined>();
+
+    // Safely access the query parameter using useEffect
+    useEffect(() => {
+        if (router.isReady) {
+            setToken(router.query.token);
+        }
+    }, [router.isReady, router.query.token]);
+
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 
@@ -54,6 +24,11 @@ const ResetPasswordPage: React.FC = () => {
 
         if (newPassword !== confirmPassword) {
             alert('Passwords do not match.');
+            return;
+        }
+
+        if (!token) {
+            alert('Token is missing.');
             return;
         }
 

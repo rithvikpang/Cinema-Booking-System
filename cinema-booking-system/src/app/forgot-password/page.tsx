@@ -17,8 +17,8 @@ const ForgotPassword: React.FC = () => {
       event.preventDefault();
       const encodedEmail = encodeURIComponent(email);
       try {
-        const response = await fetch('http://localhost:8080/api/user/forgot-password/', {
-          method: 'POST',
+        const response = await fetch(`http://localhost:8080/api/user/forgot-password?email=${encodedEmail}`, {
+        method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email }),
         });
@@ -43,7 +43,7 @@ const ForgotPassword: React.FC = () => {
                 type="email"
                 name="text"
                 value = { email }
-                onChange = { handleEmailChange }
+                onChange = { e => handleEmailChange(e)}
                 autoComplete="email"
                 required
                 />
