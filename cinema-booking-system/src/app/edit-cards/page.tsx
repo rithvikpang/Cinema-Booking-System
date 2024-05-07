@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import Link from "next/link"
-import { jwtDecode } from 'jwt-decode';
+import { Router } from 'next/router';
 
 interface Card {
     cardNumber: string;
@@ -9,45 +9,57 @@ interface Card {
 }
 
 interface NewCardDetails {
-  name: string;
+  cardholderName: string;
   cardNumber: string;
-  expiryMonth: string;
-  expiryYear: string // Simplified for this example
+  expiryMonth: number;
+  expiryYear: number;
   zipCode: string;
+  cvv: number;
 }
 
 export default function Home() {
     
     const [cards, setCards] = useState<Card[]>([]);
-    const [newCard, setNewCard] = useState<NewCardDetails>({ name: '', cardNumber: '', expiryMonth: '', expiryYear: '', zipCode: '' });
+    const [newCard, setNewCard] = useState<NewCardDetails>({ cardholderName: '', cardNumber: '', expiryMonth: 0, expiryYear: 0, zipCode: '', cvv: 0 });
+    const [email, setEmail] = useState<string>('');
 
     useEffect(() => {
-        const fetchCards = async () => {
+        const fetchProfile = async () => {
           const token = localStorage.getItem('token'); // Retrieve the stored JWT token
           if (!token) {
             console.error('No token found in localStorage');
             return;
           }
-          const decodedToken = jwtDecode(token);
-          console.log('Decoded token:', decodedToken);
-          const email = decodedToken.sub;
-          
-          if (!email) {
-            console.error('Email not found in token');
-            return;
-          } else {
-            console.log('Email:', email);
-          }
-          const encodedEmail = encodeURIComponent(email);
-          const response = await fetch('http://localhost:8080/api/user/${encodedEmail}/get-payment-cards');
+          const response = await fetch('http://localhost:8080/api/user/profile', {
+            headers: new Headers({
+              'Authorization': `Bearer ${token}`,
+            }),
+          });
           if (response.ok) {
-            const data: Card[] = await response.json();
-            setCards(data);
+            const data = await response.json();
+            setEmail(data.email);
+            fetchCards(data.email);
           }
         };
         
-        fetchCards();
+        fetchProfile();
       }, []);
+
+      const fetchCards = async (email: string) => {
+        const response = await fetch(`http://localhost:8080/api/user/${email}/get-payment-cards`);
+      
+        if (!response.ok) {
+          console.error('Failed to fetch cards:', response.status);
+          return;
+        }
+      
+        try {
+          const data: Card[] = await response.json();
+          setCards(data);
+        } catch (error) {
+          console.error('Error parsing server response:', error);
+        }
+      };
 
       const handleDelete = async (id: number) => {
         const token = localStorage.getItem('token');
@@ -72,7 +84,7 @@ export default function Home() {
     const handleAddCard = async (event: FormEvent) => {
         event.preventDefault();
         const token = localStorage.getItem('token');
-        const response = await fetch('/api/user/${encodedEmail}/add-payment-card', {
+        const response = await fetch(`http://localhost:8080/api/user/${email}/add-payment-card`, {
             method: 'POST',
             headers: new Headers({
                 'Content-Type': 'application/json',
@@ -84,7 +96,7 @@ export default function Home() {
         if (response.ok) {
             const addedCard: Card = await response.json();
             setCards([...cards, addedCard]);
-            setNewCard({ name: '', cardNumber: '', expiryMonth: '', expiryYear:'' , zipCode: '' }); // Reset form
+            setNewCard({ cardholderName: '', cardNumber: '', expiryMonth: 0, expiryYear: 0, zipCode: '', cvv: 0 }); // Reset form
         }
         // Add error handling as needed
     };
@@ -108,12 +120,12 @@ export default function Home() {
             </div>
             <form onSubmit={handleAddCard}>
               <div className="name block">
-                  <label htmlFor="frm-name">Name on Payment Card</label>
+                  <label htmlFor="frm-name">Cardholder Name</label>
                   <input 
                   onChange={handleInputChange}
                   id="inp"
                   type="text"
-                  name="name"
+                  name="cardholderName"
                   autoComplete="name"
                   required
                   />
@@ -123,8 +135,8 @@ export default function Home() {
                   <input
                   onChange={handleInputChange}
                   id="inp"
-                  type="card-num"
-                  name="text"
+                  type="text"
+                  name="cardNumber"
                   autoComplete="card-num"
                   required
                   />
@@ -135,8 +147,8 @@ export default function Home() {
                   <input
                       onChange={handleInputChange}
                       id="inp"
-                      type="text"
-                      name="exp"
+                      type="number"
+                      name="expiryMonth"
                       autoComplete="exp"
                       required
                   />
@@ -147,29 +159,40 @@ export default function Home() {
                   <input
                       onChange={handleInputChange}
                       id="inp"
-                      type="text"
-                      name="exp"
+                      type="number"
+                      name="expiryYear"
                       autoComplete="exp"
                       required
                   />
                   </div>
                 </div>
                 <div>
-                  <label htmlFor="frm-cvv">Zip Code</label>
+                  <label htmlFor="frm-zip">Zip Code</label>
                   <input
                       onChange={handleInputChange}
                       id="inp"
                       type="text"
+                      name="zipCode"
+                      autoComplete="zip"
+                      required
+                  />
+                  </div>
+                <div>
+                  <label htmlFor="frm-cvv">CVV</label>
+                  <input
+                      onChange={handleInputChange}
+                      id="inp"
+                      type="number"
                       name="cvv"
                       autoComplete="cvv"
                       required
                   />
                   </div>
               </div>
+              <div className="button block">
+                <button onClick={handleAddCard}>Add Card</button>
+              </div>
             </form>
-            <div className="button block">
-                <button type="submit">Add Card</button>
-            </div>
         </div>
     );
 }
