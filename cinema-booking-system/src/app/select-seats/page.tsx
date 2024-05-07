@@ -17,7 +17,13 @@ const SelectSeats: React.FC = () => {
   const date = queryParams?.get('date') || '';
   const time = queryParams?.get('time') || '';
 
-  const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
+  const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
+
+  const seatNumberToRowCol = (seatNumber: number) => {
+    const row = String.fromCharCode(65 + Math.floor(seatNumber / 10));
+    const col = seatNumber % 10;
+    return `${row}${col + 1}`
+  }
 
   useEffect(() => {
     // Reset selected seats when the component mounts or ticket counts change
@@ -26,10 +32,10 @@ const SelectSeats: React.FC = () => {
 
   const handleSeatClick = (seatIndex: number) => {
     if (selectedSeats.length < ticketCount) {
-      if (selectedSeats.includes(seatIndex)) {
-        setSelectedSeats(selectedSeats.filter(seat => seat !== seatIndex));
+      if (selectedSeats.includes(seatNumberToRowCol(seatIndex))) {
+        setSelectedSeats(selectedSeats.filter((seat) => (seat) !== seatNumberToRowCol(seatIndex)));
       } else {
-        setSelectedSeats([...selectedSeats, seatIndex]);
+        setSelectedSeats([...selectedSeats, seatNumberToRowCol(seatIndex)]);
       }
     }
   };

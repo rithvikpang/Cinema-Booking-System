@@ -2,26 +2,9 @@
 import React, { FormEvent } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { jwtDecode } from 'jwt-decode';
+import { useEffect, useState } from 'react';
 
-/**
-   * 
-    private Integer showId;
-    private String promotionCode;
-    private int ticketCount;
-    private String userEmail;
-    private List<SeatStatusDTO> seatStatusDTOs;
-    private PaymentRequest paymentRequest;
-    private BigDecimal totalPrice;
-   */
 
-    /** DTO
-    public class SeatStatusDTO {
-    private Integer showId;
-    private Integer seatId;
-    private String rowLetter;
-    private Integer seatNumber;
-    private Boolean isBooked;
-     */
 interface bookingRequest {
   showId: number;
   promotionCode: string;
@@ -61,9 +44,15 @@ const formatDateTime = (dateString: string, timeString: string) => {
   return `${formattedDate} at ${formattedTime}`;
 };
 
+interface seat {
+  row: string;
+  column: string;
+}
+
 export default function Home() {
   const searchParams = useSearchParams();
   const selectedSeats = searchParams?.get('selectedSeats')?.split(',') || [];
+  console.log("htrfv " + selectedSeats);
   const adultCount = parseInt(searchParams?.get('adultCount') || '0');
   const childCount = parseInt(searchParams?.get('childCount') || '0');
   const seniorCount = parseInt(searchParams?.get('seniorCount') || '0');
@@ -72,10 +61,54 @@ export default function Home() {
   const time = searchParams?.get('time') || '';
   const showroomId = searchParams?.get('showroomId') || '';
   const showId = searchParams?.get('showId') || '';
+  const [seats, setSeats] = useState<string[]>([]);
+  const [seatsDetails, setSeatsDetails] = useState([]);
+
+
+  function parseSeat(seat: string) {
+    // Check if the seat ID format is valid
+    if (!/^[A-Za-z]\d+$/.test(seat)) {
+        throw new Error('Invalid seat ID format');
+    }
+
+    // Extract the row as the first character
+    const row = seat.charAt(0);
+
+    // Extract the column as the substring from the second character to the end
+    const column = seat.slice(1);
+
+    // Return the row and column
+    return { row, column };
+}
+
 
   const formattedDateTime = formatDateTime(date, time);
 
-  
+  useEffect(() => {
+    // Extracting seats from URL query parameter
+    const searchParams = new URLSearchParams(location.search);
+    const seats = searchParams.get('seats')?.split(',') || [];
+
+    // Process each seat
+    seats.forEach(async (seat) => {
+        const { row, column } = parseSeat(seat);
+
+        try {
+          const response = await fetch(`http://localhost:8080/api/booking/get-seat/${showroomId}/${row}/${column}`);
+
+        // Check if the response is OK
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Parse the JSON response
+        const data = await response.json();
+      } catch (error) {
+          console.error(`Failed to fetch data for seat ${seat}:`, error);
+          // Optionally manage error states or notify the user
+      }
+    });
+}, [location.search]);
 
   const calculateTotalCost = () => {
     const adultPrice = 11.99;
@@ -103,22 +136,21 @@ export default function Home() {
     // Handle cancel order logic here
   };
 
-  const handleSubmitOrder = () => {
-    // Handle submit order logic here
-    // const bookingRequest: bookingRequest = {
-    //   showId: parseInt(showId),
-    //   promotionCode: '',
-    //   ticketCount: adultCount + childCount + seniorCount,
-    //   userEmail: email!,
-    //   seatStatusDTOs: selectedSeats.map(seat => ({
-    //     showId: parseInt(showId),
-    //     seatId: seat,
-    //     rowLetter: '',
-    //     seatNumber: 0,
-    //     isBooked: true,
-    //   })),
-    // }
-  };
+  // const handleSubmitOrder = () => {
+  //   bookingRequest = {
+  //     showId: parseInt(showId),
+  //     promotionCode: '',
+  //     ticketCount: adultCount + childCount + seniorCount,
+  //     userEmail: email!,
+  //     seatStatusDTOs: selectedSeats.map(seat => ({
+  //       showId: parseInt(showId),
+  //       seatId: selectedSeats.indexOf(seat),
+  //       rowLetter: parseSeat(seat).row,
+  //       seatNumber: parseSeat(seat).column,
+  //       isBooked: true,
+  //     })),
+  //   }
+  // };
 
   return (
     <form className="container">
@@ -176,7 +208,7 @@ export default function Home() {
           </button>
         </div>
         <div className="button block">
-          <button type="button" onClick={handleSubmitOrder}>
+          <button type="button" /*onClick={handleSubmitOrder}*/>
             Submit Order
           </button>
         </div>
