@@ -108,32 +108,35 @@ const ScheduleMovie: React.FC = () => {
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = e.target;
-  
-      // For date field, format value as YYYY-MM-DD (LocalDate format)
-      if (name === 'date') {
-          const formattedDate = new Date(value).toISOString().split('T')[0];
-          setFormData({
-              ...formData,
-              [name]: formattedDate
-          });
-      } 
-      // For time field, format value as HH:MM:SS (LocalTime format)
-      else if (name === 'time') {
-          const formattedTime = value + ':00'; // Assuming seconds are 00
-          setFormData({
-              ...formData,
-              [name]: formattedTime
-          });
-      } 
-      // For other fields, update value normally
-      else {
-          setFormData({
-              ...formData,
-              [name]: value
-          });
-      }
-  };
+        const { name, value } = e.target;
+    
+        if (name === 'time') {
+            // Split the input value into hours and minutes
+            const [hoursInput, minutesInput] = value.split(':');
+    
+            // Ensure hours and minutes have leading zeros if necessary
+            const hours = hoursInput.padStart(2, '0');
+            const minutes = minutesInput ? minutesInput.padStart(2, '0') : '00';
+    
+            const formattedTime = `${hours}:${minutes}:00`;
+            setFormData({
+                ...formData,
+                [name]: formattedTime
+            });
+        } else if (name === 'date') {
+            const formattedDate = new Date(value).toISOString().split('T')[0];
+            setFormData({
+                ...formData,
+                [name]: formattedDate
+            });
+        } else {
+            setFormData({
+                ...formData,
+                [name]: value
+            });
+        }
+    };
+    
   
 
     return (

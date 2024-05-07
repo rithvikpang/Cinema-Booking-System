@@ -92,8 +92,8 @@ public class AdminServiceImpl implements AdminService {
 
         
         // Parse date and time strings into LocalDate and LocalTime
-        LocalDate date = DateParser.parseDate(showRequest.getDate());
-        LocalTime time = DateParser.parseTime(showRequest.getTime());
+        LocalDate date = showRequest.getDate();
+        LocalTime time = showRequest.getTime();
         
         // duration of movie to check times
         int duration = movie.getDuration();
