@@ -6,6 +6,7 @@ import com.cinemabookingsystem.cinemadb.dto.BookingRequest;
 import com.cinemabookingsystem.cinemadb.dto.SeatStatusDTO;
 import com.cinemabookingsystem.cinemadb.model.Booking;
 import com.cinemabookingsystem.cinemadb.model.Seat;
+import com.cinemabookingsystem.cinemadb.model.Showroom;
 import com.cinemabookingsystem.cinemadb.model.TicketType;
 import com.cinemabookingsystem.cinemadb.service.BookingServiceImpl;
 import com.cinemabookingsystem.cinemadb.service.PaymentServiceImpl;
@@ -73,6 +74,21 @@ public class BookingController {
     public ResponseEntity<?> getAllSeats() {
         List<Seat> seats = seatService.getAllSeats();
         return ResponseEntity.ok().body(seats); 
+    }
+
+    @GetMapping("/get-seat/{showroom}/{row_letter}/{seat_number}")
+    public ResponseEntity<?> getSeatByShowroomIdRowLetterAndNumber(
+            @PathVariable Showroom showroom,
+            @PathVariable String row_letter,
+            @PathVariable int seat_number) {
+        Seat seat;
+        try {
+            seat = seatService.getSeatByShowroomRowLetterAndNumber(showroom, row_letter, seat_number);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok().body(seat);
     }
 
     @GetMapping("/get-ticket-price/{ticketType}")
