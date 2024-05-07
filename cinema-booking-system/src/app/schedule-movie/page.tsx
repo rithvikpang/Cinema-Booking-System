@@ -101,6 +101,7 @@ const ScheduleMovie: React.FC = () => {
             // Handle success, redirect or display message
             router.push('/manage-movies'); // Redirect to success page
         } catch (error) {
+            alert('Show time overlaps or already exists');
             console.error('Error scheduling show:', error);
             // Handle error, display message to user
         }
