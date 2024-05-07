@@ -1,22 +1,73 @@
 "use client";
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
+
+interface UserProfile {
+  isadmin: boolean;
+  // Add other fields as they are defined in your database
+}
 
 const PriceFees: React.FC = () => {
+
+  const [profile, setProfile] = useState<UserProfile>({
+    isadmin: true,
+  });
+
+  const [token, setToken] = useState<string | null>();
   const [adultPrice, setAdultPrice] = useState<number>(0);
   const [childPrice, setChildPrice] = useState<number>(0);
   const [seniorPrice, setSeniorPrice] = useState<number>(0);
   const [fee, setFee] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
+  const router = useRouter();
 
   useEffect(() => {
-    const fetchPrices = async () => {
+      const storedToken = localStorage.getItem('token');
+
+      // If token exists, assign value to token
+      if (storedToken) {
+        setToken(storedToken);
+      }
+
+    const fetchPrices = async () => {  
+      
       const token = localStorage.getItem('token');
+
       if (!token) {
+        router.push('/unauth-page'); // Does not allow non-logged in users to access this page
         setError('No token found in localStorage');
         setLoading(false);
         return;
       }
+
+      // Authorized restriction
+      try {
+        const response = await fetch('http://localhost:8080/api/user/profile', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch profile: ${response.status} ${response.statusText}`);
+        }
+
+        const data: UserProfile = await response.json();
+        setProfile(data);
+        
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
+        }
+      } finally {
+        setLoading(false);
+      }
+
       try {
         const adultResponse = await fetch('http://localhost:8080/api/booking/get-ticket-price/ADULT', {
           method: 'GET',
@@ -83,6 +134,12 @@ const PriceFees: React.FC = () => {
 
     fetchPrices();
   }, []);
+
+  useEffect(() => {
+    if (!profile.isadmin) {
+      router.push("/unauth-page");
+    }
+  }, [profile.isadmin]);
 
   const handleAdultChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -240,7 +297,7 @@ const PriceFees: React.FC = () => {
         />
       </div>
       <div className="fee block">
-        <label htmlFor="adultPrice">Senior Ticket Price</label>
+        <label htmlFor="adultPrice">Fee</label>
         <input
           id="fee"
           type="text"
