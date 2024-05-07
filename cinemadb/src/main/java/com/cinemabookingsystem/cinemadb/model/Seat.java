@@ -19,8 +19,8 @@ public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer seat_id;
-    private String row_letter;
-    private int seat_number;
+    private String rowLetter;
+    private int seatNumber;
 
     @JsonBackReference
     @ManyToOne
@@ -36,19 +36,19 @@ public class Seat {
     }
 
     public String getRowLetter() {
-        return row_letter;
+        return rowLetter;
     }
 
     public void setRowLetter(String rowLetter) {
-        this.row_letter = rowLetter;
+        this.rowLetter = rowLetter;
     }
 
     public int getSeatNumber() {
-        return seat_number;
+        return seatNumber;
     }
 
-    public void setSeatNumber(int seat_number) {
-        this.seat_number = seat_number;
+    public void setSeatNumber(int seatNumber) {
+        this.seatNumber = seatNumber;
     }
 
     public Showroom getShowroom() {

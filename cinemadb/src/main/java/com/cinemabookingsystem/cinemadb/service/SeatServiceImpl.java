@@ -97,4 +97,9 @@ public class SeatServiceImpl implements SeatService {
     private boolean shouldGenerateSeats(Showroom showroom) {
         return showroom.getSeats().isEmpty();
     }
+
+    public Seat getSeatByShowroomRowLetterAndNumber(Showroom showroom, String row_letter, int seat_number) {
+        return seatRepository.findByShowroomAndRowLetterAndSeatNumber(showroom, row_letter, seat_number)
+                .orElseThrow(() -> new IllegalArgumentException("Seat not found"));
+    }
 }
