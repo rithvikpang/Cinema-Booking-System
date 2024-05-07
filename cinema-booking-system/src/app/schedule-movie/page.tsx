@@ -1,8 +1,18 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+interface UserProfile {
+    isadmin: boolean;
+    // Add other fields as they are defined in your database
+}
+
 const ScheduleMovie: React.FC = () => {
+    
+    const [profile, setProfile] = useState<UserProfile>({
+        isadmin: true,
+    });
+
     const [formData, setFormData] = useState({
         showId: '',
         date: '',
@@ -11,7 +21,63 @@ const ScheduleMovie: React.FC = () => {
         showroomId: '',
         movieId: ''
     });
+
+    const [token, setToken] = useState<string | null>();
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string>('');
     const router = useRouter();
+
+    useEffect(() => {
+        const storedToken = localStorage.getItem("token");
+    
+        // If token exists, assign value to token
+        if (storedToken) {
+          setToken(storedToken);
+        }
+    
+        const fetchProfile = async () => {
+          const token = localStorage.getItem('token');
+          if (!token) {
+            router.push('/unauth-page'); // Does not allow non-logged in users to access this page
+            setError('No token found in localStorage');
+            setLoading(false);
+            return;
+          }
+    
+          try {
+            const response = await fetch('http://localhost:8080/api/user/profile', {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+              },
+            });
+    
+            if (!response.ok) {
+              throw new Error(`Failed to fetch profile: ${response.status} ${response.statusText}`);
+            }
+    
+            const data: UserProfile = await response.json();
+            setProfile(data);
+          } catch (err: unknown) {
+            if (err instanceof Error) {
+              setError(err.message);
+            } else {
+              setError('An unknown error occurred');
+            }
+          } finally {
+            setLoading(false);
+          }
+        };
+    
+        fetchProfile();
+      }, []);
+
+      useEffect(() => {
+        if (!profile.isadmin) {
+          router.push("/unauth-page");
+        }
+      }, [profile.isadmin]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
