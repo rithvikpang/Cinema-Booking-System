@@ -33,7 +33,7 @@ public class Show {
     @JoinColumn(name = "showroom_id", referencedColumnName = "showroom_id")
     private Showroom showroom;
 
-    @JsonBackReference
+    @JsonBackReference("movie-show")
     @ManyToOne
     @JoinColumn(name = "movie_id", referencedColumnName = "movie_id")
     private Movie movie;
