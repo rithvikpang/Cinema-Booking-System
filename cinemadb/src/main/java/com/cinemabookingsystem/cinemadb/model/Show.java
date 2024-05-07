@@ -34,7 +34,8 @@ public class Show {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "showroom_id", referencedColumnName = "showroom_id")
     private Showroom showroom;
-
+  
+    @JsonBackReference("movie-show")
     @ManyToOne
     @JoinColumn(name = "movie_id", referencedColumnName = "movie_id")
     private Movie movie;

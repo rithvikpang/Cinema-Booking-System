@@ -11,8 +11,8 @@ export interface SearchResult {
   category: string;
   cast: string;
   director: string;
-  image_url: string;
-  trailer_url: string;
+  movie_image: string;
+  movie_trailer: string;
 }
 
 interface SearchContextType {

@@ -17,8 +17,8 @@ export default function Home() {
         category: '',
         cast: '',
         director: '',
-        image_url: '',
-        trailer_url: '',
+        movie_image: '',
+        movie_trailer: '',
         producer: '',
         reviews: ''
     };
@@ -61,14 +61,16 @@ export default function Home() {
                     duration: parseInt(formData.duration),
                 })
             });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok.');
+    
+            const responseText = await response.text();
+            if (response.ok) {
+                // Assume the response is a success message
+                toast.success(responseText || 'Movie added successfully');
+                setFormData(initialFormData);
+            } else {
+                // Assume the response is an error message
+                toast.error(`Error adding movie: ${responseText}`);
             }
-
-            const result = await response.json();
-            toast.success(result.message || 'Movie added successfully');
-            setFormData(initialFormData);
         } catch (error) {
             console.error("An error occurred:", error);
             toast.error('Error adding movie. Please try again.');
@@ -217,8 +219,8 @@ export default function Home() {
                 <input
                     id="frm-movie"
                     type="text"
-                    name="image_url"
-                    value={formData.image_url}
+                    name="movie_image"
+                    value={formData.movie_image}
                     onChange={handleChange}
                     autoComplete="movie-name"
                     required
@@ -229,8 +231,8 @@ export default function Home() {
                 <input
                     id="frm-movie"
                     type="text"
-                    name="trailer_url"
-                    value={formData.trailer_url}
+                    name="movie_trailer"
+                    value={formData.movie_trailer}
                     onChange={handleChange}
                     autoComplete="movie-name"
                     required
