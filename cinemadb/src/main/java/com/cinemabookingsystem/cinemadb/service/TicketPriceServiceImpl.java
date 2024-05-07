@@ -1,7 +1,5 @@
 package com.cinemabookingsystem.cinemadb.service;
 
-import java.math.BigDecimal;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +15,7 @@ public class TicketPriceServiceImpl implements TicketPriceService {
     private TicketPriceRepository ticketPriceRepository;
 
     @Override
-    public BigDecimal getPriceByTicketType(TicketType ticketType) {
+    public Float getPriceByTicketType(TicketType ticketType) {
         return ticketPriceRepository.findByTicketType(ticketType)
                 .orElseThrow(() -> new IllegalArgumentException("No price defined for category: " + ticketType))
                 .getPrice();
@@ -26,7 +24,7 @@ public class TicketPriceServiceImpl implements TicketPriceService {
     @Override
     public TicketPrice setTicketPrice(TicketPriceDTO ticketPriceDTO) {
         TicketType ticketType = ticketPriceDTO.getTicketType();
-        BigDecimal newPrice = ticketPriceDTO.getNewPrice();
+        Float newPrice = ticketPriceDTO.getNewPrice();
         
         TicketPrice ticketPrice = ticketPriceRepository.findByTicketType(ticketType)
                 .orElse(new TicketPrice());

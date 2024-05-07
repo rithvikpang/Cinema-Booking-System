@@ -138,6 +138,7 @@ public class BookingServiceImpl implements BookingService {
                     }
                 }
                 ticket.setSeat(seat);
+                ticket.setTicketType(seatStatusDTO.getTicketType());
                 matchedSeatStatus.setBooked(true);
                 seatStatusRepository.save(matchedSeatStatus);
             } else {

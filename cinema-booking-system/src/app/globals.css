@@ -276,6 +276,18 @@ textarea {
   resize: none;
 }
 
+.seats {
+  padding: 10px;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+}
+
+.seats.selected {
+  background-color: lightgreen;
+}
+
+
 .combobox {
   position: relative;
   width: 300px;

@@ -4,11 +4,11 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
 interface UserProfile {
-  admin: boolean;
+  isadmin: boolean;
   // Add other fields as they are defined in your database
 }
 
-const ManageMovies: React.FC = () => {
+const EditMovies: React.FC = () => {
   const queryParams = new URLSearchParams(window.location.search);
 
   // Initialize state variables for movie details
@@ -27,7 +27,7 @@ const ManageMovies: React.FC = () => {
   });
 
   const [profile, setProfile] = useState<UserProfile>({
-    admin: true,
+    isadmin: true,
     // Initialize other fields as needed
   });
 
@@ -55,12 +55,66 @@ const ManageMovies: React.FC = () => {
     }));
   };
 
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+
+    // If token exists, assign value to token
+    if (storedToken) {
+      setToken(storedToken);
+    }
+
+    const fetchProfile = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        router.push('/unauth-page'); // Does not allow non-logged in users to access this page
+        setError('No token found in localStorage');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:8080/api/user/profile', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch profile: ${response.status} ${response.statusText}`);
+        }
+
+        const data: UserProfile = await response.json();
+        setProfile(data);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An unknown error occurred');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  useEffect(() => {
+    if (!profile.isadmin) {
+      router.push("/unauth-page");
+    }
+  }, [profile.isadmin]);
+
   // Function to handle form submission
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const token = localStorage.getItem('token');
+
     if (!token) {
+      router.push('/unauth-page'); // Does not allow non-logged in users to access this page
       setError('No token found in localStorage');
       return;
     }
@@ -87,12 +141,6 @@ const ManageMovies: React.FC = () => {
       setError(err.message);
     }
   };
-
-  // Does not allow users and non-logged in users to access this page
-  if (profile.admin === false) {
-    router.push('/unauth-page');
-    return null;
-  }
 
   return (
     <form onSubmit={handleSubmit} className="container" >
@@ -224,4 +272,4 @@ const ManageMovies: React.FC = () => {
   );
 }
 
-export default ManageMovies;
+export default EditMovies;

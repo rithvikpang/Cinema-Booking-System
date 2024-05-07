@@ -24,32 +24,34 @@ interface Show {
 
 interface Showroom {
     capacity: number;
-    showroomId: number;
+    showroomId: number | null;
 }
 
 const MovieInfo: React.FC<Movie> = ({ isOpen, onClose, trailerUrl, title, rating, genre, cast, director, descr, imageUrl, producer, reviews, shows}) => {
     
-    // Creates url string with movie info
+    // Adjust the handleBookClick function to handle nullable showroomId
     const handleBookClick = () => {
-        // Construct an array of show information strings
-        const showInfoArray = shows.map((show, index) => {
-            // Check if showroom and showroomId are defined before accessing them
-            const showroomId = show.showroom ? show.showroom.showroomId : null;
-            return `show${index + 1}Id=${encodeURIComponent(show.showId)}&show${index + 1}Date=${encodeURIComponent(show.date)}&show${index + 1}Time=${encodeURIComponent(show.time)}&show${index + 1}ShowroomId=${encodeURIComponent(showroomId)}`;
-        });
-    
-        // Join the show information strings with '&'
-        const showInfoQueryString = showInfoArray.join('&');
-    
-        // Construct the final query string with movie info and show info
-        const queryString = `?title=${encodeURIComponent(title)}&imageUrl=${encodeURIComponent(imageUrl)}&${showInfoQueryString}`;
-    
-        // Redirect to the booking page with the constructed query string
-        window.location.href = `/select-show-time${queryString}`;
-    
-        onClose(); // Close the modal after navigating to the booking page
-    };
-    
+    // Construct an array of show information strings
+    const showInfoArray = shows.map((show, index) => {
+        // Check if showroom and showroomId are defined before accessing them
+        const showroomId = show.showroom ? show.showroom.showroomId : null;
+        // Handle nullable showroomId by converting it to a string
+        const encodedShowroomId = showroomId !== null ? encodeURIComponent(String(showroomId)) : ''; 
+        return `show${index + 1}Id=${encodeURIComponent(show.showId)}&show${index + 1}Date=${encodeURIComponent(show.date)}&show${index + 1}Time=${encodeURIComponent(show.time)}&show${index + 1}ShowroomId=${encodedShowroomId}`;
+    });
+
+    // Join the show information strings with '&'
+    const showInfoQueryString = showInfoArray.join('&');
+
+    // Construct the final query string with movie info and show info
+    const queryString = `?title=${encodeURIComponent(title)}&imageUrl=${encodeURIComponent(imageUrl)}&${showInfoQueryString}`;
+
+    // Redirect to the booking page with the constructed query string
+    window.location.href = `/select-show-time${queryString}`;
+
+    onClose(); // Close the modal after navigating to the booking page
+};
+
     
     if (!isOpen) return null;
 

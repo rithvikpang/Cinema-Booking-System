@@ -1,8 +1,5 @@
 package com.cinemabookingsystem.cinemadb.dto;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)

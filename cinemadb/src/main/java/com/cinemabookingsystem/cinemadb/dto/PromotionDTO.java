@@ -1,26 +1,26 @@
 package com.cinemabookingsystem.cinemadb.dto;
 
-import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PromotionDTO {
-    private String start_date;
-    private String end_date;
+    private LocalDate start_date;
+    private LocalDate end_date;
     private String code;
-    private BigDecimal discount; 
+    private Float discount; 
     // Other fields, getters, and setters
-    public String getStart_date() {
+    public LocalDate getStart_date() {
         return start_date;
     }
-    public void setStart_date(String start_date) {
+    public void setStart_date(LocalDate start_date) {
         this.start_date = start_date;
     }
-    public String getEnd_date() {
+    public LocalDate getEnd_date() {
         return end_date;
     }
-    public void setEnd_date(String end_date) {
+    public void setEnd_date(LocalDate end_date) {
         this.end_date = end_date;
     }
 
@@ -32,11 +32,11 @@ public class PromotionDTO {
         this.code = code;
     }
 
-    public BigDecimal getDiscount() {
+    public Float getDiscount() {
         return discount;
     }
 
-    public void setDiscount(BigDecimal discount) {
+    public void setDiscount(Float discount) {
         this.discount = discount;
     }
 }

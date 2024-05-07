@@ -6,7 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -19,7 +18,7 @@ public class Promotion {
     private LocalDate start_date;
     private LocalDate end_date;
     private String code;
-    private BigDecimal discount;
+    private Float discount;
     
     public Promotion() {
 
@@ -49,10 +48,10 @@ public class Promotion {
     public void setCode(String code) {
         this.code = code;
     }
-    public BigDecimal getDiscount() {
+    public Float getDiscount() {
         return discount;
     }
-    public void setDiscount(BigDecimal discount) {
+    public void setDiscount(Float discount) {
         this.discount = discount;
     }
 

@@ -1,7 +1,5 @@
 package com.cinemabookingsystem.cinemadb.dto;
 
-import com.cinemabookingsystem.cinemadb.model.PaymentCard;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)

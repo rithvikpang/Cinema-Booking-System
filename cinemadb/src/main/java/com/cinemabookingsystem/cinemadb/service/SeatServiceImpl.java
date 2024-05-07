@@ -1,9 +1,7 @@
 package com.cinemabookingsystem.cinemadb.service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,6 +50,11 @@ public class SeatServiceImpl implements SeatService {
                 generateSeatStatusesForShow(show);
             }
         }
+    }
+
+    @Override
+    public List<Seat> getAllSeats() {
+        return seatRepository.findAll();
     }
 
     private void generateSeatsForShowroom(Showroom showroom) {

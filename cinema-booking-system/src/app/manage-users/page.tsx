@@ -12,22 +12,14 @@ interface UserProfile {
 }
 
 const ManageUsers: React.FC = () => {
-  const [profile, setProfile] = useState<UserProfile>({
-    user_id: 0,
-    firstname: '',
-    lastname: '',
-    email: '',
-    isadmin: false,
-    // Initialize other fields as needed
-  });
-
+  const [isAdmin, setIsAdmin] = useState(false);
   const [users, setUsers] = useState<UserProfile[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const router = useRouter();
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchProfile = async () => {
       const token = localStorage.getItem('token');
       if (!token) {
         router.push('/unauth-page');  // Redirect if not logged in
@@ -35,23 +27,22 @@ const ManageUsers: React.FC = () => {
         setLoading(false);
         return;
       }
-  
+
       try {
-        const response = await fetch('http://localhost:8080/api/user/all', {
+        const response = await fetch('http://localhost:8080/api/user/profile', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${token}`,
           },
         });
-  
+
         if (!response.ok) {
-          throw new Error(`Failed to fetch users: ${response.status} ${response.statusText}`);
+          throw new Error(`Failed to fetch profile: ${response.status} ${response.statusText}`);
         }
-  
-        const data: UserProfile[] = await response.json();
-        setUsers(data);
-        console.log(data); // Check if data is correct
+
+        const data: UserProfile = await response.json();
+        setIsAdmin(data.isadmin);
       } catch (err: unknown) {
         if (err instanceof Error) {
           setError(err.message);
@@ -62,10 +53,55 @@ const ManageUsers: React.FC = () => {
         setLoading(false);
       }
     };
-  
-    fetchUsers();
+
+    fetchProfile();
   }, []);
-  
+
+  useEffect(() => {
+    if (!loading) {
+      if (isAdmin) {
+        fetchUsers();
+      } else {
+        router.push('/unauth-page');
+      }
+    }
+  }, [loading, isAdmin]);
+
+  const fetchUsers = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      router.push('/unauth-page');  // Redirect if not logged in
+      setError('No token found in localStorage');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:8080/api/user/all', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch users: ${response.status} ${response.statusText}`);
+      }
+
+      const data: UserProfile[] = await response.json();
+      setUsers(data);
+      console.log(data); // Check if data is correct
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleEditUser = (email: String) => {
     // Logic to edit user information
@@ -80,7 +116,7 @@ const ManageUsers: React.FC = () => {
         setError('No token found in localStorage');
         return;
       }
-  
+
       const response = await fetch(`http://localhost:8080/api/user/profile/${email}`, {
         method: 'DELETE',
         headers: {
@@ -88,11 +124,11 @@ const ManageUsers: React.FC = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       if (!response.ok) {
         throw new Error(`Failed to delete user: ${response.status} ${response.statusText}`);
       }
-  
+
       // Remove the deleted user from the state
       setUsers(prevUsers => prevUsers.filter(user => user.email !== email));
     } catch (err: unknown) {
@@ -103,7 +139,9 @@ const ManageUsers: React.FC = () => {
       }
     }
   };
-  
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="container">
@@ -131,9 +169,6 @@ const ManageUsers: React.FC = () => {
       </div>
     </div>
   );
-  
 };
-
-
 
 export default ManageUsers;
