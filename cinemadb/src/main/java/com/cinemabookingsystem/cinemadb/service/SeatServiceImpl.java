@@ -52,6 +52,11 @@ public class SeatServiceImpl implements SeatService {
         }
     }
 
+    @Override
+    public List<Seat> getAllSeats() {
+        return seatRepository.findAll();
+    }
+
     private void generateSeatsForShowroom(Showroom showroom) {
         int capacity = showroom.getCapacity();
         int seatsPerRow = 20; 
