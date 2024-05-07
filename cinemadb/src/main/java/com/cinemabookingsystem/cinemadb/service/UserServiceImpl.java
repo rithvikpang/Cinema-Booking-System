@@ -43,8 +43,8 @@ public class UserServiceImpl implements UserService {
     private JavaMailSender javaMailSender;
 
     public UserServiceImpl(UserRepository userRepository, BookingRepository bookingRepository,
-        PasswordResetTokenRepository passwordResetTokenRepository,
-        JavaMailSender javaMailSender) {
+            PasswordResetTokenRepository passwordResetTokenRepository,
+            JavaMailSender javaMailSender) {
         this.userRepository = userRepository;
         this.bookingRepository = bookingRepository;
         this.passwordResetTokenRepository = passwordResetTokenRepository;
@@ -96,15 +96,17 @@ public class UserServiceImpl implements UserService {
     }
 
     // private SimpleMailMessage optEmailSend(User user, int otp) {
-    //     SimpleMailMessage msg = new SimpleMailMessage();
-    //     msg.setFrom(fromEmail);
-    //     msg.setTo(user.getEmail());
+    // SimpleMailMessage msg = new SimpleMailMessage();
+    // msg.setFrom(fromEmail);
+    // msg.setTo(user.getEmail());
 
-    //     msg.setSubject("Log in to your account");
-    //     msg.setText("Please enter the following verification code to verify this login attempt." + "\n\n" + otp
-    //             + "\n\n" + "If you did not request this code, please ignore this email." + "\n\n"
-    //             + "Thanks, Cinema Booking System");
-    //     return msg;
+    // msg.setSubject("Log in to your account");
+    // msg.setText("Please enter the following verification code to verify this
+    // login attempt." + "\n\n" + otp
+    // + "\n\n" + "If you did not request this code, please ignore this email." +
+    // "\n\n"
+    // + "Thanks, Cinema Booking System");
+    // return msg;
     // }
 
     // @Override
@@ -291,7 +293,7 @@ public class UserServiceImpl implements UserService {
         message.setTo(email);
         message.setSubject("Password Reset Request");
         message.setText(
-                "To reset your password, click the link below:\n" + "http://localhost:3000/reset-password?token="
+                "To reset your password, click the link below:\n" + "http://localhost:3000/reset-password/"
                         + token);
         javaMailSender.send(message);
 
