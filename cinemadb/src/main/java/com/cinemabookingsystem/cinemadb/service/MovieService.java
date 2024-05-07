@@ -9,8 +9,12 @@ import java.util.Set;
 
 public interface MovieService {
     public Movie saveMovie(Movie movie);
+
     public List<Movie> getAllMovies();
+
     public List<Movie> searchMoviesByTitle(String title);
+
     public List<Movie> searchMoviesByGenre(Genre genre);
+
     public Set<Movie> searchMoviesByShowDate(LocalDate showDate);
 }

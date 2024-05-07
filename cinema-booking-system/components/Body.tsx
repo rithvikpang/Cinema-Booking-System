@@ -52,8 +52,17 @@ const Body = () => {
       return;
     }
 
+    const genres = ['COMEDY', 'DRAMA', 'ACTION', 'ROMANCE', 'ADVENTURE', 'HORROR'];
+    let url;
+
+    if (genres.includes(query.toUpperCase())) {
+      url = `http://localhost:8080/api/movies/search/by-genre?genre=${encodeURIComponent(query.toUpperCase())}`;
+    } else {
+      url = `http://localhost:8080/api/movies/search/by-title?title=${encodeURIComponent(query)}`;
+    }
+
     try {
-      const response = await fetch(`http://localhost:8080/api/movies/search/by-title?title=${encodeURIComponent(query)}`);
+      const response = await fetch(url);
       const data: Movie[] = await response.json();
       setSearchResults(data);
       if (data.length === 0) {

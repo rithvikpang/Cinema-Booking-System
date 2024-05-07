@@ -51,7 +51,7 @@ public class UserController {
         Set<PaymentCardDTO> cards;
         try {
             cards = paymentInfoService.getUserPaymentCards(email);
-        } catch(IllegalStateException e) {
+        } catch (IllegalStateException e) {
             System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -99,7 +99,7 @@ public class UserController {
         }
         try {
             editedCard = paymentInfoService.editPaymentCard(paymentCardDTO, cardId);
-        } catch(IllegalStateException e) {
+        } catch (IllegalStateException e) {
             System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -118,8 +118,8 @@ public class UserController {
         return ResponseEntity.ok().body("Billing Address deleted successfully");
     }
 
-    //@Autowired
-   // private CustomUserDetailsService customUserDetailsService;
+    // @Autowired
+    // private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
     private UserRepository userRepository;
@@ -157,7 +157,7 @@ public class UserController {
 
             User user = userRepository.findById(email).orElse(null);
             if (user != null) {
-                UserDTO userDTO = userService.convertToUserDTO(user); 
+                UserDTO userDTO = userService.convertToUserDTO(user);
                 return ResponseEntity.ok().body(userDTO);
             }
         }
@@ -176,12 +176,11 @@ public class UserController {
         }
         return ResponseEntity.notFound().build();
     }
-    
 
     @PutMapping("/profile/{email}")
     public ResponseEntity<?> updateUserProfileByEmail(@PathVariable String email,
-                                                    @RequestBody User updatedUser,
-                                                    Errors errors) {
+            @RequestBody User updatedUser,
+            Errors errors) {
         if (errors.hasErrors()) {
             return ResponseEntity.badRequest().body(errors.getAllErrors());
         }
@@ -194,7 +193,6 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
-
 
     private String getTokenFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
