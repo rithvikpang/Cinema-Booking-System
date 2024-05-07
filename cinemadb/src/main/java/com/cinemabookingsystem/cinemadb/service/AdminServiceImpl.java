@@ -75,45 +75,81 @@ public class AdminServiceImpl implements AdminService {
         movieRepository.delete(deletedMovie);
     }
 
+    // @Override
+    // public Show scheduleShow(ShowRequest showRequest) {
+    //     // Get movie
+    //     Movie movie = movieRepository.findById(showRequest.getMovieId())
+    //         .orElseThrow(() -> new IllegalArgumentException("Movie not found with id: " 
+    //             + showRequest.getMovieId()));
+    //     // Get showroom
+    //     Showroom showroom = showroomRepository.findById(showRequest.getShowroomId())
+    //         .orElseThrow(() -> new IllegalArgumentException("Showroom not found with id: " 
+    //         + showRequest.getShowroomId()));
+
+    //     Show show = showRepository.findById(showRequest.getShowId()).orElseThrow(() 
+    //     -> new IllegalArgumentException("Show not found with id: " 
+    //     + showRequest.getShowId()));
+
+        
+    //     // Parse date and time strings into LocalDate and LocalTime
+    //     LocalDate date = showRequest.getDate();
+    //     LocalTime time = showRequest.getTime();
+        
+    //     // duration of movie to check times
+    //     int duration = movie.getDuration();
+        
+    //     // return error if showroom is booked
+    //     if(isShowroomBooked(showroom, date, time, duration)) {
+    //         throw new IllegalArgumentException("This showroom is booked at: " + showRequest.getTime());
+    //     }
+        
+    //     // Construct show and set fields
+    //     show.setDate(date);
+    //     show.setTime(time);
+    //     show.setDuration(duration);
+    //     show.setMovie(movie);
+    //     show.setShowroom(showroom);
+        
+    //     // add this show to the showroom's set of shows
+    //     movie.setShow(show);
+        
+    //     return showRepository.save(show); 
+    // }
+
     @Override
     public Show scheduleShow(ShowRequest showRequest) {
         // Get movie
         Movie movie = movieRepository.findById(showRequest.getMovieId())
-            .orElseThrow(() -> new IllegalArgumentException("Movie not found with id: " 
-                + showRequest.getMovieId()));
+                .orElseThrow(() -> new IllegalArgumentException("Movie not found with id: " + showRequest.getMovieId()));
+
         // Get showroom
         Showroom showroom = showroomRepository.findById(showRequest.getShowroomId())
-            .orElseThrow(() -> new IllegalArgumentException("Showroom not found with id: " 
-            + showRequest.getShowroomId()));
+                .orElseThrow(() -> new IllegalArgumentException("Showroom not found with id: " + showRequest.getShowroomId()));
 
-        Show show = showRepository.findById(showRequest.getShowId()).orElseThrow(() 
-        -> new IllegalArgumentException("Show not found with id: " 
-        + showRequest.getShowId()));
+        // Create a new Show instance
+        Show show = new Show();
 
-        
         // Parse date and time strings into LocalDate and LocalTime
-        LocalDate date = DateParser.parseDate(showRequest.getDate());
-        LocalTime time = DateParser.parseTime(showRequest.getTime());
-        
-        // duration of movie to check times
+        LocalDate date = showRequest.getDate();
+        LocalTime time = showRequest.getTime();
         int duration = movie.getDuration();
-        
+
         // return error if showroom is booked
-        if(isShowroomBooked(showroom, date, time, duration)) {
+        if (isShowroomBooked(showroom, date, time, duration)) {
             throw new IllegalArgumentException("This showroom is booked at: " + showRequest.getTime());
         }
-        
+
         // Construct show and set fields
         show.setDate(date);
         show.setTime(time);
         show.setDuration(duration);
         show.setMovie(movie);
         show.setShowroom(showroom);
-        
+
         // add this show to the showroom's set of shows
         movie.setShow(show);
-        
-        return showRepository.save(show); 
+
+        return showRepository.save(show);
     }
 
     @Override

@@ -294,6 +294,11 @@ const Navbar = () => {
                       <button className="edit-button">Profile</button>
                     </Link>
                   </div>
+                  <div className="edit-button">
+                    <Link className="edit-button" href="/order-history">
+                      <button className="edit-button">Order History</button>
+                    </Link>
+                  </div>
                   <div className="home-btn block">
                     <Link className="home-btn" href="/admin">
                       <button type="submit">Admin</button>
@@ -331,6 +336,11 @@ const Navbar = () => {
                   <div className="edit-button">
                     <Link className="edit-button" href="/profile">
                       <button className="edit-button">Profile</button>
+                    </Link>
+                  </div>
+                  <div className="edit-button">
+                    <Link className="edit-button" href="/order-history">
+                      <button className="edit-button">Order History</button>
                     </Link>
                   </div>
                   <div className="home-btn block">

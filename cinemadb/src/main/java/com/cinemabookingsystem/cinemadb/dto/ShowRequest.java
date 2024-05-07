@@ -1,15 +1,22 @@
 package com.cinemabookingsystem.cinemadb.dto;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+import org.springframework.lang.Nullable;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ShowRequest {
     
-    private String date;
-    private String time;
+    private LocalDate date;
+    private LocalTime time;
     private Integer movieId;
     private Integer showroomId;
     private Integer duration;
+
+    @Nullable
     private Integer showId;
     
     public Integer getShowId() {
@@ -18,16 +25,16 @@ public class ShowRequest {
     public void setShowId(Integer showId) {
         this.showId = showId;
     }
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
-    public String getTime() {
+    public LocalTime getTime() {
         return time;
     }
-    public void setTime(String time) {
+    public void setTime(LocalTime time) {
         this.time = time;
     }
     public Integer getMovieId() {

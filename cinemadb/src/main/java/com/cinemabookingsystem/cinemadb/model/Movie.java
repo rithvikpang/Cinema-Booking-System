@@ -19,6 +19,7 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
@@ -41,6 +42,7 @@ public class Movie {
     @Column(name = "duration")
     private int duration;
 
+    @JsonProperty("release_date")
     @Temporal(TemporalType.DATE)
     @Column(name = "release_date")
     private LocalDate release_date;
@@ -61,9 +63,11 @@ public class Movie {
     @Column(name = "director", length = 255)
     private String director;
 
+    @JsonProperty("movie_image")
     @Column(name = "movie_image", length = 255)
     private String movie_image;
 
+    @JsonProperty("movie_trailer")
     @Column(name = "movie_trailer", length = 255)
     private String movie_trailer;
 
@@ -73,6 +77,7 @@ public class Movie {
     @Column(name = "reviews", length = 255)
     private String reviews;
 
+    @JsonManagedReference("movie-show")
     @OneToMany(mappedBy = "movie", cascade = CascadeType.REFRESH)
     private Set<Show> shows;
 
