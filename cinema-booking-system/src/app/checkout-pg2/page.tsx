@@ -72,7 +72,7 @@ const Checkout: React.FC = () => {
   const bookingRequest: BookingRequest = {
     showId: 16,
     ticketCount: 2,
-    userEmail: "dylanwd37@gmail.com",
+    userEmail: "sideelol@gmail.com",
     seatStatusDTOs: [
       { showId: 16, seatId: 651, rowLetter: 'F', seatNumber: 5, isBooked: false, ticketType: 'ADULT' },
       { showId: 16, seatId: 652, rowLetter: 'F', seatNumber: 6, isBooked: false, ticketType: 'ADULT' }

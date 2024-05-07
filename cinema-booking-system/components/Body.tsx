@@ -124,6 +124,7 @@ const Body = () => {
             onChange={handleDateChange}
             dateFormat="yyyy/MM/dd"
             className="date-picker"
+            //style={{ backgroundColor: '#ffffff', color: '#000000' }}
             placeholderText="Select a date to see movies"
           />
           <select onChange={handleCategoryChange} value={selectedCategory} className="movie-cat">
