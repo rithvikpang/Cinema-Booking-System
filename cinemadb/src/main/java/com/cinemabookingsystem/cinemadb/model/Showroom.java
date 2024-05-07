@@ -12,12 +12,15 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.util.List;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "showroomId")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(schema = "cinema_db", name = "showroom")
 public class Showroom {
@@ -26,12 +29,10 @@ public class Showroom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer showroom_id;
 
-    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "theater_id", referencedColumnName = "theater_id")
     private Theater theater;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "showroom", cascade = CascadeType.ALL)
     private List<Seat> seats;
 
