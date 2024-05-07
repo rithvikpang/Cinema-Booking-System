@@ -8,11 +8,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.util.Set;
 
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "theaterId")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(schema = "cinema_db", name = "theater")
 public class Theater {
     
@@ -22,7 +27,6 @@ public class Theater {
 
     private String location;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "theater", cascade = CascadeType.ALL)
     private Set<Showroom> showrooms;
     
